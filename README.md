@@ -1,4 +1,4 @@
-# githubinator
+# [githubinator](https://github.com/chdsbd/vscode-githubinator) [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/chdsbd.githubinator.svg)](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) ![GitHub](https://img.shields.io/github/license/chdsbd/vscode-githubinator.svg)
 
 VSCode plugin that shows selected text on remote GitHub repo
 
@@ -66,3 +66,5 @@ this project|github|y|n|y|y|y|y|n|y|y|n
 [d4rkr00t-vscode]:https://marketplace.visualstudio.com/items?itemName=sysoev.vscode-open-in-github
 [ziyasal-github]:https://github.com/ziyasal/vscode-open-in-github
 [ziyasal-vscode]:https://marketplace.visualstudio.com/items?itemName=ziyasal.vscode-open-in-github
+
+[marketplace]: https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator
