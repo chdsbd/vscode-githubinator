@@ -1,6 +1,6 @@
 # githubinator
 
-VSCode plugin that shows selected text on remote GitHub or Bitbucket repo
+VSCode plugin that shows selected text on remote GitHub repo
 
 ## Features
 
