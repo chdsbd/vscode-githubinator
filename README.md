@@ -45,7 +45,7 @@ command|copy url|open url|mode|SHA-type
 
 ## Release Notes
 
-### 0.1.0
+### 0.0.1
 
 Initial release
 
