@@ -2,6 +2,10 @@
 
 VSCode plugin that shows selected text on remote GitHub repo
 
+## Install
+
+In vscode, type `CMD`+`P` and enter `ext install chdsbd.githubinator`.
+
 ## Features
 
 ![feature X](images/githubinator.png)
