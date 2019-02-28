@@ -1,65 +1,69 @@
-# githubinator README
+# githubinator
 
-This is the README for your extension "githubinator". After writing up a brief description, we recommend including the following sections.
+VSCode plugin that shows selected text on remote GitHub or Bitbucket repo
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+![feature X](images/githubinator.png)
 
-For example if there is an image subfolder under your extension project workspace:
+### Commands
 
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+command|copy url|open url|mode|SHA-type
+--|--|--|--|--
+`Githubinator`|y|y|blob|current branch
+`Githubinator: Copy`|n|y|blob|current branch
+`Githubinator: Copy Master`|n|y|blob|master branch
+`Githubinator: Copy Permalink`|n|y|blob|current SHA
+`Githubinator: Copy Master Permalink`|n|y|blob|master SHA
+`Githubinator: On Master`|y|y|blob|master branch
+`Githubinator: Permalink`|y|y|blob|current SHA
+`Githubinator: Blame`|y|y|blame|current branch
+`Githubinator: Blame On Master`|y|y|blame|master branch
+`Githubinator: Blame Permalink`|y|y|blame|current sha
+`Githubinator: Repository`|y|y|open repo|N/A
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+- Local Git repository. You must have a git repository configured with a remote. (`"origin"` is default but this can be changed in settings).
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+* `githubinator.default_remote`: The default remote branch for a repository. (default: `"origin"`)
+* `githubinator.providers.github`: The hostname for identifying a github origin and building a url. (default: `"github.com"`)
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+- Only Github is supported as a remote provider at the moment.
+
+## TODO
+- [ ] Add Gitlab, Bitbucket, VisualStudio support providers
+- [ ] Add ability to open PR associated with commit, if possible without github API
+- [ ] Replace testing setup with Jest
+- [ ] Setup CI
+- [ ] Document deployment/publishing
+- [ ] Improve README
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### 0.1.0
 
-### 1.0.0
+Initial release
 
-Initial release of ...
 
-### 1.0.1
+## Prior Art
+This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/ehamiter/GitHubinator) with the same name.
 
-Fixed issue #.
+project|providers|blame|history|permalink|master|copy|open|open-pr|one-step actions| provider autodetection
+---|---|---|---|---|--|---|--|--|--|--
+this project|github|y|n|y|y|y|y|n|y|y|n
+[d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode])|github|y|y|n|y|n|y|n|n|n
+[ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])|github, bitbucket, gitlab, visualstudio|n|n|n*|n|y|y|y|y|n
 
-### 1.1.0
+\* changable in settings between permalink and branch
 
-Added features X, Y, and Z.
 
------------------------------------------------------------------------------------------------------------
 
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+[d4rkr00t-github]:https://github.com/d4rkr00t/vscode-open-in-github
+[d4rkr00t-vscode]:https://marketplace.visualstudio.com/items?itemName=sysoev.vscode-open-in-github
+[ziyasal-github]:https://github.com/ziyasal/vscode-open-in-github
+[ziyasal-vscode]:https://marketplace.visualstudio.com/items?itemName=ziyasal.vscode-open-in-github
