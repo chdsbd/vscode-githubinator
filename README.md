@@ -37,7 +37,6 @@ command|copy url|open url|mode|SHA-type
 
 ## TODO
 - [ ] Add Gitlab, Bitbucket, VisualStudio support providers
-- [ ] Add ability to open PR associated with commit, if possible without github API
 - [ ] Replace testing setup with Jest
 - [ ] Setup CI
 - [ ] Document deployment/publishing
