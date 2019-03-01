@@ -4,7 +4,21 @@ VSCode plugin to copy/open selected text on Github (or other providers). See the
 
 ## Install
 
-In vscode, type `CMD`+`P` and enter `ext install chdsbd.githubinator`.
+### From online marketplace
+
+Open the [online marketplace listing](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) for Githubinator and click "Install". Follow the prompts to open vscode and install Githubinator.
+
+### From vscode
+
+In vscode, type `CMD`+`P` and enter `ext install chdsbd.githubinator`. Or search for and install `chdsbd.githubinator` via the extensions tab.
+
+### From github release
+
+Download the extension package from the [latest github release](https://github.com/chdsbd/vscode-githubinator/releases/latest) and run `code --install-extension githubinator-*.vsix`
+
+### From source
+
+With `vsce` installed from npm (`yarn global add vsce`), clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
 
 ## Features
 
