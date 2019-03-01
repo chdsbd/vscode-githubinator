@@ -1,6 +1,6 @@
 # [githubinator](https://github.com/chdsbd/vscode-githubinator) [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/chdsbd.githubinator.svg)](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) ![GitHub](https://img.shields.io/github/license/chdsbd/vscode-githubinator.svg)
 
-VSCode plugin to copy/open selected text on Github (or other providers). See the "commands" section for more details.
+VSCode plugin to quickly open files on Github and other providers. View blame information, copy permalinks and more. See the "commands" section of the README for more details.
 
 ## Install
 
