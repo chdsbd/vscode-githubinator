@@ -33,6 +33,7 @@ jobs:
             set -e
             /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
             disown -ar
+          background: true
       - run:
           name: test
           command: make test-ci
