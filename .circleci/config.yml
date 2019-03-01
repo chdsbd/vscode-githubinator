@@ -31,8 +31,7 @@ jobs:
           name: configure X11
           command: |
             set -e
-            /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
-            disown -ar
+            /usr/bin/Xvfb :10 -ac
           background: true
       - run:
           name: test
