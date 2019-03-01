@@ -18,9 +18,24 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
-      - run: make install
+      - run:
+          name: install
+          command: |
+            make install
+            sudo apt install libgtk-3-0 libxss1 libnss3 libasound2
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-      - run: make test-ci
+      - run:
+          name: configure X11
+          command: |
+            set -e
+            /usr/bin/Xvfb :10 -ac >> /tmp/Xvfb.out 2>&1 &
+            disown -ar
+        displayName: 'Start xvfb'
+      - run:
+          name: test
+          command: make test-ci
+          environment:
+            DISPLAY: :10
