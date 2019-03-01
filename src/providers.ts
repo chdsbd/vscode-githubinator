@@ -4,16 +4,20 @@ import { IGithubinatorConfig } from "./extension"
 import { cleanHostname } from "./utils"
 
 interface IGetUrl {
-  selection: [number, number]
-  head: string
-  mode: "blob" | "blame"
-  relativeFilePath: string
-  origin: string
-  providersConfig: IGithubinatorConfig["providers"]
+  readonly selection: [number, number]
+  readonly head: string
+  readonly mode: "blob" | "blame"
+  readonly relativeFilePath: string
+  readonly origin: string
+  readonly providersConfig: IGithubinatorConfig["providers"]
 }
 
+interface IUrlInfo {
+  readonly fileUrl: string
+  readonly repoUrl: string
+}
 interface IProvider {
-  getUrl(params: IGetUrl): { fileUrl: string; repoUrl: string } | null
+  readonly getUrl: (params: IGetUrl) => IUrlInfo | null
 }
 
 export class Github implements IProvider {
@@ -27,7 +31,7 @@ export class Github implements IProvider {
     mode,
     providersConfig,
     origin,
-  }: IGetUrl): { fileUrl: string; repoUrl: string } | null {
+  }: IGetUrl): IUrlInfo | null {
     const [start, end] = selection
     const ssh = origin.match(this.SSH)
     const https = origin.match(this.HTTPS)
