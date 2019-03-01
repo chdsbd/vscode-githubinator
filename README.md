@@ -1,24 +1,24 @@
 # [githubinator](https://github.com/chdsbd/vscode-githubinator) [![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/chdsbd.githubinator.svg)](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) ![GitHub](https://img.shields.io/github/license/chdsbd/vscode-githubinator.svg)
 
-VSCode plugin to quickly open files on Github and other providers. View blame information, copy permalinks and more. See the "commands" section of the README for more details.
+VSCode plugin to quickly open files on Github and other providers. View Git blame information, copy permalinks and more. See the "commands" section of the README for more details.
 
 ## Install
 
 ### From online marketplace
 
-Open the [online marketplace listing](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) for Githubinator and click "Install". Follow the prompts to open vscode and install Githubinator.
+Open the [online marketplace listing](https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator#overview) for Githubinator and click "Install". Follow the prompts to open VSCode and install Githubinator.
 
-### From vscode
+### From VSCode
 
-In vscode, type `CMD`+`P` and enter `ext install chdsbd.githubinator`. Or search for and install `chdsbd.githubinator` via the extensions tab.
+In VSCode, type `CMD`+`P` and enter `ext install chdsbd.githubinator`. Or search for and install `chdsbd.githubinator` via the extensions tab.
 
-### From github release
+### From Github release
 
-Download the extension package from the [latest github release](https://github.com/chdsbd/vscode-githubinator/releases/latest) and run `code --install-extension githubinator-*.vsix`
+Download the extension package from the [latest Github release](https://github.com/chdsbd/vscode-githubinator/releases/latest) and run `code --install-extension githubinator-*.vsix`
 
 ### From source
 
-With `vsce` installed from npm (`yarn global add vsce`), clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
+With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
 
 ## Features
 
@@ -26,13 +26,13 @@ With `vsce` installed from npm (`yarn global add vsce`), clone [this repo](https
 
 ### Commands
 
-| command                               | copy url | open url | mode      | SHA-type       |
+| command                               | copy URL | open URL | mode      | SHA-type       |
 | ------------------------------------- | -------- | -------- | --------- | -------------- |
-| `Githubinator`                        | y        | y        | blob      | current branch |
-| `Githubinator: Copy`                  | n        | y        | blob      | current branch |
-| `Githubinator: Copy Master`           | n        | y        | blob      | master branch  |
-| `Githubinator: Copy Permalink`        | n        | y        | blob      | current SHA    |
-| `Githubinator: Copy Master Permalink` | n        | y        | blob      | master SHA     |
+| `Githubinator`                        | y        | n        | blob      | current branch |
+| `Githubinator: Copy`                  | y        | n        | blob      | current branch |
+| `Githubinator: Copy Master`           | y        | n        | blob      | master branch  |
+| `Githubinator: Copy Permalink`        | y        | n        | blob      | current SHA    |
+| `Githubinator: Copy Master Permalink` | y        | n        | blob      | master SHA     |
 | `Githubinator: On Master`             | y        | y        | blob      | master branch  |
 | `Githubinator: Permalink`             | y        | y        | blob      | current SHA    |
 | `Githubinator: Blame`                 | y        | y        | blame     | current branch |
@@ -47,7 +47,7 @@ With `vsce` installed from npm (`yarn global add vsce`), clone [this repo](https
 ## Extension Settings
 
 - `githubinator.default_remote`: The default remote branch for a repository. (default: `"origin"`)
-- `githubinator.providers.github`: The hostname for identifying a github origin and building a url. (default: `"github.com"`)
+- `githubinator.providers.github`: The hostname for identifying a Github origin and building a URL. (default: `"github.com"`)
 
 ## Known Issues
 
@@ -71,11 +71,11 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 | project                                                                       | providers                               | blame | history | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
 | ----------------------------------------------------------------------------- | --------------------------------------- | ----- | ------- | --------- | ------ | ---- | ---- | ------- | ---------------- | ---------------------- |
-| this project                                                                  | github                                  | y     | n       | y         | y      | y    | y    | n       | y                | y                      | n |
-| [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | github                                  | y     | y       | n         | y      | n    | y    | n       | n                | n                      |
-| [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | github, bitbucket, gitlab, visualstudio | n     | n       | n\*       | n      | y    | y    | y       | y                | n                      |
+| this project                                                                  | Github                                  | y     | n       | y         | y      | y    | y    | n       | y                | y                      | n |
+| [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  | y     | y       | n         | y      | n    | y    | n       | n                | n                      |
+| [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio | n     | n       | n\*       | n      | y    | y    | y       | y                | n                      |
 
-\* changable in settings between permalink and branch
+\* changeable in settings between permalink and branch
 
 [d4rkr00t-github]: https://github.com/d4rkr00t/vscode-open-in-github
 [d4rkr00t-vscode]: https://marketplace.visualstudio.com/items?itemName=sysoev.vscode-open-in-github
