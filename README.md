@@ -57,7 +57,6 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 - [ ] Add Gitlab, Bitbucket, VisualStudio support providers
 - [ ] Replace testing setup with Jest
-- [ ] Setup CI
 
 ## Release Notes
 
@@ -84,21 +83,36 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 ## Development
 
-Install dependencies with `yarn install`, then following the guides below.
+```sh
+# install dependencies
+make install
+# lint (tslint and formatting)
+make lint
+# format code
+make format
+# check formatting
+make format-ci
+# run tests
+make test
+# run linting and testing
+make test-ci
+```
 
-### Get up and running straight away
+### VSCode instructions
+
+#### Get up and running straight away
 
 - Press `F5` to open a new window with your extension loaded.
 - Run your command from the command palette by pressing (`Ctrl+Shift+P` or `Cmd+Shift+P` on Mac) and typing `Hello World`.
 - Set breakpoints in your code inside `src/extension.ts` to debug your extension.
 - Find output from your extension in the debug console.
 
-### Make changes
+#### Make changes
 
 - You can relaunch the extension from the debug toolbar after changing code in `src/extension.ts`.
 - You can also reload (`Ctrl+R` or `Cmd+R` on Mac) the VS Code window with your extension to load your changes.
 
-### Run tests
+#### Run tests
 
 - Open the debug viewlet (`Ctrl+Shift+D` or `Cmd+Shift+D` on Mac) and from the launch configuration dropdown pick `Extension Tests`.
 - Press `F5` to run the tests in a new window with your extension loaded.
