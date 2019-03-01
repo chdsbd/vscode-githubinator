@@ -1,4 +1,4 @@
-.PHONY: install, lint, format, format-ci, test
+.PHONY: install, lint, format, format-ci, test, test-ci
 
 install:
 	@yarn install
@@ -8,6 +8,7 @@ format:
 	@yarn format
 format-ci:
 	@yarn format:ci
-test-ci: lint, format-ci
+test:
 	@yarn vscode:prepublish
 	@yarn test
+test-ci: lint, format-ci, test
