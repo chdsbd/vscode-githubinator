@@ -36,6 +36,4 @@ jobs:
           background: true
       - run:
           name: test
-          command: make test-ci
-          environment:
-            DISPLAY: ":10"
+          command: DISPLAY=':10' make test-ci
