@@ -5,9 +5,13 @@
   "version": "0.0.1",
   "publisher": "chdsbd",
   "license": "SEE LICENSE IN LICENSE",
+  "homepage": "https://github.com/chdsbd/vscode-githubinator/blob/master/README.md",
   "repository": {
     "type": "git",
     "url": "https://github.com/chdsbd/vscode-githubinator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/chdsbd/vscode-githubinator/issues"
   },
   "engines": {
     "vscode": "^1.31.0"
