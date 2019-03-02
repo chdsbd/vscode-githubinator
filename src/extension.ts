@@ -52,10 +52,14 @@ const COMMANDS: [string, IGithubinator][] = [
 
 const DEFAULT_REMOTE = "origin"
 
+interface IProviderConfig {
+  hostname?: string
+}
+
 export interface IGithubinatorConfig {
   remote: string
   providers: {
-    [key: string]: string | undefined
+    [key: string]: IProviderConfig | undefined
   }
 }
 
