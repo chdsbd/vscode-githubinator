@@ -58,7 +58,6 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 ## TODO
 
 - [ ] Replace testing setup with Jest
-- [ ] make origin configurable per provider
 
 ## Release Notes
 
