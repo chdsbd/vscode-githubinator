@@ -172,6 +172,11 @@
           "type": "string",
           "default": "gitlab.com",
           "description": "The hostname for identifying a Gitlab origin and building a url."
+        },
+        "githubinator.providers.bitbucket.hostname": {
+          "type": "string",
+          "default": "bitbucket.org",
+          "description": "The hostname for identifying a Bitbucket origin and building a url."
         }
       }
     }

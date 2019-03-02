@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 import * as git from "./git"
-import { providers } from "./providers"
+import { providers, IUrlInfo } from "./providers"
 import { getRelativeFilePath } from "./utils"
 
 const COMMANDS: [string, IGithubinator][] = [
@@ -134,35 +134,34 @@ async function githubinator({
     .getConfiguration("githubinator")
     .get<IGithubinatorConfig["providers"]>("providers", {})
 
-  let url: string | null = null
-  let repoUrl: string | null = null
+  let urls: IUrlInfo | null = null
   for (const provider of providers) {
-    const parsedUrl = new provider().getUrl({
+    const parsedUrl = new provider().getUrls({
       selection: [editor.selection.start.line, editor.selection.end.line],
       // permalink > branch > branch from HEAD
       head: !!permalink ? head : !!branch ? branch : branchName,
-      mode: blame ? "blame" : "blob",
       origin,
       providersConfig,
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
     })
     if (parsedUrl != null) {
       console.log("Found provider", provider.name)
-      url = parsedUrl.fileUrl
-      repoUrl = parsedUrl.repoUrl
+      urls = parsedUrl
       break
     }
     console.log("Skipping provider", provider.name)
   }
 
-  if (url == null) {
+  if (urls == null) {
     return err("Could not find provider for repo.")
   }
 
-  if (repoUrl != null && openRepo) {
-    vscode.env.openExternal(vscode.Uri.parse(repoUrl))
+  if (openRepo) {
+    vscode.env.openExternal(vscode.Uri.parse(urls.repoUrl))
     return
   }
+
+  const url = blame ? urls.blameUrl : urls.blobUrl
 
   if (openUrl) {
     vscode.env.openExternal(vscode.Uri.parse(url))
