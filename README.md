@@ -57,7 +57,6 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## TODO
 
-- [ ] Add Gitlab, Bitbucket, VisualStudio support providers
 - [ ] Replace testing setup with Jest
 
 ## Release Notes

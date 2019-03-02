@@ -1,6 +1,6 @@
 import * as vscode from "vscode"
 import * as git from "./git"
-import { providers, IUrlInfo } from "./providers"
+import { providers, IUrlInfo, createSha, createBranch } from "./providers"
 import { getRelativeFilePath } from "./utils"
 
 const COMMANDS: [string, IGithubinator][] = [
@@ -139,7 +139,7 @@ async function githubinator({
     const parsedUrl = new provider().getUrls({
       selection: [editor.selection.start.line, editor.selection.end.line],
       // permalink > branch > branch from HEAD
-      head: !!permalink ? head : !!branch ? branch : branchName,
+      head: !!permalink ? createSha(head) : createBranch(branchName),
       origin,
       providersConfig,
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
