@@ -1,4 +1,11 @@
-import { Github, Gitlab, Bitbucket } from "../providers"
+import {
+  Github,
+  Gitlab,
+  Bitbucket,
+  VisualStudio,
+  createSha,
+  createBranch,
+} from "../providers"
 import * as assert from "assert"
 
 suite("Github", () => {
@@ -8,7 +15,7 @@ suite("Github", () => {
       origin: "git@github.com:recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {},
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -27,7 +34,7 @@ suite("Github", () => {
       providersConfig: {
         github: { hostnames: ["github.mycompany.com"] },
       },
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -48,7 +55,7 @@ suite("Gitlab", () => {
       origin: "git@gitlab.com:recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {},
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -67,7 +74,7 @@ suite("Gitlab", () => {
       providersConfig: {
         gitlab: { hostnames: ["gitlab.mycompany.com"] },
       },
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -89,7 +96,7 @@ suite("Bitbucket", () => {
       origin: "git@bitbucket.org:recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {},
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -108,7 +115,7 @@ suite("Bitbucket", () => {
       providersConfig: {
         bitbucket: { hostnames: ["git.mycompany.org"] },
       },
-      head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
     const expected = {
@@ -117,6 +124,48 @@ suite("Bitbucket", () => {
       blameUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
+    }
+    assert.deepEqual(result, expected)
+  })
+})
+
+suite("VisualStudio", () => {
+  const vs = new VisualStudio()
+  test("ssh", () => {
+    const result = vs.getUrls({
+      origin: "git@ssh.dev.azure.com:v3/acmecorp/project-alpha/recipeyak",
+      selection: [17, 24],
+      providersConfig: {},
+      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
+      relativeFilePath: "frontend/src/components/App.tsx",
+    })
+    const expected = {
+      blobUrl:
+        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25",
+      blameUrl:
+        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25&_a=annotate",
+      repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
+    }
+    assert.deepEqual(result, expected)
+  })
+  test("https", () => {
+    const result = vs.getUrls({
+      origin:
+        "https://chdsbd@git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
+      selection: [17, 24],
+      providersConfig: {
+        visualstudio: { hostnames: ["git.mycompany.org"] },
+      },
+      head: createBranch("master"),
+      relativeFilePath: "frontend/src/components/App.tsx",
+    })
+    const expected = {
+      blobUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25",
+      blameUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25&_a=annotate",
+      repoUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
   })

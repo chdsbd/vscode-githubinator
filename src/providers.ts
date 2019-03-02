@@ -5,7 +5,7 @@ import { cleanHostname } from "./utils"
 
 interface IGetUrl {
   readonly selection: [number, number]
-  readonly head: string
+  readonly head: Head
   readonly relativeFilePath: string
   readonly origin: string
   readonly providersConfig: IGithubinatorConfig["providers"]
@@ -17,7 +17,6 @@ export interface IUrlInfo {
   readonly blameUrl: string
 }
 interface IProvider {
-  readonly getMatchers: (hostname: string) => RegExp[]
   readonly getUrls: (params: IGetUrl) => IUrlInfo | null
 }
 
@@ -56,6 +55,26 @@ function getHostnames(
   return defaults.concat((config && config.hostnames) || []).map(cleanHostname)
 }
 
+interface IBranch {
+  kind: "branch"
+  value: string
+}
+
+export function createBranch(value: string): IBranch {
+  return { kind: "branch", value }
+}
+
+interface ISHA {
+  kind: "sha"
+  value: string
+}
+
+type Head = IBranch | ISHA
+
+export function createSha(value: string): ISHA {
+  return { kind: "sha", value }
+}
+
 export class Github implements IProvider {
   DEFAULT_HOSTNAMES = ["github.com"]
   getMatchers(hostname: string) {
@@ -85,11 +104,23 @@ export class Github implements IProvider {
     const lines = `L${start + 1}-L${end + 1}`
     const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
     const blobUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blob", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "blob",
+        head.value,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     const blameUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blame", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "blame",
+        head.value,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     blobUrl.hash = lines
@@ -129,11 +160,23 @@ export class Gitlab implements IProvider {
     const lines = `L${start + 1}-${end + 1}`
     const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
     const blobUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blob", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "blob",
+        head.value,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     const blameUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blame", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "blame",
+        head.value,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     blobUrl.hash = lines
@@ -174,7 +217,13 @@ export class Bitbucket implements IProvider {
     const lines = `lines-${start + 1}:${end + 1}`
     const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
     const blobUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blob", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "blob",
+        head.value,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     const blameUrl = new url.URL(
@@ -182,7 +231,7 @@ export class Bitbucket implements IProvider {
         repoInfo.org,
         repoInfo.repo,
         "annotate",
-        head,
+        head.value,
         relativeFilePath,
       ),
       rootUrl,
@@ -197,4 +246,55 @@ export class Bitbucket implements IProvider {
   }
 }
 
-export const providers = [Bitbucket, Gitlab, Github]
+export class VisualStudio implements IProvider {
+  DEFAULT_HOSTNAMES = ["dev.azure.com"]
+  getMatchers(hostname: string) {
+    // git@ssh.dev.azure.com:v3/chdignam/magnus-montis/magnus-montis
+    const SSH = RegExp(`^git@ssh\.${hostname}:v3\/(.*)\/(.*)$`)
+    // https://chdignam@dev.azure.com/chdignam/magnus-montis/_git/magnus-montis
+    const HTTPS = RegExp(`^https:\/\/.*@${hostname}\/(.*)\/_git\/(.*)$`)
+    return [SSH, HTTPS]
+  }
+  getUrls({
+    selection,
+    relativeFilePath,
+    head,
+    providersConfig,
+    origin,
+  }: IGetUrl): IUrlInfo | null {
+    const config = providersConfig["visualstudio"]
+    const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
+    const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
+    if (repoInfo == null) {
+      return null
+    }
+    // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
+    const rootUrl = `https://${repoInfo.hostname}/`
+    const [start, end] = selection
+    const lines = `&line=${start + 1}&lineEnd=${end + 1}`
+    const repoUrl = new url.URL(
+      path.join(repoInfo.org, "_git", repoInfo.repo),
+      rootUrl,
+    )
+    let filePath = relativeFilePath
+    if (!filePath.startsWith("/")) {
+      filePath = "/" + filePath
+    }
+    const version =
+      head.kind === "branch" ? `GB${head.value}` : `GC${head.value}`
+    const baseSearch = `path=${encodeURIComponent(
+      filePath,
+    )}&version=${version}${lines}`
+    const blobUrl = new url.URL(repoUrl.toString())
+    const blameUrl = new url.URL(repoUrl.toString())
+    blobUrl.search = baseSearch
+    blameUrl.search = baseSearch + "&_a=annotate"
+    return {
+      blobUrl: blobUrl.toString(),
+      blameUrl: blameUrl.toString(),
+      repoUrl: repoUrl.toString(),
+    }
+  }
+}
+
+export const providers = [Bitbucket, Gitlab, Github, VisualStudio]
