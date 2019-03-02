@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.1.0 - 2019-03-02
+
 ### Added
 
 - `githubinator.enable_context_menu` option to disable/enable access to githubinator in the context menu.
@@ -24,7 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Fix regex creation for Github provider so hostname configured in settings is used to match origins.
 
-## 0.1.0 - 2019-02-28
+## 0.0.1 - 2019-02-28
 
 ### Added
 
