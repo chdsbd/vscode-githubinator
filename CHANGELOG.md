@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `githubinator.enable_context_menu` option to disable/enable access to githubinator in the context menu.
 - Gitlab provider with `githubinator.provider.gitlab.hostnames` setting for configuring match.
-- Bitbucket provider and configuration
+- Bitbucket provider and configuration.
 - VisualStudio provider and configuration.
 
 ### Changed
