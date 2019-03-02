@@ -1,14 +1,12 @@
 import * as path from "path"
 import * as url from "url"
-import { IGithubinatorConfig, IProviderConfig } from "./extension"
+import { IProviderConfig } from "./extension"
 import { cleanHostname } from "./utils"
 
-interface IGetUrl {
+interface IBaseGetUrls {
   readonly selection: [number, number]
   readonly head: Head
   readonly relativeFilePath: string
-  readonly origin: string
-  readonly providersConfig: IGithubinatorConfig["providers"]
 }
 
 export interface IUrlInfo {
@@ -16,48 +14,16 @@ export interface IUrlInfo {
   readonly repoUrl: string
   readonly blameUrl: string
 }
-interface IProvider {
-  readonly getUrls: (params: IGetUrl) => IUrlInfo | null
-}
 
 interface IOrgInfo {
-  org: string
-  repo: string
-  hostname: string
-}
-/** Match target against multiple matchers. Extract the first two groups. */
-function findOrgInfo(
-  origin: string,
-  hostnames: string[],
-  getMatchers: (hostname: string) => RegExp[],
-): IOrgInfo | null {
-  for (const hostname of hostnames) {
-    const matches = getMatchers(hostname).map(matcher => origin.match(matcher))
-    let org: string | null = null
-    let repo: string | null = null
-    for (const match of matches) {
-      if (match != null) {
-        ;[, org, repo] = match
-      }
-    }
-    if (org == null || repo == null) {
-      continue
-    }
-    return { org, repo, hostname }
-  }
-  return null
-}
-
-function getHostnames(
-  defaults: string[],
-  config: undefined | IProviderConfig,
-): string[] {
-  return defaults.concat((config && config.hostnames) || []).map(cleanHostname)
+  readonly org: string
+  readonly repo: string
+  readonly hostname: string
 }
 
 interface IBranch {
-  kind: "branch"
-  value: string
+  readonly kind: "branch"
+  readonly value: string
 }
 
 export function createBranch(value: string): IBranch {
@@ -65,8 +31,8 @@ export function createBranch(value: string): IBranch {
 }
 
 interface ISHA {
-  kind: "sha"
-  value: string
+  readonly kind: "sha"
+  readonly value: string
 }
 
 type Head = IBranch | ISHA
@@ -75,26 +41,76 @@ export function createSha(value: string): ISHA {
   return { kind: "sha", value }
 }
 
-export class Github implements IProvider {
-  DEFAULT_HOSTNAMES = ["github.com"]
-  getMatchers(hostname: string) {
-    const SSH = RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`)
-    const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
-    return [SSH, HTTPS]
+abstract class BaseProvider {
+  abstract readonly DEFAULT_HOSTNAMES = [] as string[]
+  abstract readonly MATCHERS: ((hostname: string) => RegExp)[] = []
+  abstract readonly PROVIDER_NAME: string
+
+  private CONFIG: { [key: string]: IProviderConfig | undefined }
+  private GLOBAL_DEFAULT_REMOTE: string
+  private FIND_REMOTE: (x: string) => Promise<string | null>
+
+  constructor(
+    config: { [key: string]: IProviderConfig | undefined },
+    global_default_remote: string,
+    findRemote: (x: string) => Promise<string | null>,
+  ) {
+    this.CONFIG = config
+    this.GLOBAL_DEFAULT_REMOTE = global_default_remote
+    this.FIND_REMOTE = findRemote.bind(this)
   }
-  getUrls({
+  private getConfig() {
+    return this.CONFIG[this.PROVIDER_NAME]
+  }
+  private getRemoteName(): string {
+    const conf = this.getConfig()
+    return conf && conf.remote ? conf.remote : this.GLOBAL_DEFAULT_REMOTE
+  }
+  private getHostnames() {
+    const conf = this.getConfig()
+    return this.DEFAULT_HOSTNAMES.concat((conf && conf.hostnames) || []).map(
+      cleanHostname,
+    )
+  }
+  async findOrgInfo(): Promise<IOrgInfo | null> {
+    const origin = await this.FIND_REMOTE(this.getRemoteName())
+    if (origin == null) {
+      return null
+    }
+    for (const hostname of this.getHostnames()) {
+      const matches = this.MATCHERS.map(matcher =>
+        origin.match(matcher(hostname)),
+      )
+      let org: string | null = null
+      let repo: string | null = null
+      for (const match of matches) {
+        if (match != null) {
+          ;[, org, repo] = match
+        }
+      }
+      if (org == null || repo == null) {
+        continue
+      }
+      return { org, repo, hostname }
+    }
+    return null
+  }
+  abstract getUrls(params: IBaseGetUrls): Promise<IUrlInfo | null>
+}
+
+export class Github extends BaseProvider {
+  DEFAULT_HOSTNAMES = ["github.com"]
+  PROVIDER_NAME = "github"
+  MATCHERS = [
+    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
+    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`),
+  ]
+  async getUrls({
     selection,
-    relativeFilePath,
     head,
-    providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
-    const config = providersConfig["github"]
-    // We always want to include the default hostnames, so a user cannot
-    // accidently remove github.com from the github provider by setting a custom
-    // hostname.
-    const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
-    const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
+    relativeFilePath,
+  }: IBaseGetUrls): Promise<IUrlInfo | null> {
+    const repoInfo = await this.findOrgInfo()
     if (repoInfo == null) {
       return null
     }
@@ -133,24 +149,19 @@ export class Github implements IProvider {
   }
 }
 
-export class Gitlab implements IProvider {
+export class Gitlab extends BaseProvider {
   DEFAULT_HOSTNAMES = ["gitlab.com"]
-  // https://gitlab.com/my_org/my_repo/blob/master/app/main.py#L3-4
-  getMatchers(hostname: string) {
-    const SSH = RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`)
-    const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
-    return [SSH, HTTPS]
-  }
-  getUrls({
+  PROVIDER_NAME = "gitlab"
+  MATCHERS = [
+    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
+    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`),
+  ]
+  async getUrls({
     selection,
     relativeFilePath,
     head,
-    providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
-    const config = providersConfig["gitlab"]
-    const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
-    const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
+  }: IBaseGetUrls): Promise<IUrlInfo | null> {
+    const repoInfo = await this.findOrgInfo()
     if (repoInfo == null) {
       return null
     }
@@ -189,25 +200,19 @@ export class Gitlab implements IProvider {
   }
 }
 
-export class Bitbucket implements IProvider {
+export class Bitbucket extends BaseProvider {
   DEFAULT_HOSTNAMES = ["bitbucket.org"]
-  getMatchers(hostname: string) {
-    // git@bitbucket.org:recipeyak/recipeyak.git
-    // https://chdsbd@bitbucket.org/recipeyak/recipeyak.git
-    const SSH = RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`)
-    const HTTPS = RegExp(`^https:\/\/.*${hostname}\/(.*)\/(.*)\.git$`)
-    return [SSH, HTTPS]
-  }
-  getUrls({
+  PROVIDER_NAME = "bitbucket"
+  MATCHERS = [
+    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
+    (hostname: string) => RegExp(`^https:\/\/.*${hostname}\/(.*)\/(.*)\.git$`),
+  ]
+  async getUrls({
     selection,
     relativeFilePath,
     head,
-    providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
-    const config = providersConfig["bitbucket"]
-    const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
-    const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
+  }: IBaseGetUrls): Promise<IUrlInfo | null> {
+    const repoInfo = await this.findOrgInfo()
     if (repoInfo == null) {
       return null
     }
@@ -246,25 +251,22 @@ export class Bitbucket implements IProvider {
   }
 }
 
-export class VisualStudio implements IProvider {
+export class VisualStudio extends BaseProvider {
   DEFAULT_HOSTNAMES = ["dev.azure.com"]
-  getMatchers(hostname: string) {
+  PROVIDER_NAME = "visualstudio"
+  MATCHERS = [
     // git@ssh.dev.azure.com:v3/chdignam/magnus-montis/magnus-montis
-    const SSH = RegExp(`^git@ssh\.${hostname}:v3\/(.*)\/(.*)$`)
+    (hostname: string) => RegExp(`^git@ssh\.${hostname}:v3\/(.*)\/(.*)$`),
     // https://chdignam@dev.azure.com/chdignam/magnus-montis/_git/magnus-montis
-    const HTTPS = RegExp(`^https:\/\/.*@${hostname}\/(.*)\/_git\/(.*)$`)
-    return [SSH, HTTPS]
-  }
-  getUrls({
+    (hostname: string) =>
+      RegExp(`^https:\/\/.*@${hostname}\/(.*)\/_git\/(.*)$`),
+  ]
+  async getUrls({
     selection,
     relativeFilePath,
     head,
-    providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
-    const config = providersConfig["visualstudio"]
-    const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
-    const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
+  }: IBaseGetUrls): Promise<IUrlInfo | null> {
+    const repoInfo = await this.findOrgInfo()
     if (repoInfo == null) {
       return null
     }

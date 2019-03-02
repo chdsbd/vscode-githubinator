@@ -54,6 +54,7 @@ const DEFAULT_REMOTE = "origin"
 
 export interface IProviderConfig {
   hostnames?: string[]
+  remote?: string
 }
 
 export interface IGithubinatorConfig {
@@ -122,13 +123,9 @@ async function githubinator({
     return err("Could not find HEAD.")
   }
   const [head, branchName] = headBranch
-  const remoteName = vscode.workspace
+  const globalDefaultRemote = vscode.workspace
     .getConfiguration("githubinator")
-    .get<IGithubinatorConfig["remote"]>("default_remote", DEFAULT_REMOTE)
-  const origin = await git.origin(gitDir, remoteName)
-  if (origin == null) {
-    return err("Could not find url for origin.")
-  }
+    .get<IGithubinatorConfig["remote"]>("remote", DEFAULT_REMOTE)
 
   const providersConfig = vscode.workspace
     .getConfiguration("githubinator")
@@ -136,12 +133,14 @@ async function githubinator({
 
   let urls: IUrlInfo | null = null
   for (const provider of providers) {
-    const parsedUrl = new provider().getUrls({
+    const parsedUrl = await new provider(
+      providersConfig,
+      globalDefaultRemote,
+      remote => git.origin(gitDir, remote),
+    ).getUrls({
       selection: [editor.selection.start.line, editor.selection.end.line],
       // permalink > branch > branch from HEAD
       head: !!permalink ? createSha(head) : createBranch(branchName),
-      origin,
-      providersConfig,
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
     })
     if (parsedUrl != null) {

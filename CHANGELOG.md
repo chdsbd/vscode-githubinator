@@ -13,10 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Gitlab provider with `githubinator.provider.gitlab.hostnames` setting for configuring match.
 - Bitbucket provider and configuration.
 - VisualStudio provider and configuration.
+- Origin configuration for each provider.
 
 ### Changed
 
 - Github provider hostnames are now configured with `githubinator.provider.github.hostnames` setting instead of `githubinator.provider.github`. This is now an array of hostnames instead of a single hostname. Note, the default for a provider will always be used for matching, so you cannot accidentally remove matching for `github.com` by only adding `mycompany.com` in `githubinator.provider.github.hostnames`.
+- Global default origin is now configured via `githubinator.remote` instead of `githubinator.default_remote`. Note, origins set on a provider override the global remote settings.
 
 ### Fixed
 
