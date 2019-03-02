@@ -47,7 +47,8 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 ## Extension Settings
 
 - `githubinator.default_remote`: The default remote branch for a repository. (default: `"origin"`)
-- `githubinator.providers.github`: The hostname for identifying a Github origin and building a URL. (default: `"github.com"`)
+- `githubinator.providers.github.hostname`: The hostname for identifying a Github origin and building a URL. (default: `"github.com"`)
+- `githubinator.providers.gitlab.hostname`: The hostname for identifying a Gitlab origin and building a url. (default: `"gitlab.com"`)
 
 ## Known Issues
 

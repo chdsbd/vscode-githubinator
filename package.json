@@ -163,10 +163,15 @@
           "default": "origin",
           "description": "The remote branch for a repository."
         },
-        "githubinator.providers.github": {
+        "githubinator.providers.github.hostname": {
           "type": "string",
           "default": "github.com",
-          "description": "The hostname for identifying a github origin and building a url."
+          "description": "The hostname for identifying a Github origin and building a url."
+        },
+        "githubinator.providers.gitlab.hostname": {
+          "type": "string",
+          "default": "gitlab.com",
+          "description": "The hostname for identifying a Gitlab origin and building a url."
         }
       }
     }
