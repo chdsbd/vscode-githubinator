@@ -5,7 +5,19 @@
   "version": "0.1.0",
   "publisher": "chdsbd",
   "license": "SEE LICENSE IN LICENSE",
+  "icon": "images/logo256.png",
+  "galleryBanner": {
+    "color": "#E93827",
+    "theme": "dark"
+  },
   "homepage": "https://github.com/chdsbd/vscode-githubinator/blob/master/README.md",
+  "keywords": [
+    "git",
+    "github",
+    "bitbucket",
+    "gitlab",
+    "visualstudio"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/chdsbd/vscode-githubinator.git"

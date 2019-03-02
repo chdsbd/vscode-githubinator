@@ -140,3 +140,7 @@ vsce publish <version>
 ```
 
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator
+
+### Logo
+
+Based on the [Git Logo](https://git-scm.com/downloads/logos) by [Jason Long](https://twitter.com/jasonlong), licensed under the [Creative Commons Attribution 3.0 Unported License.](https://creativecommons.org/licenses/by/3.0/).
