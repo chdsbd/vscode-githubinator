@@ -163,7 +163,7 @@
           "default": "origin",
           "description": "The remote branch for a repository."
         },
-        "githubinator.providers.github.hostname": {
+        "githubinator.providers.github.hostnames": {
           "type": "array",
           "items": {
             "type": "string"
@@ -173,7 +173,7 @@
           ],
           "description": "Hostnames for identifying a Github origin and building a url."
         },
-        "githubinator.providers.gitlab.hostname": {
+        "githubinator.providers.gitlab.hostnames": {
           "type": "array",
           "items": {
             "type": "string"
@@ -183,7 +183,7 @@
           ],
           "description": "Hostnames for identifying a Gitlab origin and building a url."
         },
-        "githubinator.providers.bitbucket.hostname": {
+        "githubinator.providers.bitbucket.hostnames": {
           "type": "array",
           "items": {
             "type": "string"
@@ -193,7 +193,7 @@
           ],
           "description": "Hostnames for identifying a Bitbucket origin and building a url."
         },
-        "githubinator.providers.visualstudio.hostname": {
+        "githubinator.providers.visualstudio.hostnames": {
           "type": "array",
           "items": {
             "type": "string"
