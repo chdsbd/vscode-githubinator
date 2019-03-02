@@ -64,6 +64,10 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+### 0.1.1
+
+- Add logo for Visual Studio Marketplace
+
 ### 0.1.0
 
 - Add Bitbucket, Gitlab, Visualstudio providers
