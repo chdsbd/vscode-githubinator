@@ -1,7 +1,7 @@
 import { Github, Gitlab } from "../providers"
 import * as assert from "assert"
 
-test("Github", () => {
+suite("Github", () => {
   const gh = new Github()
   test("ssh", () => {
     const result = gh.getUrl({
@@ -10,32 +10,36 @@ test("Github", () => {
       mode: "blob",
       providersConfig: {},
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
-      relativeFilePath: "frontend/src/components/App.ts",
+      relativeFilePath: "frontend/src/components/App.tsx",
     })
     assert.strictEqual(
-      result,
-      "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L17-L24",
+      result && result.fileUrl,
+      "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
+    )
+    assert.strictEqual(
+      result && result.repoUrl,
+      "https://github.com/recipeyak/recipeyak",
     )
   })
   test("https", () => {
     const result = gh.getUrl({
-      origin: "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
+      origin: "https://github.mycompany.com/recipeyak/recipeyak.git",
       selection: [17, 24],
       mode: "blame",
       providersConfig: {
-        github: { hostname: "gitlab.mycompany.com" },
+        github: { hostname: "github.mycompany.com" },
       },
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
-      relativeFilePath: "frontend/src/components/App.ts",
+      relativeFilePath: "frontend/src/components/App.tsx",
     })
     assert.strictEqual(
-      result,
-      "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L17-L24",
+      result && result.fileUrl,
+      "https://github.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
     )
   })
 })
 
-test("Gitlab", () => {
+suite("Gitlab", () => {
   const gl = new Gitlab()
   test("ssh", () => {
     const result = gl.getUrl({
@@ -44,11 +48,15 @@ test("Gitlab", () => {
       mode: "blob",
       providersConfig: {},
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
-      relativeFilePath: "frontend/src/components/App.ts",
+      relativeFilePath: "frontend/src/components/App.tsx",
     })
     assert.strictEqual(
-      result,
-      "https://gitlab.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L17-L24",
+      result && result.fileUrl,
+      "https://gitlab.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
+    )
+    assert.strictEqual(
+      result && result.repoUrl,
+      "https://gitlab.com/recipeyak/recipeyak",
     )
   })
   test("https", () => {
@@ -60,11 +68,11 @@ test("Gitlab", () => {
         gitlab: { hostname: "gitlab.mycompany.com" },
       },
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
-      relativeFilePath: "frontend/src/components/App.ts",
+      relativeFilePath: "frontend/src/components/App.tsx",
     })
     assert.strictEqual(
-      result,
-      "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L17-L24",
+      result && result.fileUrl,
+      "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
     )
   })
 })
