@@ -74,7 +74,7 @@ export class Github implements IProvider {
   }
 }
 
-class Gitlab implements IProvider {
+export class Gitlab implements IProvider {
   DEFAULT_HOSTNAME = "gitlab.com"
   // https://gitlab.com/my_org/my_repo/blob/master/app/main.py#L3-4
   getMatchers(hostname: string) {
