@@ -25,7 +25,7 @@ suite("Github", () => {
       origin: "https://github.mycompany.com/recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {
-        github: { hostname: "github.mycompany.com" },
+        github: { hostnames: ["github.mycompany.com"] },
       },
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
       relativeFilePath: "frontend/src/components/App.tsx",
@@ -65,7 +65,7 @@ suite("Gitlab", () => {
       origin: "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {
-        gitlab: { hostname: "gitlab.mycompany.com" },
+        gitlab: { hostnames: ["gitlab.mycompany.com"] },
       },
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
       relativeFilePath: "frontend/src/components/App.tsx",
@@ -106,7 +106,7 @@ suite("Bitbucket", () => {
       origin: "https://chdsbd@git.mycompany.org/recipeyak/recipeyak.git",
       selection: [17, 24],
       providersConfig: {
-        bitbucket: { hostname: "git.mycompany.org" },
+        bitbucket: { hostnames: ["git.mycompany.org"] },
       },
       head: "db99a912f5c4bffe11d91e163cd78ed96589611b",
       relativeFilePath: "frontend/src/components/App.tsx",

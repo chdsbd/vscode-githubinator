@@ -52,8 +52,8 @@ const COMMANDS: [string, IGithubinator][] = [
 
 const DEFAULT_REMOTE = "origin"
 
-interface IProviderConfig {
-  hostname?: string
+export interface IProviderConfig {
+  hostnames?: string[]
 }
 
 export interface IGithubinatorConfig {

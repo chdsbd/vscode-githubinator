@@ -10,12 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `githubinator.enable_context_menu` option to disable/enable access to githubinator in the context menu.
-- Gitlab provider with `githubinator.provider.gitlab.hostname` setting for configuring match.
+- Gitlab provider with `githubinator.provider.gitlab.hostnames` setting for configuring match.
 - Bitbucket provider and configuration.
 
 ### Changed
 
-- Github provider hostname is now configured with `githubinator.provider.github.hostname` setting instead of `githubinator.provider.github`.
+- Github provider hostnames are now configured with `githubinator.provider.github.hostnames` setting instead of `githubinator.provider.github`. This is now an array of hostnames instead of a single hostname. Note, the default for a provider will always be used for matching, so you cannot accidentally remove matching for `github.com` by only adding `mycompany.com` in `githubinator.provider.github.hostnames`.
 
 ### Fixed
 
