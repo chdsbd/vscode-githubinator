@@ -133,14 +133,15 @@ async function githubinator({
 
   let urls: IUrlInfo | null = null
   for (const provider of providers) {
-    const parsedUrl = await new provider().getUrls({
+    const parsedUrl = await new provider(
+      providersConfig,
+      globalDefaultRemote,
+      remote => git.origin(gitDir, remote),
+    ).getUrls({
       selection: [editor.selection.start.line, editor.selection.end.line],
       // permalink > branch > branch from HEAD
       head: !!permalink ? createSha(head) : createBranch(branchName),
-      globalDefaultRemote,
-      providersConfig,
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
-      findOrigin: remote => git.origin(gitDir, remote),
     })
     if (parsedUrl != null) {
       console.log("Found provider", provider.name)
