@@ -58,17 +58,21 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Known Issues
 
-- Only Github is supported as a remote provider at the moment.
-
 ## TODO
 
 - [ ] Replace testing setup with Jest
 
 ## Release Notes
 
+### 0.1.0
+
+- Add Bitbucket, Gitlab, Visualstudio providers
+- Add support for multiple hostnames per provider in config
+- Add support for custom origin per provider in config
+
 ### 0.0.1
 
-Initial release
+- Initial release
 
 ## Prior Art
 
@@ -76,7 +80,7 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 | project                                                                       | providers                               | blame | history | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
 | ----------------------------------------------------------------------------- | --------------------------------------- | :---: | :-----: | :-------: | :----: | :--: | :--: | :-----: | :--------------: | :--------------------: |
-| this project                                                                  | Github                                  |  ✅   |   ❌    |    ✅     |   ✅   |  ✅  |  ✅  |   ❌    |        ✅        |           ✅           |
+| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ❌    |    ✅     |   ✅   |  ✅  |  ✅  |   ❌    |        ✅        |           ✅           |
 | [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  |  ✅   |   ✅    |    ❌     |   ✅   |  ❌  |  ✅  |   ❌    |        ❌        |           ❌           |
 | [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio |  ❌   |   ❌    |   ✅\*    |   ❌   |  ✅  |  ✅  |   ✅    |        ✅        |           ❌           |
 
