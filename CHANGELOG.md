@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `githubinator.enable_context_menu` option to disable/enable access to githubinator in the context menu.
-- Gitlab provider with `githubinator.provider.gitlab.hostname` setting for configuring match
+- Gitlab provider with `githubinator.provider.gitlab.hostname` setting for configuring match.
 
 ### Changed
 
