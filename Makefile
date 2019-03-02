@@ -11,4 +11,4 @@ format-ci:
 test:
 	@yarn vscode:prepublish
 	@yarn test
-test-ci: lint, format-ci, test
+test-ci: lint format-ci test
