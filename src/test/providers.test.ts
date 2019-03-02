@@ -8,11 +8,12 @@ import {
 } from "../providers"
 import * as assert from "assert"
 
-suite("Github", () => {
+suite("Github", async () => {
   const gh = new Github()
-  test("ssh", () => {
-    const result = gh.getUrls({
-      origin: "git@github.com:recipeyak/recipeyak.git",
+  test("ssh", async () => {
+    const result = await gh.getUrls({
+      findOrigin: async _ => "git@github.com:recipeyak/recipeyak.git",
+      globalDefaultRemote: "origin",
       selection: [17, 24],
       providersConfig: {},
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
@@ -27,9 +28,11 @@ suite("Github", () => {
     }
     assert.deepEqual(result, expected)
   })
-  test("https", () => {
-    const result = gh.getUrls({
-      origin: "https://github.mycompany.com/recipeyak/recipeyak.git",
+  test("https", async () => {
+    const result = await gh.getUrls({
+      findOrigin: async _ =>
+        "https://github.mycompany.com/recipeyak/recipeyak.git",
+      globalDefaultRemote: "origin",
       selection: [17, 24],
       providersConfig: {
         github: { hostnames: ["github.mycompany.com"] },
@@ -48,11 +51,12 @@ suite("Github", () => {
   })
 })
 
-suite("Gitlab", () => {
+suite("Gitlab", async () => {
   const gl = new Gitlab()
-  test("ssh", () => {
-    const result = gl.getUrls({
-      origin: "git@gitlab.com:recipeyak/recipeyak.git",
+  test("ssh", async () => {
+    const result = await gl.getUrls({
+      findOrigin: async _ => "git@gitlab.com:recipeyak/recipeyak.git",
+      globalDefaultRemote: "origin",
       selection: [17, 24],
       providersConfig: {},
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
@@ -67,9 +71,11 @@ suite("Gitlab", () => {
     }
     assert.deepEqual(result, expected)
   })
-  test("https", () => {
-    const result = gl.getUrls({
-      origin: "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
+  test("https", async () => {
+    const result = await gl.getUrls({
+      findOrigin: async _ =>
+        "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
+      globalDefaultRemote: "origin",
       selection: [17, 24],
       providersConfig: {
         gitlab: { hostnames: ["gitlab.mycompany.com"] },
@@ -89,11 +95,12 @@ suite("Gitlab", () => {
   })
 })
 
-suite("Bitbucket", () => {
+suite("Bitbucket", async () => {
   const bb = new Bitbucket()
-  test("ssh", () => {
-    const result = bb.getUrls({
-      origin: "git@bitbucket.org:recipeyak/recipeyak.git",
+  test("ssh", async () => {
+    const result = await bb.getUrls({
+      findOrigin: async _ => "git@bitbucket.org:recipeyak/recipeyak.git",
+      globalDefaultRemote: "origin",
       selection: [17, 24],
       providersConfig: {},
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
@@ -108,9 +115,14 @@ suite("Bitbucket", () => {
     }
     assert.deepEqual(result, expected)
   })
-  test("https", () => {
-    const result = bb.getUrls({
-      origin: "https://chdsbd@git.mycompany.org/recipeyak/recipeyak.git",
+  test("https", async () => {
+    let calledOrigin = ""
+    const result = await bb.getUrls({
+      findOrigin: async originName => {
+        calledOrigin = originName
+        return "https://chdsbd@git.mycompany.org/recipeyak/recipeyak.git"
+      },
+      globalDefaultRemote: "blah",
       selection: [17, 24],
       providersConfig: {
         bitbucket: { hostnames: ["git.mycompany.org"] },
@@ -126,16 +138,22 @@ suite("Bitbucket", () => {
       repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
+    assert.deepEqual(calledOrigin, "blah")
   })
 })
 
-suite("VisualStudio", () => {
+suite("VisualStudio", async () => {
   const vs = new VisualStudio()
-  test("ssh", () => {
-    const result = vs.getUrls({
-      origin: "git@ssh.dev.azure.com:v3/acmecorp/project-alpha/recipeyak",
+  test("ssh", async () => {
+    let calledOrigin = ""
+    const result = await vs.getUrls({
+      findOrigin: async originName => {
+        calledOrigin = originName
+        return "git@ssh.dev.azure.com:v3/acmecorp/project-alpha/recipeyak"
+      },
+      globalDefaultRemote: "blah",
       selection: [17, 24],
-      providersConfig: {},
+      providersConfig: { visualstudio: { remote: "hello_world" } },
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -147,11 +165,16 @@ suite("VisualStudio", () => {
       repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
+    assert.deepEqual(calledOrigin, "hello_world")
   })
-  test("https", () => {
-    const result = vs.getUrls({
-      origin:
-        "https://chdsbd@git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
+  test("https", async () => {
+    let calledOrigin = ""
+    const result = await vs.getUrls({
+      findOrigin: async originName => {
+        calledOrigin = originName
+        return "https://chdsbd@git.mycompany.org/acmecorp/project-alpha/_git/recipeyak"
+      },
+      globalDefaultRemote: "origin-two",
       selection: [17, 24],
       providersConfig: {
         visualstudio: { hostnames: ["git.mycompany.org"] },
@@ -168,5 +191,6 @@ suite("VisualStudio", () => {
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
+    assert.deepEqual(calledOrigin, "origin-two")
   })
 })

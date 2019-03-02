@@ -46,10 +46,15 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Extension Settings
 
-- `githubinator.default_remote`: The default remote branch for a repository. (default: `"origin"`)
+- `githubinator.remote`: The default remote branch for a repository. (default: `"origin"`)
+- `githubinator.providers.github.remote`: Remote name to look for when identifying a Github origin. (default: `"origin"`)
 - `githubinator.providers.github.hostnames`: Hostnames for identifying a Github origin and building a URL. (default: `["github.com"]`)
+- `githubinator.providers.gitlab.remote`: Remote name to look for when identifying a Gitlab origin. (default: `"origin"`)
 - `githubinator.providers.gitlab.hostnames`: Hostnames for identifying a Gitlab origin and building a url. (default: `["gitlab.com"]`)
+- `githubinator.providers.bitbucket.remote`: Remote name to look for when identifying a Bitbucket origin. (default: `"origin"`)
 - `githubinator.providers.bitbucket.hostnames`: Hostnames for identifying a Bitbucket origin and building a url. (default: `["bitbucket.org"]`)
+- `githubinator.providers.visualstudio.remote`: Remote name to look for when identifying a VisualStudio origin. (default: `"origin"`)
+- `githubinator.providers.visualstudio.hostnames`: Hostnames for identifying a VisualStudio origin and building a url. (default: `["dev.azure.com"]`)
 
 ## Known Issues
 

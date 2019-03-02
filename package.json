@@ -158,7 +158,7 @@
           "default": true,
           "description": "Enable access to Githubinator commands from the context menu."
         },
-        "githubinator.default_remote": {
+        "githubinator.remote": {
           "type": "string",
           "default": "origin",
           "description": "The remote branch for a repository."
@@ -173,6 +173,12 @@
           ],
           "description": "Hostnames for identifying a Github origin and building a url."
         },
+        "githubinator.providers.github.remote": {
+          "type": "string",
+          "default": "origin",
+          "title": "Default Remote",
+          "description": "The remote branch for a repository."
+        },
         "githubinator.providers.gitlab.hostnames": {
           "type": "array",
           "items": {
@@ -182,6 +188,12 @@
             "gitlab.com"
           ],
           "description": "Hostnames for identifying a Gitlab origin and building a url."
+        },
+        "githubinator.providers.gitlab.remote": {
+          "type": "string",
+          "default": "origin",
+          "title": "Default Remote",
+          "description": "The remote branch for a repository."
         },
         "githubinator.providers.bitbucket.hostnames": {
           "type": "array",
@@ -193,6 +205,12 @@
           ],
           "description": "Hostnames for identifying a Bitbucket origin and building a url."
         },
+        "githubinator.providers.bitbucket.remote": {
+          "type": "string",
+          "default": "origin",
+          "title": "Default Remote",
+          "description": "The remote branch for a repository."
+        },
         "githubinator.providers.visualstudio.hostnames": {
           "type": "array",
           "items": {
@@ -202,6 +220,12 @@
             "dev.azure.com"
           ],
           "description": "Hostnames for identifying a VisualStudio origin and building a url."
+        },
+        "githubinator.providers.visualstudio.remote": {
+          "type": "string",
+          "default": "origin",
+          "title": "Default Remote",
+          "description": "The remote branch for a repository."
         }
       }
     }

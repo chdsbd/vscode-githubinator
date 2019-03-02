@@ -7,8 +7,9 @@ interface IGetUrl {
   readonly selection: [number, number]
   readonly head: Head
   readonly relativeFilePath: string
-  readonly origin: string
+  readonly globalDefaultRemote: string
   readonly providersConfig: IGithubinatorConfig["providers"]
+  readonly findOrigin: (remote: string) => Promise<string | null>
 }
 
 export interface IUrlInfo {
@@ -17,7 +18,7 @@ export interface IUrlInfo {
   readonly blameUrl: string
 }
 interface IProvider {
-  readonly getUrls: (params: IGetUrl) => IUrlInfo | null
+  readonly getUrls: (params: IGetUrl) => Promise<IUrlInfo | null>
 }
 
 interface IOrgInfo {
@@ -55,6 +56,13 @@ function getHostnames(
   return defaults.concat((config && config.hostnames) || []).map(cleanHostname)
 }
 
+function getOrigin(
+  defaultOrigin: string,
+  config: undefined | IProviderConfig,
+): string {
+  return config && config.remote ? config.remote : defaultOrigin
+}
+
 interface IBranch {
   kind: "branch"
   value: string
@@ -82,18 +90,24 @@ export class Github implements IProvider {
     const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
     return [SSH, HTTPS]
   }
-  getUrls({
+  async getUrls({
     selection,
     relativeFilePath,
     head,
     providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
+    globalDefaultRemote,
+    findOrigin,
+  }: IGetUrl): Promise<IUrlInfo | null> {
     const config = providersConfig["github"]
     // We always want to include the default hostnames, so a user cannot
     // accidently remove github.com from the github provider by setting a custom
     // hostname.
     const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
+    const origin = await findOrigin(getOrigin(globalDefaultRemote, config))
+    if (origin == null) {
+      console.log("could not find origin")
+      return null
+    }
     const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
     if (repoInfo == null) {
       return null
@@ -141,15 +155,21 @@ export class Gitlab implements IProvider {
     const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
     return [SSH, HTTPS]
   }
-  getUrls({
+  async getUrls({
     selection,
     relativeFilePath,
     head,
     providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
+    globalDefaultRemote,
+    findOrigin,
+  }: IGetUrl): Promise<IUrlInfo | null> {
     const config = providersConfig["gitlab"]
     const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
+    const origin = await findOrigin(getOrigin(globalDefaultRemote, config))
+    if (origin == null) {
+      console.log("could not find origin")
+      return null
+    }
     const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
     if (repoInfo == null) {
       return null
@@ -198,15 +218,21 @@ export class Bitbucket implements IProvider {
     const HTTPS = RegExp(`^https:\/\/.*${hostname}\/(.*)\/(.*)\.git$`)
     return [SSH, HTTPS]
   }
-  getUrls({
+  async getUrls({
     selection,
     relativeFilePath,
     head,
     providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
+    globalDefaultRemote,
+    findOrigin,
+  }: IGetUrl): Promise<IUrlInfo | null> {
     const config = providersConfig["bitbucket"]
     const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
+    const origin = await findOrigin(getOrigin(globalDefaultRemote, config))
+    if (origin == null) {
+      console.log("could not find origin")
+      return null
+    }
     const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
     if (repoInfo == null) {
       return null
@@ -255,15 +281,21 @@ export class VisualStudio implements IProvider {
     const HTTPS = RegExp(`^https:\/\/.*@${hostname}\/(.*)\/_git\/(.*)$`)
     return [SSH, HTTPS]
   }
-  getUrls({
+  async getUrls({
     selection,
     relativeFilePath,
     head,
     providersConfig,
-    origin,
-  }: IGetUrl): IUrlInfo | null {
+    globalDefaultRemote,
+    findOrigin,
+  }: IGetUrl): Promise<IUrlInfo | null> {
     const config = providersConfig["visualstudio"]
     const hostnames = getHostnames(this.DEFAULT_HOSTNAMES, config)
+    const origin = await findOrigin(getOrigin(globalDefaultRemote, config))
+    if (origin == null) {
+      console.log("could not find origin")
+      return null
+    }
     const repoInfo = findOrgInfo(origin, hostnames, this.getMatchers.bind(this))
     if (repoInfo == null) {
       return null
