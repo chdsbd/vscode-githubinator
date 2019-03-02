@@ -52,10 +52,14 @@ const COMMANDS: [string, IGithubinator][] = [
 
 const DEFAULT_REMOTE = "origin"
 
+interface IProviderConfig {
+  hostname?: string
+}
+
 export interface IGithubinatorConfig {
   remote: string
   providers: {
-    [key: string]: string | undefined
+    [key: string]: IProviderConfig | undefined
   }
 }
 
@@ -143,18 +147,21 @@ async function githubinator({
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
     })
     if (parsedUrl != null) {
+      console.log("Found provider", provider.name)
       url = parsedUrl.fileUrl
       repoUrl = parsedUrl.repoUrl
       break
     }
-  }
-  if (repoUrl != null && openRepo) {
-    vscode.env.openExternal(vscode.Uri.parse(repoUrl))
-    return
+    console.log("Skipping provider", provider.name)
   }
 
   if (url == null) {
-    return err("Could not create URL.")
+    return err("Could not find provider for repo.")
+  }
+
+  if (repoUrl != null && openRepo) {
+    vscode.env.openExternal(vscode.Uri.parse(repoUrl))
+    return
   }
 
   if (openUrl) {

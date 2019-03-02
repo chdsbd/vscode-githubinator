@@ -4,22 +4,46 @@ import { IGithubinatorConfig } from "./extension"
 import { cleanHostname } from "./utils"
 
 interface IGetUrl {
-  selection: [number, number]
-  head: string
-  mode: "blob" | "blame"
-  relativeFilePath: string
-  origin: string
-  providersConfig: IGithubinatorConfig["providers"]
+  readonly selection: [number, number]
+  readonly head: string
+  readonly mode: "blob" | "blame"
+  readonly relativeFilePath: string
+  readonly origin: string
+  readonly providersConfig: IGithubinatorConfig["providers"]
 }
 
+interface IUrlInfo {
+  readonly fileUrl: string
+  readonly repoUrl: string
+}
 interface IProvider {
-  getUrl(params: IGetUrl): { fileUrl: string; repoUrl: string } | null
+  readonly getMatchers: (hostname: string) => RegExp[]
+  readonly getUrl: (params: IGetUrl) => IUrlInfo | null
+}
+
+/** Match target against multiple matchers. Extract the first two groups. */
+function findOrgInfo(target: string, matchers: RegExp[]) {
+  const matches = matchers.map(matcher => target.match(matcher))
+  let org: string | null = null
+  let repo: string | null = null
+  for (const match of matches) {
+    if (match != null) {
+      ;[, org, repo] = match
+    }
+  }
+  if (org == null || repo == null) {
+    return null
+  }
+  return { org, repo }
 }
 
 export class Github implements IProvider {
-  SSH = /^git@github\.com:(.*)\/(.*)\.git$/
-  HTTPS = /^https:\/\/github\.com\/(.*)\/(.*)\.git$/
-  HOSTNAME = "github.com"
+  DEFAULT_HOSTNAME = "github.com"
+  getMatchers(hostname: string) {
+    const SSH = RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`)
+    const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
+    return [SSH, HTTPS]
+  }
   getUrl({
     selection,
     relativeFilePath,
@@ -27,25 +51,22 @@ export class Github implements IProvider {
     mode,
     providersConfig,
     origin,
-  }: IGetUrl): { fileUrl: string; repoUrl: string } | null {
-    const [start, end] = selection
-    const ssh = origin.match(this.SSH)
-    const https = origin.match(this.HTTPS)
-    let [_, org, repo] =
-      ssh != null ? ssh : https != null ? https : [null, null, null]
-    if (org == null || repo == null) {
+  }: IGetUrl): IUrlInfo | null {
+    const config = providersConfig["github"]
+    const providerHostname =
+      (config && config.hostname) || this.DEFAULT_HOSTNAME
+    const hostname = cleanHostname(providerHostname)
+    const repoInfo = findOrgInfo(origin, this.getMatchers(providerHostname))
+    if (repoInfo == null) {
       return null
     }
-    const providerHostname = providersConfig["github"]
-    const hostname = cleanHostname(
-      providerHostname ? providerHostname : this.HOSTNAME,
-    )
     const rootUrl = `https://${hostname}/`
+    const [start, end] = selection
     // Github uses 1-based indexing
     const lines = `L${start + 1}-L${end + 1}`
-    const repoUrl = new url.URL(path.join(org, repo), rootUrl)
+    const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
     const parsedUrl = new url.URL(
-      path.join(org, repo, mode, head, relativeFilePath),
+      path.join(repoInfo.org, repoInfo.repo, mode, head, relativeFilePath),
       rootUrl,
     )
     parsedUrl.hash = lines
@@ -53,4 +74,42 @@ export class Github implements IProvider {
   }
 }
 
-export const providers = [Github]
+export class Gitlab implements IProvider {
+  DEFAULT_HOSTNAME = "gitlab.com"
+  // https://gitlab.com/my_org/my_repo/blob/master/app/main.py#L3-4
+  getMatchers(hostname: string) {
+    const SSH = RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`)
+    const HTTPS = RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`)
+    return [SSH, HTTPS]
+  }
+  getUrl({
+    selection,
+    relativeFilePath,
+    head,
+    mode,
+    providersConfig,
+    origin,
+  }: IGetUrl): IUrlInfo | null {
+    const config = providersConfig["gitlab"]
+    const providerHostname =
+      (config && config.hostname) || this.DEFAULT_HOSTNAME
+    const hostname = cleanHostname(providerHostname)
+    const repoInfo = findOrgInfo(origin, this.getMatchers(providerHostname))
+    if (repoInfo == null) {
+      return null
+    }
+    const rootUrl = `https://${hostname}/`
+    const [start, end] = selection
+    // The format is L34-56 (this is one character off from Github)
+    const lines = `L${start + 1}-${end + 1}`
+    const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
+    const parsedUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, mode, head, relativeFilePath),
+      rootUrl,
+    )
+    parsedUrl.hash = lines
+    return { fileUrl: parsedUrl.toString(), repoUrl: repoUrl.toString() }
+  }
+}
+
+export const providers = [Gitlab, Github]
