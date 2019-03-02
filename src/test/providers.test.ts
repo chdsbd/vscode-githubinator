@@ -96,7 +96,7 @@ suite("Bitbucket", () => {
       blobUrl:
         "https://bitbucket.org/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       blameUrl:
-        "https://bitbucket.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx?fileviewer=file-view-default#lines-18:25",
+        "https://bitbucket.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       repoUrl: "https://bitbucket.org/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
@@ -115,7 +115,7 @@ suite("Bitbucket", () => {
       blobUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       blameUrl:
-        "https://git.mycompany.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx?fileviewer=file-view-default#lines-18:25",
+        "https://git.mycompany.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)

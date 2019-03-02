@@ -162,7 +162,13 @@ export class Bitbucket implements IProvider {
       rootUrl,
     )
     const blameUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "blame", head, relativeFilePath),
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "annotate",
+        head,
+        relativeFilePath,
+      ),
       rootUrl,
     )
     blobUrl.hash = lines
