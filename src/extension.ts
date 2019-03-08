@@ -118,7 +118,16 @@ async function githubinator({
   if (gitDir == null) {
     return err("Could not find .git directory.")
   }
-  const headBranch = await git.head(gitDir)
+  let headBranch: [string, string] | null = null
+  if (branch) {
+    const sha = await git.getSHAForBranch(gitDir, branch)
+    if (sha == null) {
+      return err(`Could not find SHA for branch name: ${branch}`)
+    }
+    headBranch = [sha, branch]
+  } else {
+    headBranch = await git.head(gitDir)
+  }
   if (headBranch == null) {
     return err("Could not find HEAD.")
   }
