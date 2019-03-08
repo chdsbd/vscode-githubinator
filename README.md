@@ -65,6 +65,12 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+### 0.2.0
+
+- add history, open pr, and compare commands
+- fix url copying for commands to match documentation in README
+- fix "... on master" commands to use the master branch
+
 ### 0.1.1
 
 - Add logo for Visual Studio Marketplace
