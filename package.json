@@ -42,6 +42,7 @@
     "onCommand:extension.githubinatorBlame",
     "onCommand:extension.githubinatorBlameOnMaster",
     "onCommand:extension.githubinatorBlamePermalink",
+    "onCommand:extension.githubinatorHistory",
     "onCommand:extension.githubinatorRepository"
   ],
   "main": "./out/extension.js",
@@ -99,6 +100,11 @@
       {
         "command": "extension.githubinatorRepository",
         "title": "Repository",
+        "category": "Githubinator"
+      },
+      {
+        "command": "extension.githubinatorHistory",
+        "title": "History",
         "category": "Githubinator"
       }
     ],

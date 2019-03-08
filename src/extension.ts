@@ -45,6 +45,10 @@ const COMMANDS: [string, IGithubinator][] = [
     { openUrl: true, blame: true, permalink: true },
   ],
   [
+    "extension.githubinatorHistory", //
+    { history: true },
+  ],
+  [
     "extension.githubinatorRepository", //
     { openUrl: true, openRepo: true },
   ],
@@ -91,6 +95,7 @@ interface IGithubinator {
   branch?: string
   permalink?: boolean
   openRepo?: boolean
+  history?: boolean
 }
 async function githubinator({
   openUrl,
@@ -99,6 +104,7 @@ async function githubinator({
   branch,
   openRepo,
   permalink,
+  history,
 }: IGithubinator) {
   console.log("githubinator.call")
   const editor = vscode.window.activeTextEditor
@@ -166,6 +172,11 @@ async function githubinator({
 
   if (openRepo) {
     vscode.env.openExternal(vscode.Uri.parse(urls.repoUrl))
+    return
+  }
+
+  if (history) {
+    vscode.env.openExternal(vscode.Uri.parse(urls.historyUrl))
     return
   }
 
