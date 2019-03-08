@@ -26,31 +26,31 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorOnMaster", //
-    { openUrl: true, branch: "master" },
+    { copyToClipboard: true, openUrl: true, branch: "master" },
   ],
   [
     "extension.githubinatorPermalink", //
-    { openUrl: true, permalink: true },
+    { copyToClipboard: true, openUrl: true, permalink: true },
   ],
   [
     "extension.githubinatorBlame", //
-    { openUrl: true, blame: true },
+    { copyToClipboard: true, openUrl: true, blame: true },
   ],
   [
     "extension.githubinatorBlameOnMaster", //
-    { openUrl: true, blame: true, branch: "master" },
+    { copyToClipboard: true, openUrl: true, blame: true, branch: "master" },
   ],
   [
     "extension.githubinatorBlamePermalink", //
-    { openUrl: true, blame: true, permalink: true },
+    { copyToClipboard: true, openUrl: true, blame: true, permalink: true },
   ],
   [
     "extension.githubinatorHistory", //
-    { history: true },
+    { copyToClipboard: true, history: true },
   ],
   [
     "extension.githubinatorRepository", //
-    { openUrl: true, openRepo: true },
+    { copyToClipboard: true, openUrl: true, openRepo: true },
   ],
 ]
 
@@ -170,17 +170,13 @@ async function githubinator({
     return err("Could not find provider for repo.")
   }
 
-  if (openRepo) {
-    vscode.env.openExternal(vscode.Uri.parse(urls.repoUrl))
-    return
-  }
-
-  if (history) {
-    vscode.env.openExternal(vscode.Uri.parse(urls.historyUrl))
-    return
-  }
-
-  const url = blame ? urls.blameUrl : urls.blobUrl
+  const url = openRepo
+    ? urls.repoUrl
+    : history
+    ? urls.historyUrl
+    : blame
+    ? urls.blameUrl
+    : urls.blobUrl
 
   if (openUrl) {
     vscode.env.openExternal(vscode.Uri.parse(url))
