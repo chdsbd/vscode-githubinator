@@ -44,7 +44,8 @@
     "onCommand:extension.githubinatorBlamePermalink",
     "onCommand:extension.githubinatorHistory",
     "onCommand:extension.githubinatorRepository",
-    "onCommand:extension.githubinatorOpenPR"
+    "onCommand:extension.githubinatorOpenPR",
+    "onCommand:extension.githubinatorCompare"
   ],
   "main": "./out/extension.js",
   "contributes": {
