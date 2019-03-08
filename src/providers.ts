@@ -143,8 +143,11 @@ export class Github extends BaseProvider {
     }
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
-    const compareUrl = createUrl("compare", false).toString()
     const historyUrl = createUrl("commits", false).toString()
+    const compareUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
+      rootUrl,
+    ).toString()
     const prUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "pull", "new", head.value),
       rootUrl,
@@ -203,7 +206,10 @@ export class Gitlab extends BaseProvider {
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
     const historyUrl = createUrl("commits", false).toString()
-    const compareUrl = createUrl("compare", false).toString()
+    const compareUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
+      rootUrl,
+    ).toString()
     // https://gitlab.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=master
     const prUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "merge_requests", "new"),

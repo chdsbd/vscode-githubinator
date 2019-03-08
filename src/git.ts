@@ -55,7 +55,7 @@ export async function getSHAForBranch(
   }
   // check for normal ref
   const refPath = path.resolve(gitDir, refName)
-  if (await fs.exists(packedRefPath)) {
+  if (await fs.exists(refPath)) {
     return await fs.readFile(refPath, {
       encoding: "utf-8",
     })

@@ -25,7 +25,7 @@ suite("Github", async () => {
       blameUrl:
         "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
       compareUrl:
-        "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
+        "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
       historyUrl:
         "https://github.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       prUrl:
@@ -56,7 +56,7 @@ suite("Github", async () => {
       blameUrl:
         "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
       compareUrl:
-        "https://github.mycompany.com/recipeyak/recipeyak/compare/master/frontend/src/components/App.tsx",
+        "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
       historyUrl:
         "https://github.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
       prUrl: "https://github.mycompany.com/recipeyak/recipeyak/pull/new/master",
@@ -84,7 +84,7 @@ suite("Gitlab", async () => {
       blameUrl:
         "https://gitlab.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
       compareUrl:
-        "https://gitlab.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
+        "https://gitlab.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
       historyUrl:
         "https://gitlab.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       prUrl:
@@ -112,7 +112,7 @@ suite("Gitlab", async () => {
       blameUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-25",
       compareUrl:
-        "https://gitlab.mycompany.com/recipeyak/recipeyak/compare/master/frontend/src/components/App.tsx",
+        "https://gitlab.mycompany.com/recipeyak/recipeyak/compare/master",
       historyUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
       prUrl:
