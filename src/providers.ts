@@ -15,6 +15,7 @@ export interface IUrlInfo {
   readonly blameUrl: string
   readonly historyUrl: string
   readonly prUrl: string
+  readonly compareUrl: string
 }
 
 interface IOrgInfo {
@@ -142,6 +143,7 @@ export class Github extends BaseProvider {
     }
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
+    const compareUrl = createUrl("compare", false).toString()
     const historyUrl = createUrl("commits", false).toString()
     const prUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "pull", "new", head.value),
@@ -150,9 +152,10 @@ export class Github extends BaseProvider {
     return {
       blobUrl,
       blameUrl,
-      repoUrl,
+      compareUrl,
       historyUrl,
       prUrl,
+      repoUrl,
     }
   }
 }
@@ -200,6 +203,7 @@ export class Gitlab extends BaseProvider {
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
     const historyUrl = createUrl("commits", false).toString()
+    const compareUrl = createUrl("compare", false).toString()
     // https://gitlab.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=master
     const prUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "merge_requests", "new"),
@@ -209,9 +213,10 @@ export class Gitlab extends BaseProvider {
     return {
       blobUrl,
       blameUrl,
-      repoUrl,
+      compareUrl,
       historyUrl,
       prUrl: prUrl.toString(),
+      repoUrl,
     }
   }
 }
@@ -258,6 +263,16 @@ export class Bitbucket extends BaseProvider {
     }
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("annotate").toString()
+    const compareUrl = new url.URL(
+      path.join(
+        repoInfo.org,
+        repoInfo.repo,
+        "branches",
+        "compare",
+        head.value + "..",
+      ),
+      rootUrl,
+    ).toString()
     const historyUrl = createUrl("history-node", false).toString()
     // "https://bitbucket.org/recipeyak/recipeyak/pull-requests/new?source=db99a912f5c4bffe11d91e163cd78ed96589611b"
     const prUrl = new url.URL(
@@ -268,9 +283,10 @@ export class Bitbucket extends BaseProvider {
     return {
       blobUrl,
       blameUrl,
-      repoUrl,
+      compareUrl,
       historyUrl,
       prUrl: prUrl.toString(),
+      repoUrl,
     }
   }
 }
@@ -315,6 +331,11 @@ export class VisualStudio extends BaseProvider {
     blobUrl.search = baseSearch + lines
     blameUrl.search = baseSearch + lines + "&_a=annotate"
     historyUrl.search = baseSearch + "&_a=history"
+    const compareUrl = new url.URL(
+      path.join(repoInfo.org, "_git", repoInfo.repo, "branches"),
+      rootUrl,
+    )
+    compareUrl.search = `targetVersion=${version}&_a=commits`
     const prUrl = new url.URL(
       path.join(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
       rootUrl,
@@ -323,9 +344,10 @@ export class VisualStudio extends BaseProvider {
     return {
       blobUrl: blobUrl.toString(),
       blameUrl: blameUrl.toString(),
-      repoUrl: repoUrl.toString(),
+      compareUrl: compareUrl.toString(),
       historyUrl: historyUrl.toString(),
       prUrl: prUrl.toString(),
+      repoUrl: repoUrl.toString(),
     }
   }
 }

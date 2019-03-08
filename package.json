@@ -112,6 +112,11 @@
         "command": "extension.githubinatorOpenPR",
         "title": "Open PR",
         "category": "Githubinator"
+      },
+      {
+        "command": "extension.githubinatorCompare",
+        "title": "Compare",
+        "category": "Githubinator"
       }
     ],
     "menus": {

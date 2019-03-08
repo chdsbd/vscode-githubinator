@@ -24,11 +24,13 @@ suite("Github", async () => {
         "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
       blameUrl:
         "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
-      repoUrl: "https://github.com/recipeyak/recipeyak",
+      compareUrl:
+        "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       historyUrl:
         "https://github.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       prUrl:
         "https://github.com/recipeyak/recipeyak/pull/new/db99a912f5c4bffe11d91e163cd78ed96589611b",
+      repoUrl: "https://github.com/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
   })
@@ -53,10 +55,12 @@ suite("Github", async () => {
         "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
       blameUrl:
         "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
-      repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
+      compareUrl:
+        "https://github.mycompany.com/recipeyak/recipeyak/compare/master/frontend/src/components/App.tsx",
       historyUrl:
         "https://github.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
       prUrl: "https://github.mycompany.com/recipeyak/recipeyak/pull/new/master",
+      repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
   })
@@ -79,11 +83,13 @@ suite("Gitlab", async () => {
         "https://gitlab.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
       blameUrl:
         "https://gitlab.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
-      repoUrl: "https://gitlab.com/recipeyak/recipeyak",
+      compareUrl:
+        "https://gitlab.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       historyUrl:
         "https://gitlab.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       prUrl:
         "https://gitlab.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=db99a912f5c4bffe11d91e163cd78ed96589611b",
+      repoUrl: "https://gitlab.com/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
   })
@@ -105,11 +111,13 @@ suite("Gitlab", async () => {
         "https://gitlab.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-25",
       blameUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-25",
-      repoUrl: "https://gitlab.mycompany.com/recipeyak/recipeyak",
+      compareUrl:
+        "https://gitlab.mycompany.com/recipeyak/recipeyak/compare/master/frontend/src/components/App.tsx",
       historyUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
       prUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=master",
+      repoUrl: "https://gitlab.mycompany.com/recipeyak/recipeyak",
     }
 
     assert.deepEqual(result, expected)
@@ -133,11 +141,13 @@ suite("Bitbucket", async () => {
         "https://bitbucket.org/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       blameUrl:
         "https://bitbucket.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
-      repoUrl: "https://bitbucket.org/recipeyak/recipeyak",
+      compareUrl:
+        "https://bitbucket.org/recipeyak/recipeyak/branches/compare/db99a912f5c4bffe11d91e163cd78ed96589611b..",
       historyUrl:
         "https://bitbucket.org/recipeyak/recipeyak/history-node/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
       prUrl:
         "https://bitbucket.org/recipeyak/recipeyak/pull-requests/new?source=db99a912f5c4bffe11d91e163cd78ed96589611b",
+      repoUrl: "https://bitbucket.org/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
   })
@@ -164,11 +174,13 @@ suite("Bitbucket", async () => {
         "https://git.mycompany.org/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#lines-18:25",
       blameUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/annotate/master/frontend/src/components/App.tsx#lines-18:25",
-      repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
+      compareUrl:
+        "https://git.mycompany.org/recipeyak/recipeyak/branches/compare/master..",
       historyUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/history-node/master/frontend/src/components/App.tsx",
       prUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/pull-requests/new?source=master",
+      repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
     assert.deepEqual(calledOrigin, "blah")
@@ -197,11 +209,13 @@ suite("VisualStudio", async () => {
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25",
       blameUrl:
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25&_a=annotate",
+      compareUrl:
+        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak/branches?targetVersion=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&_a=commits",
       historyUrl:
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&_a=history",
-      repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
       prUrl:
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak/pullrequestcreate?sourceRef=db99a912f5c4bffe11d91e163cd78ed96589611b",
+      repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
     assert.deepEqual(calledOrigin, "hello_world")
@@ -229,12 +243,14 @@ suite("VisualStudio", async () => {
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25",
       blameUrl:
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25&_a=annotate",
+      compareUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak/branches?targetVersion=GBmaster&_a=commits",
       historyUrl:
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&_a=history",
-      repoUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
       prUrl:
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak/pullrequestcreate?sourceRef=master",
+      repoUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
     assert.deepEqual(calledOrigin, "origin-two")

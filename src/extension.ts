@@ -56,6 +56,10 @@ const COMMANDS: [string, IGithubinator][] = [
     "extension.githubinatorOpenPR", //
     { copyToClipboard: true, openUrl: true, openPR: true },
   ],
+  [
+    "extension.githubinatorCompare", //
+    { copyToClipboard: true, openUrl: true, compare: true },
+  ],
 ]
 
 const DEFAULT_REMOTE = "origin"
@@ -101,6 +105,7 @@ interface IGithubinator {
   openRepo?: boolean
   history?: boolean
   openPR?: boolean
+  compare?: boolean
 }
 async function githubinator({
   openUrl,
@@ -111,6 +116,7 @@ async function githubinator({
   permalink,
   history,
   openPR,
+  compare,
 }: IGithubinator) {
   console.log("githubinator.call")
   const editor = vscode.window.activeTextEditor
@@ -176,7 +182,9 @@ async function githubinator({
     return err("Could not find provider for repo.")
   }
 
-  const url = openPR
+  const url = compare
+    ? urls.compareUrl
+    : openPR
     ? urls.prUrl
     : openRepo
     ? urls.repoUrl
