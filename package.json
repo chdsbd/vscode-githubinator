@@ -2,7 +2,7 @@
   "name": "githubinator",
   "displayName": "Githubinator",
   "description": "Quickly open files on Github and other providers. View blame information, copy permalinks and more. See the \"commands\" section of the README for more details.",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "publisher": "chdsbd",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/logo256.png",
