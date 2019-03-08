@@ -175,6 +175,21 @@
           "command": "extension.githubinatorRepository",
           "group": "githubinator@11",
           "when": "config.githubinator.enable_context_menu"
+        },
+        {
+          "command": "extension.githubinatorHistory",
+          "group": "githubinator@12",
+          "when": "config.githubinator.enable_context_menu"
+        },
+        {
+          "command": "extension.githubinatorOpenPR",
+          "group": "githubinator@13",
+          "when": "config.githubinator.enable_context_menu"
+        },
+        {
+          "command": "extension.githubinatorCompare",
+          "group": "githubinator@14",
+          "when": "config.githubinator.enable_context_menu"
         }
       ]
     },
