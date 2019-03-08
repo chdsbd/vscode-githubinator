@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `Githubinator: History` command to open commit history view for files.
 
+### Changed
+
+- Url copying for commands behaves as documented in README.
+
 ### Fixed
 
 - Use the `branch` argument to `githubinator`. Now the "... on master" commands
