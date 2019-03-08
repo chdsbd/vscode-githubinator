@@ -30,6 +30,39 @@ export async function origin(
   return null
 }
 
+/** Get the SHA for a ref */
+export async function getSHAForBranch(
+  gitDir: string,
+  branchName: string,
+): Promise<string | null> {
+  const refName = `refs/heads/${branchName}`
+  // check packed-refs
+  const packedRefPath = path.resolve(gitDir, "packed-refs")
+  if (await fs.exists(packedRefPath)) {
+    const packRefs = await fs.readFile(packedRefPath, {
+      encoding: "utf-8",
+    })
+
+    for (const x of packRefs.split("\n")) {
+      const [sha, refPath] = x.split(" ") as [
+        string | undefined,
+        string | undefined
+      ]
+      if (sha && refPath && refPath.trim() === refName.trim()) {
+        return sha
+      }
+    }
+  }
+  // check for normal ref
+  const refPath = path.resolve(gitDir, refName)
+  if (await fs.exists(packedRefPath)) {
+    return await fs.readFile(refPath, {
+      encoding: "utf-8",
+    })
+  }
+  return null
+}
+
 /** Get the current SHA and branch from HEAD for a git directory */
 export async function head(gitDir: string): Promise<[string, string] | null> {
   const headPath = path.resolve(gitDir, "HEAD")
@@ -42,29 +75,11 @@ export async function head(gitDir: string): Promise<[string, string] | null> {
   }
   const headInfo = headFileData.split(" ")[1].trim()
   const branchName = headInfo.replace("refs/heads/", "")
-  const packedRefPath = path.resolve(gitDir, "packed-refs")
-  if (await fs.exists(packedRefPath)) {
-    const packRefs = await fs.readFile(packedRefPath, {
-      encoding: "utf-8",
-    })
-
-    for (const x of packRefs.split("\n")) {
-      const [sha, refPath] = x.split(" ") as [
-        string | undefined,
-        string | undefined
-      ]
-      if (sha && refPath && headInfo && refPath.trim() === headInfo.trim()) {
-        return [sha, branchName]
-      }
-    }
+  const sha = await getSHAForBranch(gitDir, branchName)
+  if (sha == null) {
+    return null
   }
-  const normalRefFile = await fs.readFile(
-    path.resolve(gitDir, headInfo.trim()),
-    {
-      encoding: "utf-8",
-    },
-  )
-  return [normalRefFile, branchName]
+  return [sha, branchName]
 }
 
 export function dir(filePath: string) {
