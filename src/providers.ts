@@ -139,11 +139,11 @@ export class Github extends BaseProvider {
       if (hash) {
         u.hash = lines
       }
-      return u
+      return u.toString()
     }
-    const blobUrl = createUrl("blob").toString()
-    const blameUrl = createUrl("blame").toString()
-    const historyUrl = createUrl("commits", false).toString()
+    const blobUrl = createUrl("blob")
+    const blameUrl = createUrl("blame")
+    const historyUrl = createUrl("commits", false)
     const compareUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
       rootUrl,
@@ -201,11 +201,11 @@ export class Gitlab extends BaseProvider {
       if (hash) {
         u.hash = lines
       }
-      return u
+      return u.toString()
     }
-    const blobUrl = createUrl("blob").toString()
-    const blameUrl = createUrl("blame").toString()
-    const historyUrl = createUrl("commits", false).toString()
+    const blobUrl = createUrl("blob")
+    const blameUrl = createUrl("blame")
+    const historyUrl = createUrl("commits", false)
     const compareUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
       rootUrl,
@@ -265,10 +265,10 @@ export class Bitbucket extends BaseProvider {
       if (hash) {
         u.hash = lines
       }
-      return u
+      return u.toString()
     }
-    const blobUrl = createUrl("blob").toString()
-    const blameUrl = createUrl("annotate").toString()
+    const blobUrl = createUrl("blob")
+    const blameUrl = createUrl("annotate")
     const compareUrl = new url.URL(
       path.join(
         repoInfo.org,
@@ -279,7 +279,7 @@ export class Bitbucket extends BaseProvider {
       ),
       rootUrl,
     ).toString()
-    const historyUrl = createUrl("history-node", false).toString()
+    const historyUrl = createUrl("history-node", false)
     // "https://bitbucket.org/recipeyak/recipeyak/pull-requests/new?source=db99a912f5c4bffe11d91e163cd78ed96589611b"
     const prUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo, "pull-requests", "new"),
