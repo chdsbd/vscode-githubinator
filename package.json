@@ -43,7 +43,8 @@
     "onCommand:extension.githubinatorBlameOnMaster",
     "onCommand:extension.githubinatorBlamePermalink",
     "onCommand:extension.githubinatorHistory",
-    "onCommand:extension.githubinatorRepository"
+    "onCommand:extension.githubinatorRepository",
+    "onCommand:extension.githubinatorOpenPR"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -105,6 +106,11 @@
       {
         "command": "extension.githubinatorHistory",
         "title": "History",
+        "category": "Githubinator"
+      },
+      {
+        "command": "extension.githubinatorOpenPR",
+        "title": "Open PR",
         "category": "Githubinator"
       }
     ],

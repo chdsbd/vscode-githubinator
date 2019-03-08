@@ -46,11 +46,15 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorHistory", //
-    { copyToClipboard: true, history: true },
+    { copyToClipboard: true, openUrl: true, history: true },
   ],
   [
     "extension.githubinatorRepository", //
     { copyToClipboard: true, openUrl: true, openRepo: true },
+  ],
+  [
+    "extension.githubinatorOpenPR", //
+    { copyToClipboard: true, openUrl: true, openPR: true },
   ],
 ]
 
@@ -96,6 +100,7 @@ interface IGithubinator {
   permalink?: boolean
   openRepo?: boolean
   history?: boolean
+  openPR?: boolean
 }
 async function githubinator({
   openUrl,
@@ -105,6 +110,7 @@ async function githubinator({
   openRepo,
   permalink,
   history,
+  openPR,
 }: IGithubinator) {
   console.log("githubinator.call")
   const editor = vscode.window.activeTextEditor
@@ -170,7 +176,9 @@ async function githubinator({
     return err("Could not find provider for repo.")
   }
 
-  const url = openRepo
+  const url = openPR
+    ? urls.prUrl
+    : openRepo
     ? urls.repoUrl
     : history
     ? urls.historyUrl
