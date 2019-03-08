@@ -26,21 +26,22 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ### Commands
 
-| command                               | copy URL | open URL | mode         | SHA-type       |
-| ------------------------------------- | :------: | :------: | ------------ | -------------- |
-| `Githubinator`                        |    ✅    |    ❌    | blob         | current branch |
-| `Githubinator: Copy`                  |    ✅    |    ❌    | blob         | current branch |
-| `Githubinator: Copy Master`           |    ✅    |    ❌    | blob         | master branch  |
-| `Githubinator: Copy Permalink`        |    ✅    |    ❌    | blob         | current SHA    |
-| `Githubinator: Copy Master Permalink` |    ✅    |    ❌    | blob         | master SHA     |
-| `Githubinator: On Master`             |    ✅    |    ✅    | blob         | master branch  |
-| `Githubinator: Permalink`             |    ✅    |    ✅    | blob         | current SHA    |
-| `Githubinator: Blame`                 |    ✅    |    ✅    | blame        | current branch |
-| `Githubinator: Blame On Master`       |    ✅    |    ✅    | blame        | master branch  |
-| `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame        | current sha    |
-| `Githubinator: Repository`            |    ✅    |    ✅    | open repo    | N/A            |
-| `Githubinator: History`               |    ✅    |    ✅    | open history | N/A            |
-| `Githubinator: Open PR`               |    ✅    |    ✅    | open PR      | N/A            |
+| command                               | copy URL | open URL | mode           | SHA-type       |
+| ------------------------------------- | :------: | :------: | -------------- | -------------- |
+| `Githubinator`                        |    ✅    |    ❌    | blob           | current branch |
+| `Githubinator: Copy`                  |    ✅    |    ❌    | blob           | current branch |
+| `Githubinator: Copy Master`           |    ✅    |    ❌    | blob           | master branch  |
+| `Githubinator: Copy Permalink`        |    ✅    |    ❌    | blob           | current SHA    |
+| `Githubinator: Copy Master Permalink` |    ✅    |    ❌    | blob           | master SHA     |
+| `Githubinator: On Master`             |    ✅    |    ✅    | blob           | master branch  |
+| `Githubinator: Permalink`             |    ✅    |    ✅    | blob           | current SHA    |
+| `Githubinator: Blame`                 |    ✅    |    ✅    | blame          | current branch |
+| `Githubinator: Blame On Master`       |    ✅    |    ✅    | blame          | master branch  |
+| `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame          | current sha    |
+| `Githubinator: Repository`            |    ✅    |    ✅    | open repo      | N/A            |
+| `Githubinator: History`               |    ✅    |    ✅    | open history   | N/A            |
+| `Githubinator: Open PR`               |    ✅    |    ✅    | open PR        | N/A            |
+| `Githubinator: Compare`               |    ✅    |    ✅    | compare branch | N/A            |
 
 ## Requirements
 
@@ -82,11 +83,11 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/ehamiter/GitHubinator) with the same name.
 
-| project                                                                       | providers                               | blame | history | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
-| ----------------------------------------------------------------------------- | --------------------------------------- | :---: | :-----: | :-------: | :----: | :--: | :--: | :-----: | :--------------: | :--------------------: |
-| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ✅    |        ✅        |           ✅           |
-| [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  |  ✅   |   ✅    |    ❌     |   ✅   |  ❌  |  ✅  |   ❌    |        ❌        |           ❌           |
-| [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio |  ❌   |   ❌    |   ✅\*    |   ❌   |  ✅  |  ✅  |   ✅    |        ✅        |           ❌           |
+| project                                                                       | providers                               | blame | history | compare | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
+| ----------------------------------------------------------------------------- | --------------------------------------- | :---: | :-----: | :-----: | :-------: | :----: | :--: | :--: | :-----: | :--------------: | :--------------------: |
+| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ✅    |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ✅    |        ✅        |           ✅           |
+| [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  |  ✅   |   ✅    |   ❌    |    ❌     |   ✅   |  ❌  |  ✅  |   ❌    |        ❌        |           ❌           |
+| [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio |  ❌   |   ❌    |   ❌    |   ✅\*    |   ❌   |  ✅  |  ✅  |   ✅    |        ✅        |           ❌           |
 
 \* changeable in settings between permalink and branch
 
