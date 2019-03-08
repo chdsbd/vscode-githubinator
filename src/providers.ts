@@ -14,6 +14,7 @@ export interface IUrlInfo {
   readonly repoUrl: string
   readonly blameUrl: string
   readonly historyUrl: string
+  readonly prUrl: string
 }
 
 interface IOrgInfo {
@@ -142,11 +143,16 @@ export class Github extends BaseProvider {
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
     const historyUrl = createUrl("commits", false).toString()
+    const prUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, "pull", "new", head.value),
+      rootUrl,
+    ).toString()
     return {
       blobUrl,
       blameUrl,
       repoUrl,
       historyUrl,
+      prUrl,
     }
   }
 }
@@ -194,11 +200,18 @@ export class Gitlab extends BaseProvider {
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("blame").toString()
     const historyUrl = createUrl("commits", false).toString()
+    // https://gitlab.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=master
+    const prUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, "merge_requests", "new"),
+      rootUrl,
+    )
+    prUrl.search = `merge_request%5Bsource_branch%5D=${head.value}`
     return {
       blobUrl,
       blameUrl,
       repoUrl,
       historyUrl,
+      prUrl: prUrl.toString(),
     }
   }
 }
@@ -246,11 +259,18 @@ export class Bitbucket extends BaseProvider {
     const blobUrl = createUrl("blob").toString()
     const blameUrl = createUrl("annotate").toString()
     const historyUrl = createUrl("history-node", false).toString()
+    // "https://bitbucket.org/recipeyak/recipeyak/pull-requests/new?source=db99a912f5c4bffe11d91e163cd78ed96589611b"
+    const prUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo, "pull-requests", "new"),
+      rootUrl,
+    )
+    prUrl.search = `source=${head.value}`
     return {
       blobUrl,
       blameUrl,
       repoUrl,
       historyUrl,
+      prUrl: prUrl.toString(),
     }
   }
 }
@@ -295,11 +315,17 @@ export class VisualStudio extends BaseProvider {
     blobUrl.search = baseSearch + lines
     blameUrl.search = baseSearch + lines + "&_a=annotate"
     historyUrl.search = baseSearch + "&_a=history"
+    const prUrl = new url.URL(
+      path.join(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
+      rootUrl,
+    )
+    prUrl.search = `sourceRef=${head.value}`
     return {
       blobUrl: blobUrl.toString(),
       blameUrl: blameUrl.toString(),
       repoUrl: repoUrl.toString(),
       historyUrl: historyUrl.toString(),
+      prUrl: prUrl.toString(),
     }
   }
 }

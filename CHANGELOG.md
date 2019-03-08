@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `Githubinator: History` command to open commit history view for files.
+- `Githubinator: Open PR` command to open a PR for current branch.
 
 ### Changed
 

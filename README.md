@@ -40,6 +40,7 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 | `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame        | current sha    |
 | `Githubinator: Repository`            |    ✅    |    ✅    | open repo    | N/A            |
 | `Githubinator: History`               |    ✅    |    ✅    | open history | N/A            |
+| `Githubinator: Open PR`               |    ✅    |    ✅    | open PR      | N/A            |
 
 ## Requirements
 
@@ -83,7 +84,7 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 | project                                                                       | providers                               | blame | history | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
 | ----------------------------------------------------------------------------- | --------------------------------------- | :---: | :-----: | :-------: | :----: | :--: | :--: | :-----: | :--------------: | :--------------------: |
-| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ❌    |        ✅        |           ✅           |
+| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ✅    |        ✅        |           ✅           |
 | [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  |  ✅   |   ✅    |    ❌     |   ✅   |  ❌  |  ✅  |   ❌    |        ❌        |           ❌           |
 | [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio |  ❌   |   ❌    |   ✅\*    |   ❌   |  ✅  |  ✅  |   ✅    |        ✅        |           ❌           |
 
