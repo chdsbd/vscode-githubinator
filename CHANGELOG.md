@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- `Githubinator: History` command to open commit history view for files.
+
 ### Fixed
 
 - Use the `branch` argument to `githubinator`. Now the "... on master" commands

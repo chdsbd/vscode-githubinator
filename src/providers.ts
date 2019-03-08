@@ -13,6 +13,7 @@ export interface IUrlInfo {
   readonly blobUrl: string
   readonly repoUrl: string
   readonly blameUrl: string
+  readonly historyUrl: string
 }
 
 interface IOrgInfo {
@@ -118,33 +119,34 @@ export class Github extends BaseProvider {
     const [start, end] = selection
     // Github uses 1-based indexing
     const lines = `L${start + 1}-L${end + 1}`
-    const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
-    const blobUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "blob",
-        head.value,
-        relativeFilePath,
-      ),
+    const repoUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
-    )
-    const blameUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "blame",
-        head.value,
-        relativeFilePath,
-      ),
-      rootUrl,
-    )
-    blobUrl.hash = lines
-    blameUrl.hash = lines
+    ).toString()
+    const createUrl = (mode: string, hash = true) => {
+      const u = new url.URL(
+        path.join(
+          repoInfo.org,
+          repoInfo.repo,
+          mode,
+          head.value,
+          relativeFilePath,
+        ),
+        rootUrl,
+      )
+      if (hash) {
+        u.hash = lines
+      }
+      return u
+    }
+    const blobUrl = createUrl("blob").toString()
+    const blameUrl = createUrl("blame").toString()
+    const historyUrl = createUrl("commits", false).toString()
     return {
-      blobUrl: blobUrl.toString(),
-      blameUrl: blameUrl.toString(),
-      repoUrl: repoUrl.toString(),
+      blobUrl,
+      blameUrl,
+      repoUrl,
+      historyUrl,
     }
   }
 }
@@ -169,33 +171,34 @@ export class Gitlab extends BaseProvider {
     const [start, end] = selection
     // The format is L34-56 (this is one character off from Github)
     const lines = `L${start + 1}-${end + 1}`
-    const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
-    const blobUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "blob",
-        head.value,
-        relativeFilePath,
-      ),
+    const repoUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
-    )
-    const blameUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "blame",
-        head.value,
-        relativeFilePath,
-      ),
-      rootUrl,
-    )
-    blobUrl.hash = lines
-    blameUrl.hash = lines
+    ).toString()
+    const createUrl = (mode: string, hash = true) => {
+      const u = new url.URL(
+        path.join(
+          repoInfo.org,
+          repoInfo.repo,
+          mode,
+          head.value,
+          relativeFilePath,
+        ),
+        rootUrl,
+      )
+      if (hash) {
+        u.hash = lines
+      }
+      return u
+    }
+    const blobUrl = createUrl("blob").toString()
+    const blameUrl = createUrl("blame").toString()
+    const historyUrl = createUrl("commits", false).toString()
     return {
-      blobUrl: blobUrl.toString(),
-      blameUrl: blameUrl.toString(),
-      repoUrl: repoUrl.toString(),
+      blobUrl,
+      blameUrl,
+      repoUrl,
+      historyUrl,
     }
   }
 }
@@ -220,33 +223,34 @@ export class Bitbucket extends BaseProvider {
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
     const lines = `lines-${start + 1}:${end + 1}`
-    const repoUrl = new url.URL(path.join(repoInfo.org, repoInfo.repo), rootUrl)
-    const blobUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "blob",
-        head.value,
-        relativeFilePath,
-      ),
+    const repoUrl = new url.URL(
+      path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
-    )
-    const blameUrl = new url.URL(
-      path.join(
-        repoInfo.org,
-        repoInfo.repo,
-        "annotate",
-        head.value,
-        relativeFilePath,
-      ),
-      rootUrl,
-    )
-    blobUrl.hash = lines
-    blameUrl.hash = lines
+    ).toString()
+    const createUrl = (mode: string, hash = true) => {
+      const u = new url.URL(
+        path.join(
+          repoInfo.org,
+          repoInfo.repo,
+          mode,
+          head.value,
+          relativeFilePath,
+        ),
+        rootUrl,
+      )
+      if (hash) {
+        u.hash = lines
+      }
+      return u
+    }
+    const blobUrl = createUrl("blob").toString()
+    const blameUrl = createUrl("annotate").toString()
+    const historyUrl = createUrl("history-node", false).toString()
     return {
-      blobUrl: blobUrl.toString(),
-      blameUrl: blameUrl.toString(),
-      repoUrl: repoUrl.toString(),
+      blobUrl,
+      blameUrl,
+      repoUrl,
+      historyUrl,
     }
   }
 }
@@ -284,17 +288,18 @@ export class VisualStudio extends BaseProvider {
     }
     const version =
       head.kind === "branch" ? `GB${head.value}` : `GC${head.value}`
-    const baseSearch = `path=${encodeURIComponent(
-      filePath,
-    )}&version=${version}${lines}`
+    const baseSearch = `path=${encodeURIComponent(filePath)}&version=${version}`
     const blobUrl = new url.URL(repoUrl.toString())
     const blameUrl = new url.URL(repoUrl.toString())
-    blobUrl.search = baseSearch
-    blameUrl.search = baseSearch + "&_a=annotate"
+    const historyUrl = new url.URL(repoUrl.toString())
+    blobUrl.search = baseSearch + lines
+    blameUrl.search = baseSearch + lines + "&_a=annotate"
+    historyUrl.search = baseSearch + "&_a=history"
     return {
       blobUrl: blobUrl.toString(),
       blameUrl: blameUrl.toString(),
       repoUrl: repoUrl.toString(),
+      historyUrl: historyUrl.toString(),
     }
   }
 }

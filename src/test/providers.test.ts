@@ -25,6 +25,8 @@ suite("Github", async () => {
       blameUrl:
         "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
       repoUrl: "https://github.com/recipeyak/recipeyak",
+      historyUrl:
+        "https://github.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
     assert.deepEqual(result, expected)
   })
@@ -50,6 +52,8 @@ suite("Github", async () => {
       blameUrl:
         "https://github.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
       repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
+      historyUrl:
+        "https://github.mycompany.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
     assert.deepEqual(result, expected)
   })
@@ -73,6 +77,8 @@ suite("Gitlab", async () => {
       blameUrl:
         "https://gitlab.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
       repoUrl: "https://gitlab.com/recipeyak/recipeyak",
+      historyUrl:
+        "https://gitlab.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
     assert.deepEqual(result, expected)
   })
@@ -95,6 +101,8 @@ suite("Gitlab", async () => {
       blameUrl:
         "https://gitlab.mycompany.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-25",
       repoUrl: "https://gitlab.mycompany.com/recipeyak/recipeyak",
+      historyUrl:
+        "https://gitlab.mycompany.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
 
     assert.deepEqual(result, expected)
@@ -119,6 +127,8 @@ suite("Bitbucket", async () => {
       blameUrl:
         "https://bitbucket.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       repoUrl: "https://bitbucket.org/recipeyak/recipeyak",
+      historyUrl:
+        "https://bitbucket.org/recipeyak/recipeyak/history-node/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
     assert.deepEqual(result, expected)
   })
@@ -146,6 +156,8 @@ suite("Bitbucket", async () => {
       blameUrl:
         "https://git.mycompany.org/recipeyak/recipeyak/annotate/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#lines-18:25",
       repoUrl: "https://git.mycompany.org/recipeyak/recipeyak",
+      historyUrl:
+        "https://git.mycompany.org/recipeyak/recipeyak/history-node/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
     }
     assert.deepEqual(result, expected)
     assert.deepEqual(calledOrigin, "blah")
@@ -174,6 +186,8 @@ suite("VisualStudio", async () => {
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25",
       blameUrl:
         "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25&_a=annotate",
+      historyUrl:
+        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&_a=history",
       repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
     }
     assert.deepEqual(result, expected)
@@ -202,6 +216,8 @@ suite("VisualStudio", async () => {
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25",
       blameUrl:
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25&_a=annotate",
+      historyUrl:
+        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&_a=history",
       repoUrl:
         "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
     }
