@@ -22,6 +22,7 @@ jobs:
           name: install
           command: |
             make install
+            sudo apt update
             sudo apt install libgtk-3-0 libxss1 libnss3 libasound2
       - save_cache:
           paths:

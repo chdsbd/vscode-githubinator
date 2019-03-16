@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed failure when running Githubinator with detached HEAD. Githubinator
+  would fail because there wasn't a ref to work off when running with a detached
+  HEAD.
+
 ## 0.2.1 - 2019-03-08
 
 ### Fixed
