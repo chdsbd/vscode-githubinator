@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fixed failure when running Githubinator without a ref. When checking out a
-  SHA, Githubinator would fail because there wasn't a ref to work off.
+- Fixed failure when running Githubinator with detached HEAD. Githubinator
+  would fail because there wasn't a ref to work off when running with a detached
+  HEAD.
 
 ## 0.2.1 - 2019-03-08
 
