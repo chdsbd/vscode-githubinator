@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Fixed failure when running Githubinator without a ref. When checking out a
+  SHA, Githubinator would fail because there wasn't a ref to work off.
+
 ## 0.2.1 - 2019-03-08
 
 ### Fixed

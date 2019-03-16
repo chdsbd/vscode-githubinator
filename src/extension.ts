@@ -136,7 +136,7 @@ async function githubinator({
   if (gitDir == null) {
     return err("Could not find .git directory.")
   }
-  let headBranch: [string, string] | null = null
+  let headBranch: [string, string | null] | null = null
   if (branch) {
     const sha = await git.getSHAForBranch(gitDir, branch)
     if (sha == null) {
@@ -166,8 +166,13 @@ async function githubinator({
       remote => git.origin(gitDir, remote),
     ).getUrls({
       selection: [editor.selection.start.line, editor.selection.end.line],
-      // permalink > branch > branch from HEAD
-      head: !!permalink ? createSha(head) : createBranch(branchName),
+      // priority: permalink > branch > branch from HEAD
+      // If branchName could not be found (null) then we generate a permalink
+      // using the SHA.
+      head:
+        !!permalink || branchName == null
+          ? createSha(head)
+          : createBranch(branchName),
       relativeFilePath: getRelativeFilePath(gitDir, fileName),
     })
     if (parsedUrl != null) {

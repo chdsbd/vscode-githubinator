@@ -64,7 +64,9 @@ export async function getSHAForBranch(
 }
 
 /** Get the current SHA and branch from HEAD for a git directory */
-export async function head(gitDir: string): Promise<[string, string] | null> {
+export async function head(
+  gitDir: string,
+): Promise<[string, string | null] | null> {
   const headPath = path.resolve(gitDir, "HEAD")
   if (!(await fs.exists(headPath))) {
     return null
@@ -73,8 +75,17 @@ export async function head(gitDir: string): Promise<[string, string] | null> {
   if (!headFileData) {
     return null
   }
-  const headInfo = headFileData.split(" ")[1].trim()
-  const branchName = headInfo.replace("refs/heads/", "")
+  // If we're not on a branch, headFileData will be of the form:
+  // `3c0cc80bbdb682f6e9f65b4c9659ca21924aad4`
+  // If we're on a branch, it will be `ref: refs/heads/my_branch_name`
+  const [maybeSha, maybeHeadInfo] = headFileData.split(" ") as [
+    string,
+    string | undefined
+  ]
+  if (maybeHeadInfo == null) {
+    return [maybeSha, null]
+  }
+  const branchName = maybeHeadInfo.trim().replace("refs/heads/", "")
   const sha = await getSHAForBranch(gitDir, branchName)
   if (sha == null) {
     return null
