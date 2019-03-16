@@ -65,6 +65,10 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+### 0.2.2
+
+- Fixed failure when running Githubinator with detached HEAD
+
 ### 0.2.1
 
 - Remove artifact from logo export
