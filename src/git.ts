@@ -36,6 +36,13 @@ export async function getSHAForBranch(
   branchName: string,
 ): Promise<string | null> {
   const refName = `refs/heads/${branchName}`
+  // check for normal ref
+  const refPath = path.resolve(gitDir, refName)
+  if (await fs.exists(refPath)) {
+    return await fs.readFile(refPath, {
+      encoding: "utf-8",
+    })
+  }
   // check packed-refs
   const packedRefPath = path.resolve(gitDir, "packed-refs")
   if (await fs.exists(packedRefPath)) {
@@ -52,13 +59,6 @@ export async function getSHAForBranch(
         return sha
       }
     }
-  }
-  // check for normal ref
-  const refPath = path.resolve(gitDir, refName)
-  if (await fs.exists(refPath)) {
-    return await fs.readFile(refPath, {
-      encoding: "utf-8",
-    })
   }
   return null
 }
