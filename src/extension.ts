@@ -173,11 +173,7 @@ async function githubinator({
         !!permalink || branchName == null
           ? createSha(head)
           : createBranch(branchName),
-      // escape invalid url characters
-      // See https://github.com/chdsbd/vscode-githubinator/issues/28
-      relativeFilePath: encodeURIComponent(
-        getRelativeFilePath(gitDir, fileName),
-      ),
+      relativeFilePath: getRelativeFilePath(gitDir, fileName),
     })
     if (parsedUrl != null) {
       console.log("Found provider", provider.name)
