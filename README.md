@@ -65,6 +65,10 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+## 0.2.3
+
+- Fix ref lookup to ensure most recent ref is always used.
+
 ### 0.2.2
 
 - Fixed failure when running Githubinator with detached HEAD
