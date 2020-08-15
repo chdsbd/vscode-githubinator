@@ -65,6 +65,11 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+## 0.3.0
+
+- Support calling Githubinator without an open file.
+- Don't copy URL when using "Open PR".
+
 ## 0.2.3
 
 - Fix ref lookup to ensure most recent ref is always used.
