@@ -101,7 +101,7 @@ function walkUpDirectories(
   file_path: string,
   file_or_folder: string,
 ): string | null {
-  let directory = path.dirname(file_path)
+  let directory = file_path
   while (true) {
     const newPath = path.resolve(directory, file_or_folder)
     if (fs.existsSync(newPath)) {

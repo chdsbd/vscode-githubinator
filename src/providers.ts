@@ -4,18 +4,18 @@ import { IProviderConfig } from "./extension"
 import { cleanHostname } from "./utils"
 
 interface IBaseGetUrls {
-  readonly selection: [number, number]
+  readonly selection: [number | null, number | null]
   readonly head: Head
-  readonly relativeFilePath: string
+  readonly relativeFilePath: string | null
 }
 
 export interface IUrlInfo {
-  readonly blobUrl: string
-  readonly repoUrl: string
-  readonly blameUrl: string
-  readonly historyUrl: string
-  readonly prUrl: string
-  readonly compareUrl: string
+  readonly blobUrl: string | null
+  readonly repoUrl: string | null
+  readonly blameUrl: string | null
+  readonly historyUrl: string | null
+  readonly prUrl: string | null
+  readonly compareUrl: string | null
 }
 
 interface IOrgInfo {
@@ -120,12 +120,13 @@ export class Github extends BaseProvider {
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
     // Github uses 1-based indexing
-    const lines = `L${start + 1}-L${end + 1}`
+    const lines = start != null && end != null ? `L${start + 1}-L${end + 1}` : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
+      if (relativeFilePath == null) {return null}
       const u = new url.URL(
         path.join(
           repoInfo.org,
@@ -136,7 +137,7 @@ export class Github extends BaseProvider {
         ),
         rootUrl,
       )
-      if (hash) {
+      if (hash && lines) {
         u.hash = lines
       }
       return u.toString()
