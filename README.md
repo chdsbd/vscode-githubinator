@@ -40,7 +40,7 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 | `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame          | current sha    |
 | `Githubinator: Repository`            |    ✅    |    ✅    | open repo      | N/A            |
 | `Githubinator: History`               |    ✅    |    ✅    | open history   | N/A            |
-| `Githubinator: Open PR`               |    ✅    |    ✅    | open PR        | N/A            |
+| `Githubinator: Open PR`               |    ❌    |    ✅    | open PR        | N/A            |
 | `Githubinator: Compare`               |    ✅    |    ✅    | compare branch | N/A            |
 
 ## Requirements
