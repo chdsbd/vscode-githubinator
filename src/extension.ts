@@ -54,7 +54,7 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorOpenPR", //
-    { copyToClipboard: true, openUrl: true, openPR: true },
+    { copyToClipboard: false, openUrl: true, openPR: true },
   ],
   [
     "extension.githubinatorCompare", //
@@ -96,6 +96,25 @@ function err(message: string) {
   vscode.window.showErrorMessage(message)
 }
 
+function getEditorInfo(): { uri: vscode.Uri | null; fileName: string | null } {
+  const workspaceUri =
+    vscode.workspace.workspaceFolders != null &&
+    vscode.workspace.workspaceFolders.length > 0
+      ? vscode.workspace.workspaceFolders[0].uri
+      : null
+  const editor = vscode.window.activeTextEditor
+  // if we cannot find editor information fall back to the workspace path.
+  if (!editor) {
+    return { uri: workspaceUri, fileName: null }
+  }
+
+  const { fileName, isUntitled, uri } = editor.document
+  if (isUntitled) {
+    return { uri: workspaceUri, fileName: null }
+  }
+  return { uri, fileName }
+}
+
 interface IGithubinator {
   openUrl?: boolean
   copyToClipboard?: boolean
@@ -119,20 +138,12 @@ async function githubinator({
   compare,
 }: IGithubinator) {
   console.log("githubinator.call")
-  const editor = vscode.window.activeTextEditor
-  if (!editor) {
-    return err("There is no active file to look up.")
+  const editorConfig = getEditorInfo()
+  if (!editorConfig.uri) {
+    return err("could not find file")
   }
 
-  const { fileName, isUntitled, uri } = editor.document
-  if (isUntitled) {
-    return err("Cannot lookup unsaved file.")
-  }
-  if (uri.scheme !== "file") {
-    return err("Only native files can be used.")
-  }
-
-  const gitDir = git.dir(uri.fsPath)
+  const gitDir = git.dir(editorConfig.uri.fsPath)
   if (gitDir == null) {
     return err("Could not find .git directory.")
   }
@@ -158,6 +169,7 @@ async function githubinator({
     .getConfiguration("githubinator")
     .get<IGithubinatorConfig["providers"]>("providers", {})
 
+  const editor = vscode.window.activeTextEditor
   let urls: IUrlInfo | null = null
   for (const provider of providers) {
     const parsedUrl = await new provider(
@@ -165,7 +177,10 @@ async function githubinator({
       globalDefaultRemote,
       remote => git.origin(gitDir, remote),
     ).getUrls({
-      selection: [editor.selection.start.line, editor.selection.end.line],
+      selection: [
+        editor ? editor.selection.start.line : null,
+        editor ? editor.selection.end.line : null,
+      ],
       // priority: permalink > branch > branch from HEAD
       // If branchName could not be found (null) then we generate a permalink
       // using the SHA.
@@ -173,7 +188,9 @@ async function githubinator({
         !!permalink || branchName == null
           ? createSha(head)
           : createBranch(branchName),
-      relativeFilePath: getRelativeFilePath(gitDir, fileName),
+      relativeFilePath: editorConfig.fileName
+        ? getRelativeFilePath(gitDir, editorConfig.fileName)
+        : null,
     })
     if (parsedUrl != null) {
       console.log("Found provider", provider.name)
@@ -187,7 +204,7 @@ async function githubinator({
     return err("Could not find provider for repo.")
   }
 
-  const url = compare
+  let url = compare
     ? urls.compareUrl
     : openPR
     ? urls.prUrl
@@ -199,6 +216,16 @@ async function githubinator({
     ? urls.blameUrl
     : urls.blobUrl
 
+  // file-specific urls will be null when we are using the workspace path. Use
+  // the compare url or repo url if available instead.
+  const fallbackUrl = [urls.compareUrl, urls.repoUrl].find(x => x != null)
+  if (!url && fallbackUrl) {
+    url = fallbackUrl
+  }
+
+  if (url == null) {
+    return err("could not find url")
+  }
   if (openUrl) {
     vscode.env.openExternal(vscode.Uri.parse(url))
   }

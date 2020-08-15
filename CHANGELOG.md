@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 0.3.0 - 2020-08-15
+
+### Added
+
+- Support calling Githubinator without an open file.
+
+### Changed
+
+- Don't copy URL when using "Open PR".
+
 ## 0.2.3 - 2019-04-04
 
 ### Fixed
