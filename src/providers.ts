@@ -120,13 +120,16 @@ export class Github extends BaseProvider {
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
     // Github uses 1-based indexing
-    const lines = start != null && end != null ? `L${start + 1}-L${end + 1}` : null
+    const lines =
+      start != null && end != null ? `L${start + 1}-L${end + 1}` : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
-      if (relativeFilePath == null) {return null}
+      if (relativeFilePath == null) {
+        return null
+      }
       const u = new url.URL(
         path.join(
           repoInfo.org,
@@ -183,12 +186,16 @@ export class Gitlab extends BaseProvider {
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
     // The format is L34-56 (this is one character off from Github)
-    const lines = `L${start + 1}-${end + 1}`
+    const lines =
+      start != null && end != null ? `L${start + 1}-${end + 1}` : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
+      if (relativeFilePath == null) {
+        return null
+      }
       const u = new url.URL(
         path.join(
           repoInfo.org,
@@ -199,7 +206,7 @@ export class Gitlab extends BaseProvider {
         ),
         rootUrl,
       )
-      if (hash) {
+      if (hash && lines) {
         u.hash = lines
       }
       return u.toString()
@@ -247,12 +254,16 @@ export class Bitbucket extends BaseProvider {
     // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
-    const lines = `lines-${start + 1}:${end + 1}`
+    const lines =
+      start != null && end != null ? `lines-${start + 1}:${end + 1}` : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
+      if (relativeFilePath == null) {
+        return null
+      }
       const u = new url.URL(
         path.join(
           repoInfo.org,
@@ -263,7 +274,7 @@ export class Bitbucket extends BaseProvider {
         ),
         rootUrl,
       )
-      if (hash) {
+      if (hash && lines) {
         u.hash = lines
       }
       return u.toString()
@@ -320,24 +331,32 @@ export class VisualStudio extends BaseProvider {
     // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
     const rootUrl = `https://${repoInfo.hostname}/`
     const [start, end] = selection
-    const lines = `&line=${start + 1}&lineEnd=${end + 1}`
+    const lines =
+      start != null && end != null
+        ? `&line=${start + 1}&lineEnd=${end + 1}`
+        : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, "_git", repoInfo.repo),
       rootUrl,
     )
     let filePath = relativeFilePath
-    if (!filePath.startsWith("/")) {
+    if (filePath != null && !filePath.startsWith("/")) {
       filePath = "/" + filePath
     }
     const version =
       head.kind === "branch" ? `GB${head.value}` : `GC${head.value}`
-    const baseSearch = `path=${encodeURIComponent(filePath)}&version=${version}`
+    const baseSearch =
+      filePath != null
+        ? `path=${encodeURIComponent(filePath)}&version=${version}`
+        : null
     const blobUrl = new url.URL(repoUrl.toString())
     const blameUrl = new url.URL(repoUrl.toString())
     const historyUrl = new url.URL(repoUrl.toString())
-    blobUrl.search = baseSearch + lines
-    blameUrl.search = baseSearch + lines + "&_a=annotate"
-    historyUrl.search = baseSearch + "&_a=history"
+    if (baseSearch != null) {
+      blobUrl.search = baseSearch + lines
+      blameUrl.search = baseSearch + lines + "&_a=annotate"
+      historyUrl.search = baseSearch + "&_a=history"
+    }
     const compareUrl = new url.URL(
       path.join(repoInfo.org, "_git", repoInfo.repo, "branches"),
       rootUrl,
