@@ -19,7 +19,7 @@ suite("utils", async () => {
         "fixit/-#123✅",
         "C#/C#.Package",
       ),
-      "ghost/ghost.github.io/blob/fixit--%23123%E2%9C%85/C%23/C%23.Package",
+      "ghost/ghost.github.io/blob/fixit/-%23123%E2%9C%85/C%23/C%23.Package",
     )
   })
 })
