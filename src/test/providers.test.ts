@@ -26,7 +26,7 @@ suite("utils", async () => {
         "ghost",
         "ghost.github.io",
         "blob",
-        "chris/fix%23123-✅",
+        "chris/fix#123-✅",
         "blah-#🤷🏻‍♂️.txt",
       ),
       "ghost/ghost.github.io/blob/chris/fix%23123-✅/blah-%23🤷🏻%E2%80%8D♂%EF%B8%8F.txt",
