@@ -242,10 +242,11 @@ async function githubinator({
     return err("could not find url")
   }
   if (openUrl) {
-    vscode.env.openExternal(vscode.Uri.parse(url))
+    // @ts-ignore This works. Using vscode.Uri.parse double encodes characters which breaks URLs.
+    await vscode.env.openExternal(url)
   }
   if (copyToClipboard) {
-    vscode.env.clipboard.writeText(url)
-    vscode.window.showInformationMessage("URL copied to clipboard.")
+    await vscode.env.clipboard.writeText(url)
+    await vscode.window.showInformationMessage("URL copied to clipboard.")
   }
 }

@@ -5,8 +5,34 @@ import {
   createSha,
   createBranch,
   Github,
+  pathJoin,
 } from "../providers"
 import * as assert from "assert"
+
+suite("utils", async () => {
+  test("pathJoin", () => {
+    assert.strictEqual(
+      pathJoin(
+        "ghost",
+        "ghost.github.io",
+        "blob",
+        "fixit/-#123✅",
+        "C#/C#.Package",
+      ),
+      "ghost/ghost.github.io/blob/fixit/-%23123%E2%9C%85/C%23/C%23.Package",
+    )
+    assert.strictEqual(
+      pathJoin(
+        "ghost",
+        "ghost.github.io",
+        "blob",
+        "chris/fix#123-✅",
+        "blah-#🤷🏻‍♂️.txt",
+      ),
+      "ghost/ghost.github.io/blob/chris/fix%23123-%E2%9C%85/blah-%23%F0%9F%A4%B7%F0%9F%8F%BB%E2%80%8D%E2%99%82%EF%B8%8F.txt",
+    )
+  })
+})
 
 suite("Github", async () => {
   test("ssh", async () => {

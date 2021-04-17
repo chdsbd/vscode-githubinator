@@ -2,6 +2,7 @@ import * as path from "path"
 import * as url from "url"
 import { IProviderConfig } from "./extension"
 import { cleanHostname } from "./utils"
+import { flatten } from "lodash"
 
 interface IBaseGetUrls {
   readonly selection: [number | null, number | null]
@@ -102,6 +103,12 @@ abstract class BaseProvider {
   abstract getUrls(params: IBaseGetUrls): Promise<IUrlInfo | null>
 }
 
+export function pathJoin(...args: string[]): string {
+  return path.join(
+    ...flatten(args.map(x => x.split("/"))).map(encodeURIComponent),
+  )
+}
+
 export class Github extends BaseProvider {
   DEFAULT_HOSTNAMES = ["github.com"]
   PROVIDER_NAME = "github"
@@ -132,7 +139,7 @@ export class Github extends BaseProvider {
         return null
       }
       const u = new url.URL(
-        path.join(
+        pathJoin(
           repoInfo.org,
           repoInfo.repo,
           mode,
@@ -150,11 +157,11 @@ export class Github extends BaseProvider {
     const blameUrl = createUrl("blame")
     const historyUrl = createUrl("commits", false)
     const compareUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
+      pathJoin(repoInfo.org, repoInfo.repo, "compare", head.value),
       rootUrl,
     ).toString()
     const prUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "pull", "new", head.value),
+      pathJoin(repoInfo.org, repoInfo.repo, "pull", "new", head.value),
       rootUrl,
     ).toString()
     return {
@@ -190,7 +197,7 @@ export class Gitlab extends BaseProvider {
     const lines =
       start != null && end != null ? `L${start + 1}-${end + 1}` : null
     const repoUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo),
+      pathJoin(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
@@ -198,7 +205,7 @@ export class Gitlab extends BaseProvider {
         return null
       }
       const u = new url.URL(
-        path.join(
+        pathJoin(
           repoInfo.org,
           repoInfo.repo,
           mode,
@@ -216,12 +223,12 @@ export class Gitlab extends BaseProvider {
     const blameUrl = createUrl("blame")
     const historyUrl = createUrl("commits", false)
     const compareUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "compare", head.value),
+      pathJoin(repoInfo.org, repoInfo.repo, "compare", head.value),
       rootUrl,
     ).toString()
     // https://gitlab.com/recipeyak/recipeyak/merge_requests/new?merge_request%5Bsource_branch%5D=master
     const prUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "merge_requests", "new"),
+      pathJoin(repoInfo.org, repoInfo.repo, "merge_requests", "new"),
       rootUrl,
     )
     prUrl.search = `merge_request%5Bsource_branch%5D=${head.value}`
@@ -258,7 +265,7 @@ export class Bitbucket extends BaseProvider {
     const lines =
       start != null && end != null ? `lines-${start + 1}:${end + 1}` : null
     const repoUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo),
+      pathJoin(repoInfo.org, repoInfo.repo),
       rootUrl,
     ).toString()
     const createUrl = (mode: string, hash = true) => {
@@ -266,7 +273,7 @@ export class Bitbucket extends BaseProvider {
         return null
       }
       const u = new url.URL(
-        path.join(
+        pathJoin(
           repoInfo.org,
           repoInfo.repo,
           mode,
@@ -283,7 +290,7 @@ export class Bitbucket extends BaseProvider {
     const blobUrl = createUrl("blob")
     const blameUrl = createUrl("annotate")
     const compareUrl = new url.URL(
-      path.join(
+      pathJoin(
         repoInfo.org,
         repoInfo.repo,
         "branches",
@@ -295,7 +302,7 @@ export class Bitbucket extends BaseProvider {
     const historyUrl = createUrl("history-node", false)
     // "https://bitbucket.org/recipeyak/recipeyak/pull-requests/new?source=db99a912f5c4bffe11d91e163cd78ed96589611b"
     const prUrl = new url.URL(
-      path.join(repoInfo.org, repoInfo.repo, "pull-requests", "new"),
+      pathJoin(repoInfo.org, repoInfo.repo, "pull-requests", "new"),
       rootUrl,
     )
     prUrl.search = `source=${head.value}`
@@ -337,7 +344,7 @@ export class VisualStudio extends BaseProvider {
         ? `&line=${start + 1}&lineEnd=${end + 1}`
         : null
     const repoUrl = new url.URL(
-      path.join(repoInfo.org, "_git", repoInfo.repo),
+      pathJoin(repoInfo.org, "_git", repoInfo.repo),
       rootUrl,
     )
     let filePath = relativeFilePath
@@ -359,12 +366,12 @@ export class VisualStudio extends BaseProvider {
       historyUrl.search = baseSearch + "&_a=history"
     }
     const compareUrl = new url.URL(
-      path.join(repoInfo.org, "_git", repoInfo.repo, "branches"),
+      pathJoin(repoInfo.org, "_git", repoInfo.repo, "branches"),
       rootUrl,
     )
     compareUrl.search = `targetVersion=${version}&_a=commits`
     const prUrl = new url.URL(
-      path.join(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
+      pathJoin(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
       rootUrl,
     )
     prUrl.search = `sourceRef=${head.value}`
