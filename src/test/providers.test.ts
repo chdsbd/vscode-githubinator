@@ -41,8 +41,8 @@ suite("Github", async () => {
   })
   test("https", async () => {
     for (let url of [
-      "git@github.com:recipeyak/recipeyak.git",
-      "git@github.com:recipeyak/recipeyak",
+      "git@github.mycompany.com:recipeyak/recipeyak.git",
+      "git@github.mycompany.com:recipeyak/recipeyak",
     ]) {
       async function findRemote(hostname: string) {
         return url
