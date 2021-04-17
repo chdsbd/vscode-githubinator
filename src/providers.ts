@@ -103,7 +103,7 @@ abstract class BaseProvider {
   abstract getUrls(params: IBaseGetUrls): Promise<IUrlInfo | null>
 }
 
-function pathJoin(...args: string[]): string {
+export function pathJoin(...args: string[]): string {
   return path.join(
     ...flatten(args.map(x => x.split("/"))).map(encodeURIComponent),
   )
