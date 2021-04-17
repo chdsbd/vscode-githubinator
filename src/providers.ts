@@ -94,6 +94,7 @@ abstract class BaseProvider {
       if (org == null || repo == null) {
         continue
       }
+      ;[repo] = repo.split(/\.git$/)
       return { org, repo, hostname }
     }
     return null
@@ -105,8 +106,8 @@ export class Github extends BaseProvider {
   DEFAULT_HOSTNAMES = ["github.com"]
   PROVIDER_NAME = "github"
   MATCHERS = [
-    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
-    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`),
+    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)(\.git)?$`),
+    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)(\.git)?$`),
   ]
   async getUrls({
     selection,
