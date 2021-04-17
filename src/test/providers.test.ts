@@ -21,6 +21,16 @@ suite("utils", async () => {
       ),
       "ghost/ghost.github.io/blob/fixit/-%23123%E2%9C%85/C%23/C%23.Package",
     )
+    assert.strictEqual(
+      pathJoin(
+        "ghost",
+        "ghost.github.io",
+        "blob",
+        "chris/fix%23123-✅",
+        "blah-#🤷🏻‍♂️.txt",
+      ),
+      "ghost/ghost.github.io/blob/chris/fix%23123-✅/blah-%23🤷🏻%E2%80%8D♂%EF%B8%8F.txt",
+    )
   })
 })
 
