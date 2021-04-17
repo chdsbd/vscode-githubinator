@@ -10,33 +10,36 @@ import * as assert from "assert"
 
 suite("Github", async () => {
   test("ssh", async () => {
-    async function findRemote(hostname: string) {
-      return "git@github.com:recipeyak/recipeyak.git"
+    for (let url of ["git@github.com:recipeyak/recipeyak.git", "git@github.com:recipeyak/recipeyak"]) {
+      async function findRemote(hostname: string) {
+        return url
+      }
+      const gh = new Github({}, "origin", findRemote)
+      const result = await gh.getUrls({
+        selection: [17, 24],
+        head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
+        relativeFilePath: "frontend/src/components/App.tsx",
+      })
+      const expected = {
+        blobUrl:
+          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
+        blameUrl:
+          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
+        compareUrl:
+          "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
+        historyUrl:
+          "https://github.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
+        prUrl:
+          "https://github.com/recipeyak/recipeyak/pull/new/db99a912f5c4bffe11d91e163cd78ed96589611b",
+        repoUrl: "https://github.com/recipeyak/recipeyak",
+      }
+      assert.deepEqual(result, expected)
     }
-    const gh = new Github({}, "origin", findRemote)
-    const result = await gh.getUrls({
-      selection: [17, 24],
-      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
-      relativeFilePath: "frontend/src/components/App.tsx",
-    })
-    const expected = {
-      blobUrl:
-        "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
-      blameUrl:
-        "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
-      compareUrl:
-        "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
-      historyUrl:
-        "https://github.com/recipeyak/recipeyak/commits/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx",
-      prUrl:
-        "https://github.com/recipeyak/recipeyak/pull/new/db99a912f5c4bffe11d91e163cd78ed96589611b",
-      repoUrl: "https://github.com/recipeyak/recipeyak",
-    }
-    assert.deepEqual(result, expected)
   })
   test("https", async () => {
+    for (let url of ["git@github.com:recipeyak/recipeyak.git", "git@github.com:recipeyak/recipeyak"]) {
     async function findRemote(hostname: string) {
-      return "https://github.mycompany.com/recipeyak/recipeyak.git"
+      return url
     }
     const gh = new Github(
       {
@@ -63,6 +66,7 @@ suite("Github", async () => {
       repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
     }
     assert.deepEqual(result, expected)
+  }
   })
 })
 
