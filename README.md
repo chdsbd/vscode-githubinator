@@ -26,22 +26,22 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ### Commands
 
-| command                               | copy URL | open URL | mode           | SHA-type       |
-| ------------------------------------- | :------: | :------: | -------------- | -------------- |
-| `Githubinator`                        |    ✅    |    ❌    | blob           | current branch |
-| `Githubinator: Copy`                  |    ✅    |    ❌    | blob           | current branch |
-| `Githubinator: Copy Master`           |    ✅    |    ❌    | blob           | "main" branch  |
-| `Githubinator: Copy Permalink`        |    ✅    |    ❌    | blob           | current SHA    |
-| `Githubinator: Copy Master Permalink` |    ✅    |    ❌    | blob           | "main" SHA     |
-| `Githubinator: On Master`             |    ✅    |    ✅    | blob           | "main" branch  |
-| `Githubinator: Permalink`             |    ✅    |    ✅    | blob           | current SHA    |
-| `Githubinator: Blame`                 |    ✅    |    ✅    | blame          | current branch |
-| `Githubinator: Blame On Master`       |    ✅    |    ✅    | blame          | "main" branch  |
-| `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame          | current sha    |
-| `Githubinator: Repository`            |    ✅    |    ✅    | open repo      | N/A            |
-| `Githubinator: History`               |    ✅    |    ✅    | open history   | N/A            |
-| `Githubinator: Open PR`               |    ❌    |    ✅    | open PR        | N/A            |
-| `Githubinator: Compare`               |    ✅    |    ✅    | compare branch | N/A            |
+| command                             | copy URL | open URL | mode           | SHA-type       |
+| ----------------------------------- | :------: | :------: | -------------- | -------------- |
+| `Githubinator`                      |    ✅    |    ❌    | blob           | current branch |
+| `Githubinator: Copy`                |    ✅    |    ❌    | blob           | current branch |
+| `Githubinator: Copy Main`           |    ✅    |    ❌    | blob           | "main" branch  |
+| `Githubinator: Copy Permalink`      |    ✅    |    ❌    | blob           | current SHA    |
+| `Githubinator: Copy Main Permalink` |    ✅    |    ❌    | blob           | "main" SHA     |
+| `Githubinator: On Main`             |    ✅    |    ✅    | blob           | "main" branch  |
+| `Githubinator: Permalink`           |    ✅    |    ✅    | blob           | current SHA    |
+| `Githubinator: Blame`               |    ✅    |    ✅    | blame          | current branch |
+| `Githubinator: Blame On Main`       |    ✅    |    ✅    | blame          | "main" branch  |
+| `Githubinator: Blame Permalink`     |    ✅    |    ✅    | blame          | current sha    |
+| `Githubinator: Repository`          |    ✅    |    ✅    | open repo      | N/A            |
+| `Githubinator: History`             |    ✅    |    ✅    | open history   | N/A            |
+| `Githubinator: Open PR`             |    ❌    |    ✅    | open PR        | N/A            |
+| `Githubinator: Compare`             |    ✅    |    ✅    | compare branch | N/A            |
 
 The "main" branch is configured via `githubinator.mainBranches` (see "Extension Settings" below).
 
