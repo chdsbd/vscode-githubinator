@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.0.0 - 2021-04-17
+
+### Added
+
+- support multiple default branches. vscode-githubinator now attempts to open `main`, then `master`, `trunk`, `develop`, and `dev`. Configure these branches with the `githubinator.mainBranches` option.
+
+### Changed
+
+- renamed `Master` commands to `Main`: `Githubinator: Copy Master` -> `Githubinator: Copy Main`, `Githubinator: Copy Master Permalink` -> `Githubinator: Copy Main Permalink`, `Githubinator: On Master` -> `Githubinator: On Main`, `Githubinator: Blame On Master` -> `Githubinator: Blame On Main`
+
+### Fixed
+
+- support resolving symbolic links. vscode-githubinator will now resolve symbolic links before opening a URL.
+
 ## 0.3.1 - 2021-04-17
 
 ### Fixed
