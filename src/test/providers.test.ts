@@ -10,7 +10,10 @@ import * as assert from "assert"
 
 suite("Github", async () => {
   test("ssh", async () => {
-    for (let url of ["git@github.com:recipeyak/recipeyak.git", "git@github.com:recipeyak/recipeyak"]) {
+    for (let url of [
+      "git@github.com:recipeyak/recipeyak.git",
+      "git@github.com:recipeyak/recipeyak",
+    ]) {
       async function findRemote(hostname: string) {
         return url
       }
@@ -37,36 +40,40 @@ suite("Github", async () => {
     }
   })
   test("https", async () => {
-    for (let url of ["git@github.com:recipeyak/recipeyak.git", "git@github.com:recipeyak/recipeyak"]) {
-    async function findRemote(hostname: string) {
-      return url
+    for (let url of [
+      "git@github.com:recipeyak/recipeyak.git",
+      "git@github.com:recipeyak/recipeyak",
+    ]) {
+      async function findRemote(hostname: string) {
+        return url
+      }
+      const gh = new Github(
+        {
+          github: { hostnames: ["github.mycompany.com"] },
+        },
+        "origin",
+        findRemote,
+      )
+      const result = await gh.getUrls({
+        selection: [17, 24],
+        head: createBranch("master"),
+        relativeFilePath: "frontend/src/components/App.tsx",
+      })
+      const expected = {
+        blobUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
+        blameUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
+        compareUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
+        historyUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
+        prUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/pull/new/master",
+        repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
+      }
+      assert.deepEqual(result, expected)
     }
-    const gh = new Github(
-      {
-        github: { hostnames: ["github.mycompany.com"] },
-      },
-      "origin",
-      findRemote,
-    )
-    const result = await gh.getUrls({
-      selection: [17, 24],
-      head: createBranch("master"),
-      relativeFilePath: "frontend/src/components/App.tsx",
-    })
-    const expected = {
-      blobUrl:
-        "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
-      blameUrl:
-        "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
-      compareUrl:
-        "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
-      historyUrl:
-        "https://github.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
-      prUrl: "https://github.mycompany.com/recipeyak/recipeyak/pull/new/master",
-      repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
-    }
-    assert.deepEqual(result, expected)
-  }
   })
 })
 
