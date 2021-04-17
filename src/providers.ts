@@ -94,7 +94,7 @@ abstract class BaseProvider {
       if (org == null || repo == null) {
         continue
       }
-      [repo, ] = repo.split(/\.git$/)
+      ;[repo] = repo.split(/\.git$/)
       return { org, repo, hostname }
     }
     return null
