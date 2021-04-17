@@ -29,7 +29,7 @@ suite("utils", async () => {
         "chris/fix#123-✅",
         "blah-#🤷🏻‍♂️.txt",
       ),
-      "ghost/ghost.github.io/blob/chris/fix%23123-✅/blah-%23🤷🏻%E2%80%8D♂%EF%B8%8F.txt",
+      "ghost/ghost.github.io/blob/chris/fix%23123-%E2%9C%85/blah-%23%F0%9F%A4%B7%F0%9F%8F%BB%E2%80%8D%E2%99%82%EF%B8%8F.txt",
     )
   })
 })
