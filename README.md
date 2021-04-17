@@ -65,6 +65,10 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Release Notes
 
+## 0.3.1
+
+- allow origin urls not ending in `.git` for GitHub.
+
 ## 0.3.0
 
 - Support calling Githubinator without an open file.
