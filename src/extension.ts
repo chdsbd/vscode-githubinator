@@ -14,7 +14,7 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorCopyMaster", //
-    { copyToClipboard: true, branch: "master" },
+    { copyToClipboard: true, mainBranch: true },
   ],
   [
     "extension.githubinatorCopyPermalink", //
@@ -22,11 +22,11 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorCopyMasterPermalink", //
-    { copyToClipboard: true, branch: "master", permalink: true },
+    { copyToClipboard: true, mainBranch: true, permalink: true },
   ],
   [
     "extension.githubinatorOnMaster", //
-    { copyToClipboard: true, openUrl: true, branch: "master" },
+    { copyToClipboard: true, openUrl: true, mainBranch: true },
   ],
   [
     "extension.githubinatorPermalink", //
@@ -38,7 +38,7 @@ const COMMANDS: [string, IGithubinator][] = [
   ],
   [
     "extension.githubinatorBlameOnMaster", //
-    { copyToClipboard: true, openUrl: true, blame: true, branch: "master" },
+    { copyToClipboard: true, openUrl: true, blame: true, mainBranch: true },
   ],
   [
     "extension.githubinatorBlamePermalink", //
@@ -115,11 +115,26 @@ function getEditorInfo(): { uri: vscode.Uri | null; fileName: string | null } {
   return { uri, fileName }
 }
 
+const BRANCHES = ["main", "master", "trunk", "dev", "develop"]
+
+async function findShaForBranches(
+  gitDir: string,
+): Promise<[string, string] | null> {
+  for (let branch of BRANCHES) {
+    const sha = await git.getSHAForBranch(gitDir, branch)
+    if (sha == null) {
+      continue
+    }
+    return [sha, branch]
+  }
+  return null
+}
+
 interface IGithubinator {
   openUrl?: boolean
   copyToClipboard?: boolean
   blame?: boolean
-  branch?: string
+  mainBranch?: boolean
   permalink?: boolean
   openRepo?: boolean
   history?: boolean
@@ -130,7 +145,7 @@ async function githubinator({
   openUrl,
   copyToClipboard,
   blame,
-  branch,
+  mainBranch,
   openRepo,
   permalink,
   history,
@@ -148,12 +163,12 @@ async function githubinator({
     return err("Could not find .git directory.")
   }
   let headBranch: [string, string | null] | null = null
-  if (branch) {
-    const sha = await git.getSHAForBranch(gitDir, branch)
-    if (sha == null) {
-      return err(`Could not find SHA for branch name: ${branch}`)
+  if (mainBranch) {
+    const res = await findShaForBranches(gitDir)
+    if (res == null) {
+      return err(`Could not find SHA for branch in ${BRANCHES}`)
     }
-    headBranch = [sha, branch]
+    headBranch = res
   } else {
     headBranch = await git.head(gitDir)
   }

@@ -2,7 +2,7 @@
   "name": "githubinator",
   "displayName": "Githubinator",
   "description": "Quickly open files on Github and other providers. View blame information, copy permalinks and more. See the \"commands\" section of the README for more details.",
-  "version": "0.3.1",
+  "version": "1.0.0",
   "publisher": "chdsbd",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/logo256.png",
@@ -61,7 +61,7 @@
       },
       {
         "command": "extension.githubinatorCopyMaster",
-        "title": "Copy Master",
+        "title": "Copy Main",
         "category": "Githubinator"
       },
       {
@@ -71,12 +71,12 @@
       },
       {
         "command": "extension.githubinatorCopyMasterPermalink",
-        "title": "Copy Master Permalink",
+        "title": "Copy Main Permalink",
         "category": "Githubinator"
       },
       {
         "command": "extension.githubinatorOnMaster",
-        "title": "On Master",
+        "title": "On Main",
         "category": "Githubinator"
       },
       {
@@ -91,7 +91,7 @@
       },
       {
         "command": "extension.githubinatorBlameOnMaster",
-        "title": "Blame On Master",
+        "title": "Blame On Main",
         "category": "Githubinator"
       },
       {
@@ -196,12 +196,26 @@
     },
     "configuration": {
       "type": "object",
-      "title": "Githubinator configuration",
+      "title": "Githubinator",
       "properties": {
         "githubinator.enable_context_menu": {
           "type": "boolean",
           "default": true,
           "description": "Enable access to Githubinator commands from the context menu."
+        },
+        "githubinator.mainBranches": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "main",
+            "master",
+            "trunk",
+            "develop",
+            "dev"
+          ],
+          "description": "Branch names to use as `main` repository branch. If you call \"Githubinator: Blame on Main\", we try to open the `main` branch then fall back to the next name."
         },
         "githubinator.remote": {
           "type": "string",

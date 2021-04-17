@@ -30,18 +30,20 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 | ------------------------------------- | :------: | :------: | -------------- | -------------- |
 | `Githubinator`                        |    ✅    |    ❌    | blob           | current branch |
 | `Githubinator: Copy`                  |    ✅    |    ❌    | blob           | current branch |
-| `Githubinator: Copy Master`           |    ✅    |    ❌    | blob           | master branch  |
+| `Githubinator: Copy Master`           |    ✅    |    ❌    | blob           | "main" branch  |
 | `Githubinator: Copy Permalink`        |    ✅    |    ❌    | blob           | current SHA    |
-| `Githubinator: Copy Master Permalink` |    ✅    |    ❌    | blob           | master SHA     |
-| `Githubinator: On Master`             |    ✅    |    ✅    | blob           | master branch  |
+| `Githubinator: Copy Master Permalink` |    ✅    |    ❌    | blob           | "main" SHA     |
+| `Githubinator: On Master`             |    ✅    |    ✅    | blob           | "main" branch  |
 | `Githubinator: Permalink`             |    ✅    |    ✅    | blob           | current SHA    |
 | `Githubinator: Blame`                 |    ✅    |    ✅    | blame          | current branch |
-| `Githubinator: Blame On Master`       |    ✅    |    ✅    | blame          | master branch  |
+| `Githubinator: Blame On Master`       |    ✅    |    ✅    | blame          | "main" branch  |
 | `Githubinator: Blame Permalink`       |    ✅    |    ✅    | blame          | current sha    |
 | `Githubinator: Repository`            |    ✅    |    ✅    | open repo      | N/A            |
 | `Githubinator: History`               |    ✅    |    ✅    | open history   | N/A            |
 | `Githubinator: Open PR`               |    ❌    |    ✅    | open PR        | N/A            |
 | `Githubinator: Compare`               |    ✅    |    ✅    | compare branch | N/A            |
+
+The "main" branch is configured via `githubinator.mainBranches` (see "Extension Settings" below).
 
 ## Requirements
 
@@ -49,6 +51,8 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 
 ## Extension Settings
 
+- `githubinator.enable_context_menu`: Enable access to Githubinator commands from the context menu. (default: `true`)
+- `githubinator.mainBranches`: Branch names to use as `main` repository branch. (default: `["main", "master", "trunk", "develop", "dev"]`)
 - `githubinator.remote`: The default remote branch for a repository. (default: `"origin"`)
 - `githubinator.providers.github.remote`: Remote name to look for when identifying a Github origin. (default: `"origin"`)
 - `githubinator.providers.github.hostnames`: Hostnames for identifying a Github origin and building a URL. (default: `["github.com"]`)
@@ -64,6 +68,11 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 ## TODO
 
 ## Release Notes
+
+## 1.0.0
+
+- support multiple default branches. vscode-githubinator now attempts to open `main`, then `master`, `trunk`, `develop`, and `dev`. Configure these branches with the `githubinator.mainBranches` option.
+- renamed `Master` commands to `Main`: `Githubinator: Copy Master` -> `Githubinator: Copy Main`, `Githubinator: Copy Master Permalink` -> `Githubinator: Copy Main Permalink`, `Githubinator: On Master` -> `Githubinator: On Main`, `Githubinator: Blame On Master` -> `Githubinator: Blame On Main`
 
 ## 0.3.1
 
