@@ -290,8 +290,8 @@
     }
   },
   "scripts": {
-    "vscode:prepublish": "yarn run compile",
-    "compile": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
+    "vscode:prepublish": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "lint": "yarn run tslint --project tsconfig.json",
