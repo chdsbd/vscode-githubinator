@@ -69,6 +69,10 @@ The "main" branch is configured via `githubinator.mainBranches` (see "Extension 
 
 ## Release Notes
 
+## 1.0.1
+
+- Fixed URL escaping of branch and file names.
+
 ## 1.0.0
 
 - support multiple default branches. vscode-githubinator now attempts to open `main`, then `master`, `trunk`, `develop`, and `dev`. Configure these branches with the `githubinator.mainBranches` option.
