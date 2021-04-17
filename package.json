@@ -291,7 +291,7 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
+    "compile": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
     "watch": "tsc -watch -p ./",
     "postinstall": "node ./node_modules/vscode/bin/install",
     "lint": "yarn run tslint --project tsconfig.json",
@@ -305,6 +305,7 @@
     "@types/mocha": "^2.2.42",
     "@types/mz": "^0.0.32",
     "@types/node": "^10.12.21",
+    "esbuild": "^0.11.12",
     "prettier": "^1.16.4",
     "tslint": "^5.12.1",
     "typescript": "^3.3.1",
