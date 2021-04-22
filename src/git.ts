@@ -90,7 +90,7 @@ export async function head(
   if (sha == null) {
     return null
   }
-  return [sha, branchName]
+  return [sha.trim(), branchName]
 }
 
 export function dir(filePath: string) {

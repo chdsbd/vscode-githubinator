@@ -125,7 +125,7 @@ async function findShaForBranches(
     if (sha == null) {
       continue
     }
-    return [sha, branch]
+    return [sha.trim(), branch]
   }
   return null
 }
