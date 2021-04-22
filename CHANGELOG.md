@@ -7,9 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.0.2 - 2021-04-21
+
 ### Changed
 
 - reduce package size by bundling extension with esbuild.
+
+### Fixed
+
+- fixed "\n" being included in urls for permalinks.
 
 ## 1.0.1 - 2021-04-17
 
