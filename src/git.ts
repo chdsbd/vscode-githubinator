@@ -53,7 +53,7 @@ export async function getSHAForBranch(
     for (const x of packRefs.split("\n")) {
       const [sha, refPath] = x.split(" ") as [
         string | undefined,
-        string | undefined
+        string | undefined,
       ]
       if (sha && refPath && refPath.trim() === refName.trim()) {
         return sha
@@ -80,7 +80,7 @@ export async function head(
   // If we're on a branch, it will be `ref: refs/heads/my_branch_name`
   const [maybeSha, maybeHeadInfo] = headFileData.split(" ") as [
     string,
-    string | undefined
+    string | undefined,
   ]
   if (maybeHeadInfo == null) {
     return [maybeSha, null]
