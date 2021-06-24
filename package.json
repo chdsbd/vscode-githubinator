@@ -26,7 +26,7 @@
     "url": "https://github.com/chdsbd/vscode-githubinator/issues"
   },
   "engines": {
-    "vscode": "^1.31.0"
+    "vscode": "^1.53.0"
   },
   "categories": [
     "Other"
@@ -293,23 +293,26 @@
     "vscode:prepublish": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "postinstall": "node ./node_modules/vscode/bin/install",
     "lint": "yarn run tslint --project tsconfig.json",
-    "test": "yarn run compile && node ./node_modules/vscode/bin/test",
+    "test": "yarn run compile && node ./out/test/runTest.js",
     "format": "$(yarn bin)/prettier --write src/* src/**/* .circleci/* *.md *.json",
     "format:ci": "$(yarn bin)/prettier --check src/* src/**/* .circleci/* *.md *.json"
   },
   "devDependencies": {
+    "@types/glob": "^7.1.3",
     "@types/ini": "^1.3.30",
-    "@types/lodash": "^4.14.168",
-    "@types/mocha": "^2.2.42",
-    "@types/mz": "^0.0.32",
-    "@types/node": "^10.12.21",
+    "@types/lodash": "^4.14.170",
+    "@types/mocha": "^7.0.2",
+    "@types/mz": "^2.7.3",
+    "@types/node": "^15.12.4",
+    "@types/vscode": "^1.32.0",
     "esbuild": "^0.11.12",
+    "glob": "^7.1.7",
+    "mocha": "^7.2.0",
     "prettier": "^1.16.4",
     "tslint": "^5.12.1",
-    "typescript": "^3.3.1",
-    "vscode": "^1.1.37"
+    "typescript": "^4.2.2",
+    "vscode-test": "^1.3.0"
   },
   "dependencies": {
     "gitconfiglocal": "^2.1.0",

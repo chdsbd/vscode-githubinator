@@ -6,7 +6,7 @@ import {
   createBranch,
   Github,
   pathJoin,
-} from "../providers"
+} from "../../providers"
 import * as assert from "assert"
 
 suite("utils", async () => {
