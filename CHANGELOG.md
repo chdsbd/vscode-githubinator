@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 1.1.0 - 2021-06-24
+
+### Added
+
+- support git submodules when generating links. Thanks @CvX! (#48)
+
+### Changed
+
+- updated test suite to use `vscode-test`. Thanks @CvX! (#47)
+
 ## 1.0.2 - 2021-04-21
 
 ### Changed
