@@ -158,10 +158,15 @@ async function githubinator({
     return err("could not find file")
   }
 
-  const gitDir = git.dir(editorConfig.uri.fsPath)
-  if (gitDir == null) {
+  const gitDirectories = git.dir(editorConfig.uri.fsPath)
+
+  if (gitDirectories == null) {
     return err("Could not find .git directory.")
   }
+
+  const gitDir = gitDirectories.git
+  const repoDir = gitDirectories.repository
+
   let headBranch: [string, string | null] | null = null
   if (mainBranch) {
     const res = await findShaForBranches(gitDir)
@@ -204,7 +209,7 @@ async function githubinator({
           ? createSha(head)
           : createBranch(branchName),
       relativeFilePath: editorConfig.fileName
-        ? getRelativeFilePath(gitDir, editorConfig.fileName)
+        ? getRelativeFilePath(repoDir, editorConfig.fileName)
         : null,
     })
     if (parsedUrl != null) {
