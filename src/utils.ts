@@ -1,10 +1,12 @@
 import * as path from "path"
 import * as fs from "fs"
-/** Get path of file relative to git root. */
-export function getRelativeFilePath(gitDir: string, fileName: string): string {
+/** Get path of file relative to repository root. */
+export function getRelativeFilePath(
+  repositoryDir: string,
+  fileName: string,
+): string {
   const resolvedFileName = fs.realpathSync(fileName)
-  const gitProjectRoot = path.dirname(gitDir) + "/"
-  return resolvedFileName.replace(gitProjectRoot, "")
+  return resolvedFileName.replace(repositoryDir, "")
 }
 
 /** Convert url/hostname to hostname

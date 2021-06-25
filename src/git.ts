@@ -7,6 +7,11 @@ interface IRemote {
   url?: string
 }
 
+interface IGitDirectories {
+  git: string
+  repository: string
+}
+
 export async function origin(
   gitDir: string,
   remote: string,
@@ -100,12 +105,30 @@ export function dir(filePath: string) {
 function walkUpDirectories(
   file_path: string,
   file_or_folder: string,
-): string | null {
+): IGitDirectories | null {
   let directory = file_path
   while (true) {
     const newPath = path.resolve(directory, file_or_folder)
     if (fs.existsSync(newPath)) {
-      return newPath
+      if (fs.lstatSync(newPath).isFile()) {
+        const submoduleMatch = fs
+          .readFileSync(newPath, "utf8")
+          .match(/gitdir: (.+)/)
+
+        if (submoduleMatch) {
+          return {
+            git: path.resolve(path.join(directory, submoduleMatch[1])),
+            repository: directory,
+          }
+        } else {
+          return null
+        }
+      } else {
+        return {
+          git: newPath,
+          repository: directory,
+        }
+      }
     }
     const newDirectory = path.dirname(directory)
     if (newDirectory === directory) {
