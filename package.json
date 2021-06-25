@@ -291,7 +291,7 @@
   },
   "scripts": {
     "vscode:prepublish": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
-    "compile": "tsc -p ./ && mkdir -p out/test/suite/test_submodule/ && cp src/test/suite/test_submodule/.git out/test/suite/test_submodule/",
+    "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "yarn run tslint --project tsconfig.json",
     "test": "yarn run compile && node ./out/test/runTest.js",

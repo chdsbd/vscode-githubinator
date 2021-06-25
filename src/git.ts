@@ -113,7 +113,7 @@ function walkUpDirectories(
       if (fs.lstatSync(newPath).isFile()) {
         const submoduleMatch = fs
           .readFileSync(newPath, "utf8")
-          .match(/gitdir: (.+)\n/)
+          .match(/gitdir: (.+)/)
 
         if (submoduleMatch) {
           return {
