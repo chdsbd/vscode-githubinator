@@ -70,7 +70,8 @@ suite("Github", async () => {
     for (let url of [
       "git@github.mycompany.com:recipeyak/recipeyak.git",
       "git@github.mycompany.com:recipeyak/recipeyak",
-      "org-XYZ123@github.mycompany.com:recipeyak/recipeyak"
+      "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
+      "ssh://git@github.mycompany.com/recipeyak/recipeyak.git"
     ]) {
       async function findRemote(hostname: string) {
         return url
