@@ -88,11 +88,11 @@ abstract class BaseProvider {
       return null
     }
 
-    if (!this.getHostnames().some(x => parsed.source === x)) {
+    if (!this.getHostnames().some(x => parsed.resource === x)) {
       return null
     }
 
-    return { org: parsed.owner, repo: parsed.name, hostname: parsed.source }
+    return { org: parsed.owner, repo: parsed.name, hostname: parsed.resource }
   }
   abstract getUrls(params: IBaseGetUrls): Promise<IUrlInfo | null>
 }
