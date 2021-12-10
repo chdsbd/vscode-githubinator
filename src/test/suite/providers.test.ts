@@ -1,7 +1,6 @@
 import {
   Gitlab,
   Bitbucket,
-  VisualStudio,
   createSha,
   createBranch,
   Github,
@@ -39,7 +38,7 @@ suite("Github", async () => {
     for (let url of [
       "git@github.com:recipeyak/recipeyak.git",
       "git@github.com:recipeyak/recipeyak",
-      "org-XYZ123@github.com:recipeyak/recipeyak"
+      "org-XYZ123@github.com:recipeyak/recipeyak",
     ]) {
       async function findRemote(hostname: string) {
         return url
@@ -70,7 +69,8 @@ suite("Github", async () => {
     for (let url of [
       "git@github.mycompany.com:recipeyak/recipeyak.git",
       "git@github.mycompany.com:recipeyak/recipeyak",
-      "org-XYZ123@github.mycompany.com:recipeyak/recipeyak"
+      "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
+      "ssh://git@github.mycompany.com/recipeyak/recipeyak.git",
     ]) {
       async function findRemote(hostname: string) {
         return url
@@ -223,75 +223,5 @@ suite("Bitbucket", async () => {
     }
     assert.deepEqual(result, expected)
     assert.deepEqual(calledOrigin, "blah")
-  })
-})
-
-suite("VisualStudio", async () => {
-  test("ssh", async () => {
-    let calledOrigin = ""
-    const getOrigin = async (originName: string) => {
-      calledOrigin = originName
-      return "git@ssh.dev.azure.com:v3/acmecorp/project-alpha/recipeyak"
-    }
-    const vs = new VisualStudio(
-      { visualstudio: { remote: "hello_world" } },
-      "blah",
-      getOrigin,
-    )
-    const result = await vs.getUrls({
-      selection: [17, 24],
-      head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
-      relativeFilePath: "frontend/src/components/App.tsx",
-    })
-    const expected = {
-      blobUrl:
-        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25",
-      blameUrl:
-        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&line=18&lineEnd=25&_a=annotate",
-      compareUrl:
-        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak/branches?targetVersion=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&_a=commits",
-      historyUrl:
-        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GCdb99a912f5c4bffe11d91e163cd78ed96589611b&_a=history",
-      prUrl:
-        "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak/pullrequestcreate?sourceRef=db99a912f5c4bffe11d91e163cd78ed96589611b",
-      repoUrl: "https://dev.azure.com/acmecorp/project-alpha/_git/recipeyak",
-    }
-    assert.deepEqual(result, expected)
-    assert.deepEqual(calledOrigin, "hello_world")
-  })
-  test("https", async () => {
-    let calledOrigin = ""
-    const getOrigin = async (originName: string) => {
-      calledOrigin = originName
-      return "https://chdsbd@git.mycompany.org/acmecorp/project-alpha/_git/recipeyak"
-    }
-    const vs = new VisualStudio(
-      {
-        visualstudio: { hostnames: ["git.mycompany.org"] },
-      },
-      "origin-two",
-      getOrigin,
-    )
-    const result = await vs.getUrls({
-      selection: [17, 24],
-      head: createBranch("master"),
-      relativeFilePath: "frontend/src/components/App.tsx",
-    })
-    const expected = {
-      blobUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25",
-      blameUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&line=18&lineEnd=25&_a=annotate",
-      compareUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak/branches?targetVersion=GBmaster&_a=commits",
-      historyUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak?path=%2Ffrontend%2Fsrc%2Fcomponents%2FApp.tsx&version=GBmaster&_a=history",
-      prUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak/pullrequestcreate?sourceRef=master",
-      repoUrl:
-        "https://git.mycompany.org/acmecorp/project-alpha/_git/recipeyak",
-    }
-    assert.deepEqual(result, expected)
-    assert.deepEqual(calledOrigin, "origin-two")
   })
 })

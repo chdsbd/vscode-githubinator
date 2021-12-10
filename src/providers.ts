@@ -3,6 +3,7 @@ import * as url from "url"
 import { IProviderConfig } from "./extension"
 import { cleanHostname } from "./utils"
 import { flatten } from "lodash"
+import gitUrlParse from "git-url-parse"
 
 interface IBaseGetUrls {
   readonly selection: [number | null, number | null]
@@ -46,8 +47,7 @@ export function createSha(value: string): ISHA {
 }
 
 abstract class BaseProvider {
-  abstract readonly DEFAULT_HOSTNAMES = [] as string[]
-  abstract readonly MATCHERS: ((hostname: string) => RegExp)[] = []
+  abstract readonly DEFAULT_HOSTNAMES: string[]
   abstract readonly PROVIDER_NAME: string
 
   private CONFIG: { [key: string]: IProviderConfig | undefined }
@@ -81,24 +81,18 @@ abstract class BaseProvider {
     if (origin == null) {
       return null
     }
-    for (const hostname of this.getHostnames()) {
-      const matches = this.MATCHERS.map(matcher =>
-        origin.match(matcher(hostname)),
-      )
-      let org: string | null = null
-      let repo: string | null = null
-      for (const match of matches) {
-        if (match != null) {
-          ;[, org, repo] = match
-        }
-      }
-      if (org == null || repo == null) {
-        continue
-      }
-      ;[repo] = repo.split(/\.git$/)
-      return { org, repo, hostname }
+    let parsed: gitUrlParse.GitUrl
+    try {
+      parsed = gitUrlParse(origin)
+    } catch {
+      return null
     }
-    return null
+
+    if (!this.getHostnames().some(x => parsed.resource.includes(x))) {
+      return null
+    }
+
+    return { org: parsed.owner, repo: parsed.name, hostname: parsed.resource }
   }
   abstract getUrls(params: IBaseGetUrls): Promise<IUrlInfo | null>
 }
@@ -112,10 +106,6 @@ export function pathJoin(...args: string[]): string {
 export class Github extends BaseProvider {
   DEFAULT_HOSTNAMES = ["github.com"]
   PROVIDER_NAME = "github"
-  MATCHERS = [
-    (hostname: string) => RegExp(`^[\\w-_]+@${hostname}:(.*)\/(.*)(\.git)?$`),
-    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)(\.git)?$`),
-  ]
   async getUrls({
     selection,
     head,
@@ -178,10 +168,6 @@ export class Github extends BaseProvider {
 export class Gitlab extends BaseProvider {
   DEFAULT_HOSTNAMES = ["gitlab.com"]
   PROVIDER_NAME = "gitlab"
-  MATCHERS = [
-    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
-    (hostname: string) => RegExp(`^https:\/\/${hostname}\/(.*)\/(.*)\.git$`),
-  ]
   async getUrls({
     selection,
     relativeFilePath,
@@ -246,10 +232,6 @@ export class Gitlab extends BaseProvider {
 export class Bitbucket extends BaseProvider {
   DEFAULT_HOSTNAMES = ["bitbucket.org"]
   PROVIDER_NAME = "bitbucket"
-  MATCHERS = [
-    (hostname: string) => RegExp(`^git@${hostname}:(.*)\/(.*)\.git$`),
-    (hostname: string) => RegExp(`^https:\/\/.*${hostname}\/(.*)\/(.*)\.git$`),
-  ]
   async getUrls({
     selection,
     relativeFilePath,
@@ -317,73 +299,4 @@ export class Bitbucket extends BaseProvider {
   }
 }
 
-export class VisualStudio extends BaseProvider {
-  DEFAULT_HOSTNAMES = ["dev.azure.com"]
-  PROVIDER_NAME = "visualstudio"
-  MATCHERS = [
-    // git@ssh.dev.azure.com:v3/chdignam/magnus-montis/magnus-montis
-    (hostname: string) => RegExp(`^git@ssh\.${hostname}:v3\/(.*)\/(.*)$`),
-    // https://chdignam@dev.azure.com/chdignam/magnus-montis/_git/magnus-montis
-    (hostname: string) =>
-      RegExp(`^https:\/\/.*@${hostname}\/(.*)\/_git\/(.*)$`),
-  ]
-  async getUrls({
-    selection,
-    relativeFilePath,
-    head,
-  }: IBaseGetUrls): Promise<IUrlInfo | null> {
-    const repoInfo = await this.findOrgInfo()
-    if (repoInfo == null) {
-      return null
-    }
-    // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
-    const rootUrl = `https://${repoInfo.hostname}/`
-    const [start, end] = selection
-    const lines =
-      start != null && end != null
-        ? `&line=${start + 1}&lineEnd=${end + 1}`
-        : null
-    const repoUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo),
-      rootUrl,
-    )
-    let filePath = relativeFilePath
-    if (filePath != null && !filePath.startsWith("/")) {
-      filePath = "/" + filePath
-    }
-    const version =
-      head.kind === "branch" ? `GB${head.value}` : `GC${head.value}`
-    const baseSearch =
-      filePath != null
-        ? `path=${encodeURIComponent(filePath)}&version=${version}`
-        : null
-    const blobUrl = new url.URL(repoUrl.toString())
-    const blameUrl = new url.URL(repoUrl.toString())
-    const historyUrl = new url.URL(repoUrl.toString())
-    if (baseSearch != null) {
-      blobUrl.search = baseSearch + lines
-      blameUrl.search = baseSearch + lines + "&_a=annotate"
-      historyUrl.search = baseSearch + "&_a=history"
-    }
-    const compareUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo, "branches"),
-      rootUrl,
-    )
-    compareUrl.search = `targetVersion=${version}&_a=commits`
-    const prUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
-      rootUrl,
-    )
-    prUrl.search = `sourceRef=${head.value}`
-    return {
-      blobUrl: blobUrl.toString(),
-      blameUrl: blameUrl.toString(),
-      compareUrl: compareUrl.toString(),
-      historyUrl: historyUrl.toString(),
-      prUrl: prUrl.toString(),
-      repoUrl: repoUrl.toString(),
-    }
-  }
-}
-
-export const providers = [Bitbucket, Gitlab, Github, VisualStudio]
+export const providers = [Bitbucket, Gitlab, Github]

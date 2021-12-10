@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.0.0 - 2021-12-09
+
+### Removed
+
+- removed VisualStudio support because of maintence burden. (#54)
+
 ## 1.1.1 - 2021-10-12
 
 ### Fixed

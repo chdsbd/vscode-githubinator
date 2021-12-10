@@ -60,8 +60,6 @@ The "main" branch is configured via `githubinator.mainBranches` (see "Extension 
 - `githubinator.providers.gitlab.hostnames`: Hostnames for identifying a Gitlab origin and building a url. (default: `["gitlab.com"]`)
 - `githubinator.providers.bitbucket.remote`: Remote name to look for when identifying a Bitbucket origin. (default: `"origin"`)
 - `githubinator.providers.bitbucket.hostnames`: Hostnames for identifying a Bitbucket origin and building a url. (default: `["bitbucket.org"]`)
-- `githubinator.providers.visualstudio.remote`: Remote name to look for when identifying a VisualStudio origin. (default: `"origin"`)
-- `githubinator.providers.visualstudio.hostnames`: Hostnames for identifying a VisualStudio origin and building a url. (default: `["dev.azure.com"]`)
 
 ## Prior Art
 
@@ -69,7 +67,7 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 | project                                                                       | providers                               | blame | history | compare | permalink | master | copy | open | open-pr | one-step actions | provider autodetection |
 | ----------------------------------------------------------------------------- | --------------------------------------- | :---: | :-----: | :-----: | :-------: | :----: | :--: | :--: | :-----: | :--------------: | :--------------------: |
-| this project                                                                  | Github, Bitbucket, Gitlab, Visualstudio |  ✅   |   ✅    |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ✅    |        ✅        |           ✅           |
+| this project                                                                  | Github, Bitbucket, Gitlab               |  ✅   |   ✅    |   ✅    |    ✅     |   ✅   |  ✅  |  ✅  |   ✅    |        ✅        |           ✅           |
 | [d4rkr00t/vscode-open-in-github][d4rkr00t-github] ([vscode][d4rkr00t-vscode]) | Github                                  |  ✅   |   ✅    |   ❌    |    ❌     |   ✅   |  ❌  |  ✅  |   ❌    |        ❌        |           ❌           |
 | [ziyasal/vscode-open-in-github][ziyasal-github] ([vscode][ziyasal-vscode])    | Github, Bitbucket, Gitlab, Visualstudio |  ❌   |   ❌    |   ❌    |   ✅\*    |   ❌   |  ✅  |  ✅  |   ✅    |        ✅        |           ❌           |
 
