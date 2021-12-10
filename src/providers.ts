@@ -88,7 +88,7 @@ abstract class BaseProvider {
       return null
     }
 
-    if (!this.getHostnames().some(x => parsed.resource === x)) {
+    if (!this.getHostnames().some(x => parsed.resource.includes(x))) {
       return null
     }
 
@@ -299,66 +299,4 @@ export class Bitbucket extends BaseProvider {
   }
 }
 
-export class VisualStudio extends BaseProvider {
-  DEFAULT_HOSTNAMES = ["dev.azure.com"]
-  PROVIDER_NAME = "visualstudio"
-  async getUrls({
-    selection,
-    relativeFilePath,
-    head,
-  }: IBaseGetUrls): Promise<IUrlInfo | null> {
-    const repoInfo = await this.findOrgInfo()
-    if (repoInfo == null) {
-      return null
-    }
-    // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
-    const rootUrl = `https://${repoInfo.hostname}/`
-    const [start, end] = selection
-    const lines =
-      start != null && end != null
-        ? `&line=${start + 1}&lineEnd=${end + 1}`
-        : null
-    const repoUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo),
-      rootUrl,
-    )
-    let filePath = relativeFilePath
-    if (filePath != null && !filePath.startsWith("/")) {
-      filePath = "/" + filePath
-    }
-    const version =
-      head.kind === "branch" ? `GB${head.value}` : `GC${head.value}`
-    const baseSearch =
-      filePath != null
-        ? `path=${encodeURIComponent(filePath)}&version=${version}`
-        : null
-    const blobUrl = new url.URL(repoUrl.toString())
-    const blameUrl = new url.URL(repoUrl.toString())
-    const historyUrl = new url.URL(repoUrl.toString())
-    if (baseSearch != null) {
-      blobUrl.search = baseSearch + lines
-      blameUrl.search = baseSearch + lines + "&_a=annotate"
-      historyUrl.search = baseSearch + "&_a=history"
-    }
-    const compareUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo, "branches"),
-      rootUrl,
-    )
-    compareUrl.search = `targetVersion=${version}&_a=commits`
-    const prUrl = new url.URL(
-      pathJoin(repoInfo.org, "_git", repoInfo.repo, "pullrequestcreate"),
-      rootUrl,
-    )
-    prUrl.search = `sourceRef=${head.value}`
-    return {
-      blobUrl: blobUrl.toString(),
-      blameUrl: blameUrl.toString(),
-      compareUrl: compareUrl.toString(),
-      historyUrl: historyUrl.toString(),
-      prUrl: prUrl.toString(),
-      repoUrl: repoUrl.toString(),
-    }
-  }
-}
-
-export const providers = [Bitbucket, Gitlab, Github, VisualStudio]
+export const providers = [Bitbucket, Gitlab, Github]

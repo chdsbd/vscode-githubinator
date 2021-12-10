@@ -15,8 +15,7 @@
     "git",
     "github",
     "bitbucket",
-    "gitlab",
-    "visualstudio"
+    "gitlab"
   ],
   "repository": {
     "type": "git",
@@ -265,22 +264,6 @@
           "description": "Hostnames for identifying a Bitbucket origin and building a url."
         },
         "githubinator.providers.bitbucket.remote": {
-          "type": "string",
-          "default": "origin",
-          "title": "Default Remote",
-          "description": "The remote branch for a repository."
-        },
-        "githubinator.providers.visualstudio.hostnames": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "default": [
-            "dev.azure.com"
-          ],
-          "description": "Hostnames for identifying a VisualStudio origin and building a url."
-        },
-        "githubinator.providers.visualstudio.remote": {
           "type": "string",
           "default": "origin",
           "title": "Default Remote",
