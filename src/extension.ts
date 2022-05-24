@@ -115,12 +115,16 @@ function getEditorInfo(): { uri: vscode.Uri | null; fileName: string | null } {
   return { uri, fileName }
 }
 
-const BRANCHES = ["main", "master", "trunk", "dev", "develop"]
+function mainBranches() {
+  return vscode.workspace
+    .getConfiguration("githubinator")
+    .get<string[]>("mainBranches", ["main"])
+}
 
 async function findShaForBranches(
   gitDir: string,
 ): Promise<[string, string] | null> {
-  for (let branch of BRANCHES) {
+  for (let branch of mainBranches()) {
     const sha = await git.getSHAForBranch(gitDir, branch)
     if (sha == null) {
       continue
@@ -171,7 +175,7 @@ async function githubinator({
   if (mainBranch) {
     const res = await findShaForBranches(gitDir)
     if (res == null) {
-      return err(`Could not find SHA for branch in ${BRANCHES}`)
+      return err(`Could not find SHA for branch in ${mainBranches()}`)
     }
     headBranch = res
   } else {
