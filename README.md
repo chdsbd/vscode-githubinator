@@ -51,7 +51,7 @@ The "main" branch is configured via `githubinator.mainBranches` (see "Extension 
 
 ## Extension Settings
 
-- `githubinator.enable_context_menu`: Enable access to Githubinator commands from the context menu. (default: `true`)
+- `githubinator.contextMenu`: Enable access to Githubinator commands from the context menu (`"enabled"`|`"submenu"`|`"disabled"`). (default: `"enabled"`)
 - `githubinator.mainBranches`: Branch names to use as `main` repository branch. (default: `["main", "master", "trunk", "develop", "dev"]`)
 - `githubinator.remote`: The default remote branch for a repository. (default: `"origin"`)
 - `githubinator.providers.github.remote`: Remote name to look for when identifying a Github origin. (default: `"origin"`)

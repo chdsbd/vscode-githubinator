@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 2.1.0 - 2022-12-10
+
+### Changed
+
+- Replaced `enable_context_menu` with new option to allow configuring Githubinator to display context menu options in a submenu. Thanks @Far0n! (#58)
+
 ## 2.0.1 - 2022-05-26
 
 ### Fixed
