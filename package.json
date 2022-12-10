@@ -279,6 +279,13 @@
       "type": "object",
       "title": "Githubinator",
       "properties": {
+        "githubinator.enable_context_menu": {
+          "type": "boolean",
+          "default": false,
+          "markdownDeprecationMessage": "**Deprecated**: Please use `#githubinator.contextMenu#` instead.",
+          "deprecationMessage": "Deprecated: Please use githubinator.contextMenu instead.",
+          "description": "Enable access to Githubinator commands from the context menu."
+        },
         "githubinator.contextMenu": {
           "type": "string",
           "enum": [
