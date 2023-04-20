@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 3.0.0 - 2023-04-19
+
+### Changed
+
+- Renamed "Open PR" to "Open Pull Request".
+
 ## 2.1.0 - 2022-12-10
 
 ### Changed
