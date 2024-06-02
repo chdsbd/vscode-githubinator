@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 3.1.0 - 2024-06-02
+
+### Added
+
+- Selections in VSCode will now highlight the same span of characters on GitHub. (#63)
+
 ## 3.0.0 - 2023-04-19
 
 ### Changed
