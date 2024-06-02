@@ -5,13 +5,8 @@ import { cleanHostname } from "./utils"
 import { flatten } from "lodash"
 import gitUrlParse from "git-url-parse"
 
-interface ISelection {
-  start: { line: number; character: number }
-  end: { line: number; character: number }
-}
-
 interface IBaseGetUrls {
-  readonly selection: ISelection
+  readonly selection: [number | null, number | null]
   readonly head: Head
   readonly relativeFilePath: string | null
 }
@@ -121,10 +116,10 @@ export class Github extends BaseProvider {
       return null
     }
     const rootUrl = `https://${repoInfo.hostname}/`
-    const { start, end } = selection
+    const [start, end] = selection
     // Github uses 1-based indexing
-    const lines = `L${start.line + 1}C${start.character + 1}-L${end.line +
-      1}C${end.character + 1}`
+    const lines =
+      start != null && end != null ? `L${start + 1}-L${end + 1}` : null
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
@@ -143,7 +138,7 @@ export class Github extends BaseProvider {
         ),
         rootUrl,
       )
-      if (hash) {
+      if (hash && lines) {
         u.hash = lines
       }
       return u.toString()
@@ -183,9 +178,10 @@ export class Gitlab extends BaseProvider {
       return null
     }
     const rootUrl = `https://${repoInfo.hostname}/`
-    const { start, end } = selection
+    const [start, end] = selection
     // The format is L34-56 (this is one character off from Github)
-    const lines = `L${start.line + 1}-${end.line + 1}`
+    const lines =
+      start != null && end != null ? `L${start + 1}-${end + 1}` : null
     const repoUrl = new url.URL(
       pathJoin(repoInfo.org, repoInfo.repo),
       rootUrl,
@@ -247,8 +243,9 @@ export class Bitbucket extends BaseProvider {
     }
     // https://bitbucket.org/recipeyak/recipeyak/src/master/app/main.py#lines-12:15
     const rootUrl = `https://${repoInfo.hostname}/`
-    const { start, end } = selection
-    const lines = `lines-${start.line + 1}:${end.line + 1}`
+    const [start, end] = selection
+    const lines =
+      start != null && end != null ? `lines-${start + 1}:${end + 1}` : null
     const repoUrl = new url.URL(
       pathJoin(repoInfo.org, repoInfo.repo),
       rootUrl,

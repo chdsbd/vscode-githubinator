@@ -45,18 +45,15 @@ suite("Github", async () => {
       }
       const gh = new Github({}, "origin", findRemote)
       const result = await gh.getUrls({
-        selection: {
-          start: { line: 17, character: 0 },
-          end: { line: 24, character: 0 },
-        },
+        selection: [17, 24],
         head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
         relativeFilePath: "frontend/src/components/App.tsx",
       })
       const expected = {
         blobUrl:
-          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
         blameUrl:
-          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
         compareUrl:
           "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
         historyUrl:
@@ -86,18 +83,15 @@ suite("Github", async () => {
         findRemote,
       )
       const result = await gh.getUrls({
-        selection: {
-          start: { line: 17, character: 0 },
-          end: { line: 24, character: 0 },
-        },
+        selection: [17, 24],
         head: createBranch("master"),
         relativeFilePath: "frontend/src/components/App.tsx",
       })
       const expected = {
         blobUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
         blameUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
         compareUrl:
           "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
         historyUrl:
@@ -119,10 +113,7 @@ suite("Gitlab", async () => {
       async _ => "git@gitlab.com:recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
-      selection: {
-        start: { line: 17, character: 0 },
-        end: { line: 24, character: 0 },
-      },
+      selection: [17, 24],
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -150,10 +141,7 @@ suite("Gitlab", async () => {
       async _ => "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
-      selection: {
-        start: { line: 17, character: 0 },
-        end: { line: 24, character: 0 },
-      },
+      selection: [17, 24],
       head: createBranch("master"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -183,10 +171,7 @@ suite("Bitbucket", async () => {
       async _ => "git@bitbucket.org:recipeyak/recipeyak.git",
     )
     const result = await bb.getUrls({
-      selection: {
-        start: { line: 17, character: 0 },
-        end: { line: 24, character: 0 },
-      },
+      selection: [17, 24],
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -219,10 +204,7 @@ suite("Bitbucket", async () => {
       getOrigin,
     )
     const result = await bb.getUrls({
-      selection: {
-        start: { line: 17, character: 0 },
-        end: { line: 24, character: 0 },
-      },
+      selection: [17, 24],
       head: createBranch("master"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
