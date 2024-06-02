@@ -196,15 +196,16 @@ async function githubinator({
   const editor = vscode.window.activeTextEditor
   let urls: IUrlInfo | null = null
   for (const provider of providers) {
+    const selection = editor?.selection
+    if (selection == null) {
+      return err("Could not find editor")
+    }
     const parsedUrl = await new provider(
       providersConfig,
       globalDefaultRemote,
       remote => git.origin(gitDir, remote),
     ).getUrls({
-      selection: [
-        editor ? editor.selection.start.line : null,
-        editor ? editor.selection.end.line : null,
-      ],
+      selection,
       // priority: permalink > branch > branch from HEAD
       // If branchName could not be found (null) then we generate a permalink
       // using the SHA.
