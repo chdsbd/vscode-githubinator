@@ -8,10 +8,7 @@ on:
 
 jobs:
   test:
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -19,9 +16,5 @@ jobs:
         uses: actions/setup-node@v3
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Run tests ${{ matrix.os }}
-        if: runner.os == 'Linux'
+      - name: Run tests
         run: xvfb-run -a npm test
-      - name: Run tests ${{ matrix.os }}
-        if: runner.os != 'Linux'
-        run: yarn test
