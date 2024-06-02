@@ -54,9 +54,9 @@ suite("Github", async () => {
       })
       const expected = {
         blobUrl:
-          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
+          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
         blameUrl:
-          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
+          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
         compareUrl:
           "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
         historyUrl:
@@ -95,9 +95,9 @@ suite("Github", async () => {
       })
       const expected = {
         blobUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
+          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18C1-L25C1",
         blameUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
+          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18C1-L25C1",
         compareUrl:
           "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
         historyUrl:
