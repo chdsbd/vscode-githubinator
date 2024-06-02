@@ -59,6 +59,11 @@
         "category": "Githubinator"
       },
       {
+        "command": "extension.githubinatorOpenFromUrl",
+        "title": "Open from URL",
+        "category": "Githubinator"
+      },
+      {
         "command": "extension.githubinatorCopyMaster",
         "title": "Copy Main",
         "category": "Githubinator"
