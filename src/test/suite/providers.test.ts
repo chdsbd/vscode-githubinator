@@ -45,7 +45,10 @@ suite("Github", async () => {
       }
       const gh = new Github({}, "origin", findRemote)
       const result = await gh.getUrls({
-        selection: [17, 24],
+        selection: {
+          start: { line: 17, character: 0 },
+          end: { line: 24, character: 0 },
+        },
         head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
         relativeFilePath: "frontend/src/components/App.tsx",
       })
@@ -83,7 +86,10 @@ suite("Github", async () => {
         findRemote,
       )
       const result = await gh.getUrls({
-        selection: [17, 24],
+        selection: {
+          start: { line: 17, character: 0 },
+          end: { line: 24, character: 0 },
+        },
         head: createBranch("master"),
         relativeFilePath: "frontend/src/components/App.tsx",
       })
@@ -113,7 +119,10 @@ suite("Gitlab", async () => {
       async _ => "git@gitlab.com:recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
-      selection: [17, 24],
+      selection: {
+        start: { line: 17, character: 0 },
+        end: { line: 24, character: 0 },
+      },
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -141,7 +150,10 @@ suite("Gitlab", async () => {
       async _ => "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
-      selection: [17, 24],
+      selection: {
+        start: { line: 17, character: 0 },
+        end: { line: 24, character: 0 },
+      },
       head: createBranch("master"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -171,7 +183,10 @@ suite("Bitbucket", async () => {
       async _ => "git@bitbucket.org:recipeyak/recipeyak.git",
     )
     const result = await bb.getUrls({
-      selection: [17, 24],
+      selection: {
+        start: { line: 17, character: 0 },
+        end: { line: 24, character: 0 },
+      },
       head: createSha("db99a912f5c4bffe11d91e163cd78ed96589611b"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
@@ -204,7 +219,10 @@ suite("Bitbucket", async () => {
       getOrigin,
     )
     const result = await bb.getUrls({
-      selection: [17, 24],
+      selection: {
+        start: { line: 17, character: 0 },
+        end: { line: 24, character: 0 },
+      },
       head: createBranch("master"),
       relativeFilePath: "frontend/src/components/App.tsx",
     })
