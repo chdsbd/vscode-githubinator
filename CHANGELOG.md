@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 3.2.1 - 2024-06-02
+
+### Fixed
+
+- handle missing file error when opening pull request. (#66)
+
 ## 3.2.0 - 2024-06-02
 
 ### Added
