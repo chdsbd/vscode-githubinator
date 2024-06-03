@@ -25,101 +25,85 @@
     "url": "https://github.com/chdsbd/vscode-githubinator/issues"
   },
   "engines": {
-    "vscode": "^1.53.0"
+    "vscode": "^1.89.0"
   },
   "categories": [
     "Other"
-  ],
-  "activationEvents": [
-    "onCommand:extension.githubinator",
-    "onCommand:extension.githubinatorCopy",
-    "onCommand:extension.githubinatorCopyMaster",
-    "onCommand:extension.githubinatorCopyPermalink",
-    "onCommand:extension.githubinatorCopyMasterPermalink",
-    "onCommand:extension.githubinatorOnMaster",
-    "onCommand:extension.githubinatorPermalink",
-    "onCommand:extension.githubinatorBlame",
-    "onCommand:extension.githubinatorBlameOnMaster",
-    "onCommand:extension.githubinatorBlamePermalink",
-    "onCommand:extension.githubinatorHistory",
-    "onCommand:extension.githubinatorRepository",
-    "onCommand:extension.githubinatorOpenPR",
-    "onCommand:extension.githubinatorCompare"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "extension.githubinator",
+        "command": "githubinator.githubinator",
         "title": "Githubinator"
       },
       {
-        "command": "extension.githubinatorCopy",
+        "command": "githubinator.githubinatorCopy",
         "title": "Copy",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorOpenFromUrl",
+        "command": "githubinator.githubinatorOpenFromUrl",
         "title": "Open from URL",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorCopyMaster",
+        "command": "githubinator.githubinatorCopyMaster",
         "title": "Copy Main",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorCopyPermalink",
+        "command": "githubinator.githubinatorCopyPermalink",
         "title": "Copy Permalink",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorCopyMasterPermalink",
+        "command": "githubinator.githubinatorCopyMasterPermalink",
         "title": "Copy Main Permalink",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorOnMaster",
+        "command": "githubinator.githubinatorOnMaster",
         "title": "On Main",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorPermalink",
+        "command": "githubinator.githubinatorPermalink",
         "title": "Permalink",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorBlame",
+        "command": "githubinator.githubinatorBlame",
         "title": "Blame",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorBlameOnMaster",
+        "command": "githubinator.githubinatorBlameOnMaster",
         "title": "Blame On Main",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorBlamePermalink",
+        "command": "githubinator.githubinatorBlamePermalink",
         "title": "Blame Permalink",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorRepository",
+        "command": "githubinator.githubinatorRepository",
         "title": "Repository",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorHistory",
+        "command": "githubinator.githubinatorHistory",
         "title": "History",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorOpenPR",
+        "command": "githubinator.githubinatorOpenPR",
         "title": "Open Pull Request",
         "category": "Githubinator"
       },
       {
-        "command": "extension.githubinatorCompare",
+        "command": "githubinator.githubinatorCompare",
         "title": "Compare",
         "category": "Githubinator"
       }
@@ -127,148 +111,148 @@
     "menus": {
       "editor/context": [
         {
-          "command": "extension.githubinator",
+          "command": "githubinator.githubinator",
           "group": "githubinator@1",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuGithubinator"
         },
         {
-          "command": "extension.githubinatorCopy",
+          "command": "githubinator.githubinatorCopy",
           "group": "githubinator@2",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuCopy"
         },
         {
-          "command": "extension.githubinatorCopyMaster",
+          "command": "githubinator.githubinatorCopyMaster",
           "group": "githubinator@3",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuCopyMaster"
         },
         {
-          "command": "extension.githubinatorCopyPermalink",
+          "command": "githubinator.githubinatorCopyPermalink",
           "group": "githubinator@4",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuCopyPermalink"
         },
         {
-          "command": "extension.githubinatorCopyMasterPermalink",
+          "command": "githubinator.githubinatorCopyMasterPermalink",
           "group": "githubinator@5",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuCopyMasterPermalink"
         },
         {
-          "command": "extension.githubinatorOnMaster",
+          "command": "githubinator.githubinatorOnMaster",
           "group": "githubinator@6",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuOnMaster"
         },
         {
-          "command": "extension.githubinatorPermalink",
+          "command": "githubinator.githubinatorPermalink",
           "group": "githubinator@7",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuPermalink"
         },
         {
-          "command": "extension.githubinatorBlame",
+          "command": "githubinator.githubinatorBlame",
           "group": "githubinator@8",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuBlame"
         },
         {
-          "command": "extension.githubinatorBlameOnMaster",
+          "command": "githubinator.githubinatorBlameOnMaster",
           "group": "githubinator@9",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuBlameOnMaster"
         },
         {
-          "command": "extension.githubinatorBlamePermalink",
+          "command": "githubinator.githubinatorBlamePermalink",
           "group": "githubinator@10",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuBlamePermalink"
         },
         {
-          "command": "extension.githubinatorRepository",
+          "command": "githubinator.githubinatorRepository",
           "group": "githubinator@11",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuRepository"
         },
         {
-          "command": "extension.githubinatorHistory",
+          "command": "githubinator.githubinatorHistory",
           "group": "githubinator@12",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuHistory"
         },
         {
-          "command": "extension.githubinatorOpenPR",
+          "command": "githubinator.githubinatorOpenPR",
           "group": "githubinator@13",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuOpenPR"
         },
         {
-          "command": "extension.githubinatorCompare",
+          "command": "githubinator.githubinatorCompare",
           "group": "githubinator@14",
           "when": "config.githubinator.contextMenu == enabled && config.githubinator.contextMenuCompare"
         },
         {
-          "submenu": "extension.githubinatorSubmenu",
+          "submenu": "githubinator.githubinatorSubmenu",
           "group": "githubinator@15"
         }
       ],
-      "extension.githubinatorSubmenu": [
+      "githubinator.githubinatorSubmenu": [
         {
-          "command": "extension.githubinator",
+          "command": "githubinator.githubinator",
           "group": "githubinator@1",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuGithubinator"
         },
         {
-          "command": "extension.githubinatorCopy",
+          "command": "githubinator.githubinatorCopy",
           "group": "githubinator@2",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuCopy"
         },
         {
-          "command": "extension.githubinatorCopyMaster",
+          "command": "githubinator.githubinatorCopyMaster",
           "group": "githubinator@3",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuCopyMaster"
         },
         {
-          "command": "extension.githubinatorCopyPermalink",
+          "command": "githubinator.githubinatorCopyPermalink",
           "group": "githubinator@4",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuCopyPermalink"
         },
         {
-          "command": "extension.githubinatorCopyMasterPermalink",
+          "command": "githubinator.githubinatorCopyMasterPermalink",
           "group": "githubinator@5",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuCopyMasterPermalink"
         },
         {
-          "command": "extension.githubinatorOnMaster",
+          "command": "githubinator.githubinatorOnMaster",
           "group": "githubinator@6",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuOnMaster"
         },
         {
-          "command": "extension.githubinatorPermalink",
+          "command": "githubinator.githubinatorPermalink",
           "group": "githubinator@7",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuPermalink"
         },
         {
-          "command": "extension.githubinatorBlame",
+          "command": "githubinator.githubinatorBlame",
           "group": "githubinator@8",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuBlame"
         },
         {
-          "command": "extension.githubinatorBlameOnMaster",
+          "command": "githubinator.githubinatorBlameOnMaster",
           "group": "githubinator@9",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuBlameOnMaster"
         },
         {
-          "command": "extension.githubinatorBlamePermalink",
+          "command": "githubinator.githubinatorBlamePermalink",
           "group": "githubinator@10",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuBlamePermalink"
         },
         {
-          "command": "extension.githubinatorRepository",
+          "command": "githubinator.githubinatorRepository",
           "group": "githubinator@11",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuRepository"
         },
         {
-          "command": "extension.githubinatorHistory",
+          "command": "githubinator.githubinatorHistory",
           "group": "githubinator@12",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuHistory"
         },
         {
-          "command": "extension.githubinatorOpenPR",
+          "command": "githubinator.githubinatorOpenPR",
           "group": "githubinator@13",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuOpenPR"
         },
         {
-          "command": "extension.githubinatorCompare",
+          "command": "githubinator.githubinatorCompare",
           "group": "githubinator@14",
           "when": "config.githubinator.contextMenu == submenu && config.githubinator.contextMenuCompare"
         }
@@ -277,7 +261,7 @@
     "submenus": [
       {
         "label": "Githubinator",
-        "id": "extension.githubinatorSubmenu"
+        "id": "githubinator.githubinatorSubmenu"
       }
     ],
     "configuration": {
@@ -460,14 +444,12 @@
     "vscode:prepublish": "yarn esbuild ./src/extension.ts --bundle --platform=node --external:vscode --outfile=out/extension.js",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "lint": "yarn run tslint --project tsconfig.json",
     "test": "yarn run compile && yarn vscode-test",
-    "format": "$(yarn bin)/prettier --write src/* src/**/* .circleci/* *.md *.json",
-    "format:ci": "$(yarn bin)/prettier --check src/* src/**/* .circleci/* *.md *.json"
+    "format": "$(yarn bin)/prettier --write --cache .",
+    "format:check": "$(yarn bin)/prettier --check --cache ."
   },
   "devDependencies": {
     "@types/git-url-parse": "^9.0.1",
-    "@types/glob": "^7.1.3",
     "@types/ini": "^1.3.30",
     "@types/lodash": "^4.14.170",
     "@types/mocha": "^10.0.6",
@@ -477,18 +459,20 @@
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "esbuild": "^0.11.12",
-    "glob": "^7.1.7",
     "mocha": "^10.4.0",
-    "prettier": "^1.16.4",
-    "tslint": "^5.12.1",
-    "typescript": "^4.2.2"
+    "prettier": "^3.3.0",
+    "typescript": "^4.2.2",
+    "vscode-test": "^1.6.1"
   },
   "dependencies": {
     "git-url-parse": "^11.6.0",
     "gitconfiglocal": "^2.1.0",
     "ini": "^1.3.5",
     "lodash": "^4.17.21",
-    "mz": "^2.7.0",
-    "vscode-test": "^1.6.1"
+    "mz": "^2.7.0"
+  },
+  "volta": {
+    "node": "18.20.3",
+    "yarn": "1.22.22"
   }
 }

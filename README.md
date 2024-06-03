@@ -83,17 +83,13 @@ This plugin is based on the [Sublime Plugin by ehamiter](https://github.com/eham
 
 ```sh
 # install dependencies
-make install
-# lint (tslint and formatting)
-make lint
+yarn install
 # format code
-make format
+yarn format
 # check formatting
-make format-ci
+yarb format:check
 # run tests
-make test
-# run linting and testing
-make test-ci
+yarn test
 ```
 
 ### VSCode instructions

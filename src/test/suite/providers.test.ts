@@ -116,7 +116,7 @@ suite("Gitlab", async () => {
     const gl = new Gitlab(
       {},
       "origin",
-      async _ => "git@gitlab.com:recipeyak/recipeyak.git",
+      async (_) => "git@gitlab.com:recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
       selection: {
@@ -147,7 +147,7 @@ suite("Gitlab", async () => {
         gitlab: { hostnames: ["gitlab.mycompany.com"] },
       },
       "origin",
-      async _ => "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
+      async (_) => "https://gitlab.mycompany.com/recipeyak/recipeyak.git",
     )
     const result = await gl.getUrls({
       selection: {
@@ -180,7 +180,7 @@ suite("Bitbucket", async () => {
     const bb = new Bitbucket(
       {},
       "origin",
-      async _ => "git@bitbucket.org:recipeyak/recipeyak.git",
+      async (_) => "git@bitbucket.org:recipeyak/recipeyak.git",
     )
     const result = await bb.getUrls({
       selection: {
