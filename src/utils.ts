@@ -4,9 +4,21 @@ import * as fs from "fs"
 export function getRelativeFilePath(
   repositoryDir: string,
   fileName: string,
-): string {
-  const resolvedFileName = fs.realpathSync(fileName)
-  return resolvedFileName.replace(repositoryDir, "")
+): string | null {
+  try {
+    const resolvedFileName = fs.realpathSync(fileName)
+    return resolvedFileName.replace(repositoryDir, "")
+  } catch (e) {
+    if (
+      typeof e === "object" &&
+      e != null &&
+      "code" in e &&
+      e.code === "ENOENT"
+    ) {
+      return null
+    }
+    throw e
+  }
 }
 
 /** Convert url/hostname to hostname
