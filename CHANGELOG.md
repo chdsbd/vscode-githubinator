@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 3.2.0 - 2024-06-02
+
+### Added
+
+- added "Open from URL" command to open a workspace file from a GitHub repository URL. (#64)
+
 ## 3.1.0 - 2024-06-02
 
 ### Added
