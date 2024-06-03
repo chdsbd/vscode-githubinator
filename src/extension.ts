@@ -103,7 +103,11 @@ function err(message: string) {
 }
 
 function getEditorInfo(): { uri: vscode.Uri | null; fileName: string | null } {
-  const workspaceUri = vscode.workspace.workspaceFolders?.[0].uri ?? null
+  const workspaceUri =
+    vscode.workspace.workspaceFolders != null &&
+    vscode.workspace.workspaceFolders.length > 0
+      ? vscode.workspace.workspaceFolders[0].uri
+      : null
   const editor = vscode.window.activeTextEditor
   // if we cannot find editor information fall back to the workspace path.
   if (!editor) {
@@ -164,12 +168,7 @@ async function githubinator({
     return err("could not find file")
   }
 
-  let gitDirectories
-  try {
-    gitDirectories = git.dir(editorConfig.uri.fsPath)
-  } catch (e) {
-    console.error(e)
-  }
+  const gitDirectories = git.dir(editorConfig.uri.fsPath)
 
   if (gitDirectories == null) {
     return err("Could not find .git directory.")
