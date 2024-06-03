@@ -6,59 +6,59 @@ import { openFileFromGitHubUrl } from "./openfromUrl"
 
 const COMMANDS: [string, IGithubinator][] = [
   [
-    "extension.githubinator", //
+    "githubinator.githubinator", //
     { copyToClipboard: true, openUrl: true },
   ],
   [
-    "extension.githubinatorCopy", //
+    "githubinator.githubinatorCopy", //
     { copyToClipboard: true },
   ],
   [
-    "extension.githubinatorCopyMaster", //
+    "githubinator.githubinatorCopyMaster", //
     { copyToClipboard: true, mainBranch: true },
   ],
   [
-    "extension.githubinatorCopyPermalink", //
+    "githubinator.githubinatorCopyPermalink", //
     { copyToClipboard: true, permalink: true },
   ],
   [
-    "extension.githubinatorCopyMasterPermalink", //
+    "githubinator.githubinatorCopyMasterPermalink", //
     { copyToClipboard: true, mainBranch: true, permalink: true },
   ],
   [
-    "extension.githubinatorOnMaster", //
+    "githubinator.githubinatorOnMaster", //
     { copyToClipboard: true, openUrl: true, mainBranch: true },
   ],
   [
-    "extension.githubinatorPermalink", //
+    "githubinator.githubinatorPermalink", //
     { copyToClipboard: true, openUrl: true, permalink: true },
   ],
   [
-    "extension.githubinatorBlame", //
+    "githubinator.githubinatorBlame", //
     { copyToClipboard: true, openUrl: true, blame: true },
   ],
   [
-    "extension.githubinatorBlameOnMaster", //
+    "githubinator.githubinatorBlameOnMaster", //
     { copyToClipboard: true, openUrl: true, blame: true, mainBranch: true },
   ],
   [
-    "extension.githubinatorBlamePermalink", //
+    "githubinator.githubinatorBlamePermalink", //
     { copyToClipboard: true, openUrl: true, blame: true, permalink: true },
   ],
   [
-    "extension.githubinatorHistory", //
+    "githubinator.githubinatorHistory", //
     { copyToClipboard: true, openUrl: true, history: true },
   ],
   [
-    "extension.githubinatorRepository", //
+    "githubinator.githubinatorRepository", //
     { copyToClipboard: true, openUrl: true, openRepo: true },
   ],
   [
-    "extension.githubinatorOpenPR", //
+    "githubinator.githubinatorOpenPR", //
     { copyToClipboard: false, openUrl: true, openPR: true },
   ],
   [
-    "extension.githubinatorCompare", //
+    "githubinator.githubinatorCompare", //
     { copyToClipboard: true, openUrl: true, compare: true },
   ],
 ]
@@ -86,7 +86,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable)
   })
   vscode.commands.registerCommand(
-    "extension.githubinatorOpenFromUrl",
+    "githubinator.githubinatorOpenFromUrl",
     openFileFromGitHubUrl,
   )
 
@@ -209,7 +209,7 @@ async function githubinator({
     const parsedUrl = await new provider(
       providersConfig,
       globalDefaultRemote,
-      remote => git.origin(gitDir, remote),
+      (remote) => git.origin(gitDir, remote),
     ).getUrls({
       selection,
       // priority: permalink > branch > branch from HEAD
@@ -238,18 +238,18 @@ async function githubinator({
   let url = compare
     ? urls.compareUrl
     : openPR
-    ? urls.prUrl
-    : openRepo
-    ? urls.repoUrl
-    : history
-    ? urls.historyUrl
-    : blame
-    ? urls.blameUrl
-    : urls.blobUrl
+      ? urls.prUrl
+      : openRepo
+        ? urls.repoUrl
+        : history
+          ? urls.historyUrl
+          : blame
+            ? urls.blameUrl
+            : urls.blobUrl
 
   // file-specific urls will be null when we are using the workspace path. Use
   // the compare url or repo url if available instead.
-  const fallbackUrl = [urls.compareUrl, urls.repoUrl].find(x => x != null)
+  const fallbackUrl = [urls.compareUrl, urls.repoUrl].find((x) => x != null)
   if (!url && fallbackUrl) {
     url = fallbackUrl
   }

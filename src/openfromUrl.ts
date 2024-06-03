@@ -62,18 +62,13 @@ export async function openFileFromGitHubUrl() {
   // if a branch name has a / in it, this won't work.
   //
   // /org/repo/blob/branch/my/file.js -> /my/file.js
-  const path =
-    "/" +
-    url.path
-      .split("/")
-      .slice(5)
-      .join("/")
+  const path = "/" + url.path.split("/").slice(5).join("/")
   if (!path) {
     return
   }
   const selection = fragmentToSelection(url.fragment)
   const results = await Promise.allSettled(
-    vscode.workspace.workspaceFolders?.map(async folder => {
+    vscode.workspace.workspaceFolders?.map(async (folder) => {
       const doc = await vscode.workspace.openTextDocument(
         folder.uri.fsPath + path,
       )
@@ -93,5 +88,5 @@ export async function openFileFromGitHubUrl() {
   }
   // don't wait for error message so we can trigger command.
   vscode.window.showErrorMessage("Could not open file from URL.")
-  await vscode.commands.executeCommand("extension.githubinatorOpenFromUrl")
+  await vscode.commands.executeCommand("githubinator.githubinatorOpenFromUrl")
 }

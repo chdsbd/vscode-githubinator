@@ -93,7 +93,7 @@ abstract class BaseProvider {
       return null
     }
 
-    if (!this.getHostnames().some(x => parsed.resource.includes(x))) {
+    if (!this.getHostnames().some((x) => parsed.resource.includes(x))) {
       return null
     }
 
@@ -104,7 +104,7 @@ abstract class BaseProvider {
 
 export function pathJoin(...args: string[]): string {
   return path.join(
-    ...flatten(args.map(x => x.split("/"))).map(encodeURIComponent),
+    ...flatten(args.map((x) => x.split("/"))).map(encodeURIComponent),
   )
 }
 
@@ -123,8 +123,9 @@ export class Github extends BaseProvider {
     const rootUrl = `https://${repoInfo.hostname}/`
     const { start, end } = selection
     // Github uses 1-based indexing
-    const lines = `L${start.line + 1}C${start.character + 1}-L${end.line +
-      1}C${end.character + 1}`
+    const lines = `L${start.line + 1}C${start.character + 1}-L${
+      end.line + 1
+    }C${end.character + 1}`
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,
