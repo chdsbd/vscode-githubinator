@@ -41,6 +41,7 @@ With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https
 | `Githubinator: Repository`          |    ✅    |    ✅    | open repo         | N/A            |
 | `Githubinator: History`             |    ✅    |    ✅    | open history      | N/A            |
 | `Githubinator: Open Pull Request`   |    ❌    |    ✅    | open pull request | N/A            |
+| `Githubinator: Open from URL`       |   N/A    |   N/A    | open file         | N/A            |
 | `Githubinator: Compare`             |    ✅    |    ✅    | compare branch    | N/A            |
 
 The "main" branch is configured via `githubinator.mainBranches` (see "Extension Settings" below).

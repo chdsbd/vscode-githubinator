@@ -2,6 +2,7 @@ import * as vscode from "vscode"
 import * as git from "./git"
 import { providers, IUrlInfo, createSha, createBranch } from "./providers"
 import { getRelativeFilePath } from "./utils"
+import { openFileFromGitHubUrl } from "./openfromUrl"
 
 const COMMANDS: [string, IGithubinator][] = [
   [
@@ -84,6 +85,11 @@ export function activate(context: vscode.ExtensionContext) {
     )
     context.subscriptions.push(disposable)
   })
+  vscode.commands.registerCommand(
+    "extension.githubinatorOpenFromUrl",
+    openFileFromGitHubUrl,
+  )
+
   console.log("githubinator.active.complete")
 }
 
