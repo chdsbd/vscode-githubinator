@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- fix new line in sha for SHA checkouts.
+- fix new line in URL for SHA checkouts. (#67)
 
 ## 3.2.1 - 2024-06-02
 
