@@ -88,7 +88,7 @@ export async function head(
     string | undefined,
   ]
   if (maybeHeadInfo == null) {
-    return [maybeSha, null]
+    return [maybeSha.trim(), null]
   }
   const branchName = maybeHeadInfo.trim().replace("refs/heads/", "")
   const sha = await getSHAForBranch(gitDir, branchName)
