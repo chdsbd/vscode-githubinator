@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Only add column offsets when they are non-zero for GitHub.
+- Only add column offsets when they are non-zero for GitHub. (#68)
 
 ## 3.2.2 - 2025-07-02
 
