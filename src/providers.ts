@@ -111,6 +111,18 @@ export function pathJoin(...args: string[]): string {
 export class Github extends BaseProvider {
   DEFAULT_HOSTNAMES = ["github.com"]
   PROVIDER_NAME = "github"
+
+  buildLines({ start, end }: ISelection): string {
+    let line = `L${start.line + 1}`
+    if (start.character !== 0) {
+      line += `C${start.character + 1}`
+    }
+    line += `-L${end.line + 1}`
+    if (end.character !== 0) {
+      line += `C${end.character + 1}`
+    }
+    return line
+  }
   async getUrls({
     selection,
     head,
@@ -121,11 +133,7 @@ export class Github extends BaseProvider {
       return null
     }
     const rootUrl = `https://${repoInfo.hostname}/`
-    const { start, end } = selection
-    // Github uses 1-based indexing
-    const lines = `L${start.line + 1}C${start.character + 1}-L${
-      end.line + 1
-    }C${end.character + 1}`
+    const lines = this.buildLines(selection)
     const repoUrl = new url.URL(
       path.join(repoInfo.org, repoInfo.repo),
       rootUrl,

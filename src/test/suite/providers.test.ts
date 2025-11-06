@@ -54,9 +54,9 @@ suite("Github", async () => {
       })
       const expected = {
         blobUrl:
-          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.com/recipeyak/recipeyak/blob/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
         blameUrl:
-          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.com/recipeyak/recipeyak/blame/db99a912f5c4bffe11d91e163cd78ed96589611b/frontend/src/components/App.tsx#L18-L25",
         compareUrl:
           "https://github.com/recipeyak/recipeyak/compare/db99a912f5c4bffe11d91e163cd78ed96589611b",
         historyUrl:
@@ -87,17 +87,17 @@ suite("Github", async () => {
       )
       const result = await gh.getUrls({
         selection: {
-          start: { line: 17, character: 0 },
-          end: { line: 24, character: 0 },
+          start: { line: 17, character: 4 },
+          end: { line: 24, character: 5 },
         },
         head: createBranch("master"),
         relativeFilePath: "frontend/src/components/App.tsx",
       })
       const expected = {
         blobUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18C5-L25C6",
         blameUrl:
-          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18C1-L25C1",
+          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18C5-L25C6",
         compareUrl:
           "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
         historyUrl:
