@@ -471,6 +471,7 @@
     "lodash": "^4.17.21",
     "mz": "^2.7.0"
   },
+  "packageManager": "yarn@1.22.22",
   "volta": {
     "node": "18.20.3",
     "yarn": "1.22.22"
