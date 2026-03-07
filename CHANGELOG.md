@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 3.4.0 - 2026-03-07
+
+### Changed
+
+- Only add column offset for last line when first line's column is non-zero for GitHub. (#70)
+
 ## 3.3.0 - 2025-11-05
 
 ### Changed

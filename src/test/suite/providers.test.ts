@@ -109,6 +109,47 @@ suite("Github", async () => {
       assert.deepEqual(result, expected)
     }
   })
+  test("if column of first line is 0, last line should be 0", async () => {
+    for (let url of [
+      "git@github.mycompany.com:recipeyak/recipeyak.git",
+      "git@github.mycompany.com:recipeyak/recipeyak",
+      "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
+      "ssh://git@github.mycompany.com/recipeyak/recipeyak.git",
+    ]) {
+      async function findRemote(hostname: string) {
+        return url
+      }
+      const gh = new Github(
+        {
+          github: { hostnames: ["github.mycompany.com"] },
+        },
+        "origin",
+        findRemote,
+      )
+      const result = await gh.getUrls({
+        selection: {
+          start: { line: 17, character: 0 },
+          end: { line: 24, character: 5 },
+        },
+        head: createBranch("master"),
+        relativeFilePath: "frontend/src/components/App.tsx",
+      })
+      const expected = {
+        blobUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx#L18-L25",
+        blameUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/blame/master/frontend/src/components/App.tsx#L18-L25",
+        compareUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/compare/master",
+        historyUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/commits/master/frontend/src/components/App.tsx",
+        prUrl:
+          "https://github.mycompany.com/recipeyak/recipeyak/pull/new/master",
+        repoUrl: "https://github.mycompany.com/recipeyak/recipeyak",
+      }
+      assert.deepEqual(result, expected)
+    }
+  })
 })
 
 suite("Gitlab", async () => {
