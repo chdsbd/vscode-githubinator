@@ -116,6 +116,9 @@ export class Github extends BaseProvider {
     let line = `L${start.line + 1}`
     if (start.character !== 0) {
       line += `C${start.character + 1}`
+    } else {
+      line += `-L${end.line + 1}`
+      return line
     }
     line += `-L${end.line + 1}`
     if (end.character !== 0) {
