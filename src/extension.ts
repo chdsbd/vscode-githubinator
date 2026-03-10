@@ -175,17 +175,18 @@ async function githubinator({
   }
 
   const gitDir = gitDirectories.git
+  const commonGitDir = gitDirectories.commonGit
   const repoDir = gitDirectories.repository
 
   let headBranch: [string, string | null] | null = null
   if (mainBranch) {
-    const res = await findShaForBranches(gitDir)
+    const res = await findShaForBranches(commonGitDir)
     if (res == null) {
       return err(`Could not find SHA for branch in ${mainBranches()}`)
     }
     headBranch = res
   } else {
-    headBranch = await git.head(gitDir)
+    headBranch = await git.head(gitDir, commonGitDir)
   }
   if (headBranch == null) {
     return err("Could not find HEAD.")
@@ -209,7 +210,7 @@ async function githubinator({
     const parsedUrl = await new provider(
       providersConfig,
       globalDefaultRemote,
-      (remote) => git.origin(gitDir, remote),
+      (remote) => git.origin(commonGitDir, remote),
     ).getUrls({
       selection,
       // priority: permalink > branch > branch from HEAD

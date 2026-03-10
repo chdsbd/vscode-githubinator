@@ -10,10 +10,12 @@ suite("git", async () => {
 
     assert.deepStrictEqual(dir(__dirname), {
       git: gitPath,
+      commonGit: gitPath,
       repository: repoPath,
     })
     assert.deepStrictEqual(dir(repoPath), {
       git: gitPath,
+      commonGit: gitPath,
       repository: repoPath,
     })
 
@@ -24,7 +26,30 @@ suite("git", async () => {
 
     assert.deepStrictEqual(dir(submodulePath), {
       git: path.join(repoPath, ".git/modules/test_submodule"),
+      commonGit: path.join(repoPath, ".git/modules/test_submodule"),
       repository: submodulePath,
     })
+
+    // worktree: gitdir redirect with a commondir file
+    const worktreeGitDir = path.join(repoPath, ".git/worktrees/my-feature")
+    fs.mkdirSync(worktreeGitDir, { recursive: true })
+    fs.writeFileSync(path.join(worktreeGitDir, "commondir"), "../..")
+
+    const worktreePath = path.join(__dirname, "test_worktree")
+    fs.mkdirSync(worktreePath, { recursive: true })
+    fs.writeFileSync(
+      path.join(worktreePath, ".git"),
+      `gitdir: ${worktreeGitDir}`,
+    )
+
+    assert.deepStrictEqual(dir(worktreePath), {
+      git: worktreeGitDir,
+      commonGit: gitPath,
+      repository: worktreePath,
+    })
+
+    // cleanup
+    fs.rmSync(worktreePath, { recursive: true })
+    fs.rmSync(worktreeGitDir, { recursive: true })
   })
 })

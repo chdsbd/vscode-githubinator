@@ -9,6 +9,7 @@ interface IRemote {
 
 interface IGitDirectories {
   git: string
+  commonGit: string
   repository: string
 }
 
@@ -71,6 +72,7 @@ export async function getSHAForBranch(
 /** Get the current SHA and branch from HEAD for a git directory */
 export async function head(
   gitDir: string,
+  commonGitDir?: string,
 ): Promise<[string, string | null] | null> {
   const headPath = path.resolve(gitDir, "HEAD")
   if (!(await fs.exists(headPath))) {
@@ -91,7 +93,7 @@ export async function head(
     return [maybeSha.trim(), null]
   }
   const branchName = maybeHeadInfo.trim().replace("refs/heads/", "")
-  const sha = await getSHAForBranch(gitDir, branchName)
+  const sha = await getSHAForBranch(commonGitDir ?? gitDir, branchName)
   if (sha == null) {
     return null
   }
@@ -100,6 +102,15 @@ export async function head(
 
 export function dir(filePath: string) {
   return walkUpDirectories(filePath, ".git")
+}
+
+function resolveCommonGitDir(gitDir: string): string {
+  const commondirPath = path.resolve(gitDir, "commondir")
+  if (fs.existsSync(commondirPath)) {
+    const commondir = fs.readFileSync(commondirPath, "utf8").trim()
+    return path.resolve(gitDir, commondir)
+  }
+  return gitDir
 }
 
 function walkUpDirectories(
@@ -116,8 +127,10 @@ function walkUpDirectories(
           .match(/gitdir: (.+)/)
 
         if (submoduleMatch) {
+          const gitDir = path.resolve(directory, submoduleMatch[1])
           return {
-            git: path.resolve(path.join(directory, submoduleMatch[1])),
+            git: gitDir,
+            commonGit: resolveCommonGitDir(gitDir),
             repository: directory,
           }
         } else {
@@ -126,6 +139,7 @@ function walkUpDirectories(
       } else {
         return {
           git: newPath,
+          commonGit: newPath,
           repository: directory,
         }
       }
