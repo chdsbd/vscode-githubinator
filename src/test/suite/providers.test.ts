@@ -40,7 +40,7 @@ suite("Github", async () => {
       "git@github.com:recipeyak/recipeyak",
       "org-XYZ123@github.com:recipeyak/recipeyak",
     ]) {
-      async function findRemote(hostname: string) {
+      const findRemote = async (hostname: string) => {
         return url
       }
       const gh = new Github({}, "origin", findRemote)
@@ -75,7 +75,7 @@ suite("Github", async () => {
       "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
       "ssh://git@github.mycompany.com/recipeyak/recipeyak.git",
     ]) {
-      async function findRemote(hostname: string) {
+      const findRemote = async (hostname: string) => {
         return url
       }
       const gh = new Github(
@@ -116,7 +116,7 @@ suite("Github", async () => {
       "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
       "ssh://git@github.mycompany.com/recipeyak/recipeyak.git",
     ]) {
-      async function findRemote(hostname: string) {
+      const findRemote = async (hostname: string) => {
         return url
       }
       const gh = new Github(
@@ -157,7 +157,7 @@ suite("Github", async () => {
       "org-XYZ123@github.mycompany.com:recipeyak/recipeyak",
       "ssh://git@github.mycompany.com/recipeyak/recipeyak.git",
     ]) {
-      async function findRemote(hostname: string) {
+      const findRemote = async (hostname: string) => {
         return url
       }
       const gh = new Github(

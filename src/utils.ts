@@ -1,13 +1,14 @@
 import * as path from "path"
 import * as fs from "fs"
+import * as vscode from "vscode"
 /** Get path of file relative to repository root. */
 export function getRelativeFilePath(
-  repositoryDir: string,
+  repositoryDir: vscode.Uri,
   fileName: string,
 ): string | null {
   try {
     const resolvedFileName = fs.realpathSync(fileName)
-    return resolvedFileName.replace(repositoryDir, "")
+    return resolvedFileName.replace(repositoryDir.fsPath, "")
   } catch (e) {
     if (
       typeof e === "object" &&
