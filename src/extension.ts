@@ -3,7 +3,6 @@ import * as git from "./git"
 import { providers, IUrlInfo, createSha, createBranch } from "./providers"
 import { getRelativeFilePath } from "./utils"
 import { openFileFromGitHubUrl } from "./openfromUrl"
-import { Repository } from "./vscode-git"
 
 const COMMANDS: [string, IGithubinator][] = [
   [
@@ -137,7 +136,7 @@ function mainBranches() {
  * Search default main branch names for the first one that exists.
  */
 async function findShaForBranches(
-  gitRepository: Repository,
+  gitRepository: git.Repo,
   fileUri: vscode.Uri,
 ): Promise<[string, string] | null> {
   for (let branch of mainBranches()) {

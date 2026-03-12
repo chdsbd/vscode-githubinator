@@ -1,77 +1,84 @@
 import * as vscode from "vscode"
+import { execFile } from "child_process"
+import { promisify } from "util"
+import * as path from "path"
 import { outputChannel } from "./extension"
-import { GitExtension, Remote, Repository } from "./vscode-git"
 
-async function getGitAPI() {
-  const gitExtension =
-    vscode.extensions.getExtension<GitExtension>("vscode.git")
-  if (!gitExtension) return null
-  const exports = await gitExtension.activate()
-  return exports.getAPI(1)
+const execFileAsync = promisify(execFile)
+
+export interface Repo {
+  rootUri: vscode.Uri
 }
 
-export async function getRepo(fileUri: vscode.Uri) {
-  const api = await getGitAPI()
-  if (!api) {
-    vscode.window.showErrorMessage("Git API not available")
+async function git(cwd: string, ...args: string[]): Promise<string> {
+  const { stdout } = await execFileAsync("git", args, { cwd })
+  return stdout.trim()
+}
+
+export async function getRepo(fileUri: vscode.Uri): Promise<Repo | null> {
+  try {
+    const stat = await vscode.workspace.fs.stat(fileUri)
+    const cwd =
+      stat.type & vscode.FileType.Directory
+        ? fileUri.fsPath
+        : path.dirname(fileUri.fsPath)
+    const root = await git(cwd, "rev-parse", "--show-toplevel")
+    return { rootUri: vscode.Uri.file(root) }
+  } catch {
+    outputChannel.appendLine(
+      "Could not find git repository for file: " + fileUri.fsPath,
+    )
     return null
   }
-  const existing = api.getRepository(fileUri)
-  if (existing) return existing
-  outputChannel.appendLine("No repository found, triggering git refresh...")
-  await vscode.commands.executeCommand("git.refresh")
-  const afterRefresh = api.getRepository(fileUri)
-  if (afterRefresh) return afterRefresh
-  // Repos are discovered asynchronously after activation; wait for one to open
-  return new Promise<ReturnType<typeof api.getRepository>>((resolve) => {
-    const timeout = setTimeout(() => {
-      disposable.dispose()
-      resolve(null)
-      outputChannel.appendLine("Hit 5 second timeout for repository to load.")
-    }, 5000)
-    const disposable = api.onDidOpenRepository(() => {
-      const repo = api.getRepository(fileUri)
-      if (repo) {
-        outputChannel.appendLine("Found repository via onDidOpenRepository.")
-        clearTimeout(timeout)
-        disposable.dispose()
-        resolve(repo)
-      }
-    })
-  })
 }
 
 export async function origin(
-  repository: Repository,
+  repo: Repo,
   remote: string,
 ): Promise<string | null> {
-  const found = repository.state.remotes.find((r: Remote) => r.name === remote)
-  return found?.fetchUrl ?? found?.pushUrl ?? null
+  try {
+    return await git(repo.rootUri.fsPath, "remote", "get-url", remote)
+  } catch {
+    return null
+  }
 }
 
 export async function getSHAForBranch(
-  repository: Repository,
+  repo: Repo,
   branchName: string,
 ): Promise<string | null> {
   try {
-    const branch = await repository.getBranch(branchName)
-    return branch.commit ?? null
+    return await git(repo.rootUri.fsPath, "rev-parse", branchName)
   } catch {
     return null
   }
 }
 
 export async function head(
-  repository: Repository,
+  repo: Repo,
 ): Promise<[string, string | null] | null> {
-  const repoHead = repository.state.HEAD
-  if (!repoHead?.commit) return null
-  return [repoHead.commit, repoHead.name ?? null]
+  try {
+    const sha = await git(repo.rootUri.fsPath, "rev-parse", "HEAD")
+    let branchName: string | null = null
+    try {
+      branchName = await git(
+        repo.rootUri.fsPath,
+        "symbolic-ref",
+        "--short",
+        "HEAD",
+      )
+    } catch {
+      // detached HEAD, branchName stays null
+    }
+    return [sha, branchName]
+  } catch {
+    return null
+  }
 }
 
 export async function dir(
-  repository: Repository,
+  repo: Repo,
 ): Promise<{ git: string; repository: string } | null> {
-  const root = repository.rootUri.fsPath
+  const root = repo.rootUri.fsPath
   return { git: root, repository: root }
 }
