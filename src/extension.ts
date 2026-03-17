@@ -77,11 +77,13 @@ export interface IGithubinatorConfig {
   }
 }
 
-export let outputChannel: vscode.OutputChannel
+export let outputChannel: vscode.LogOutputChannel
 
 export function activate(context: vscode.ExtensionContext) {
-  console.log("githubinator.active.start")
-  outputChannel = vscode.window.createOutputChannel("GitHubinator")
+  outputChannel = vscode.window.createOutputChannel("GitHubinator", {
+    log: true,
+  })
+  outputChannel.debug("githubinator.active.start")
   context.subscriptions.push(outputChannel)
   COMMANDS.forEach(([cmd, args]) => {
     const disposable = vscode.commands.registerCommand(cmd, () =>
@@ -95,15 +97,15 @@ export function activate(context: vscode.ExtensionContext) {
   )
   context.subscriptions.push(openFromUrlDisposable)
 
-  console.log("githubinator.active.complete")
+  outputChannel.debug("githubinator.active.complete")
 }
 
 export function deactivate() {
-  console.log("githubinator.deactivate")
+  outputChannel.debug("githubinator.deactivate")
 }
 
 function err(message: string) {
-  console.error(message)
+  outputChannel.error(message)
   vscode.window.showErrorMessage(message)
 }
 
@@ -172,7 +174,7 @@ async function githubinator(options: IGithubinator) {
     openPR,
     compare,
   } = options
-  outputChannel.appendLine(
+  outputChannel.info(
     "githubinator called with options: " + JSON.stringify(options),
   )
   const editorConfig = getEditorInfo()
@@ -233,11 +235,11 @@ async function githubinator(options: IGithubinator) {
         : null,
     })
     if (parsedUrl != null) {
-      console.log("Found provider", provider.name)
+      outputChannel.debug("Found provider", provider.name)
       urls = parsedUrl
       break
     }
-    console.log("Skipping provider", provider.name)
+    outputChannel.debug("Skipping provider", provider.name)
   }
 
   if (urls == null) {

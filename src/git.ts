@@ -25,7 +25,7 @@ export async function getRepo(fileUri: vscode.Uri): Promise<Repo | null> {
     const root = await git(cwd, "rev-parse", "--show-toplevel")
     return { rootUri: vscode.Uri.file(root) }
   } catch {
-    outputChannel.appendLine(
+    outputChannel.warn(
       "Could not find git repository for file: " + fileUri.fsPath,
     )
     return null
