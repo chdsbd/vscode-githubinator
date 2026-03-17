@@ -150,6 +150,28 @@ suite("Github", async () => {
       assert.deepEqual(result, expected)
     }
   })
+  test("if we have no selection on the first line, don't select anything", async () => {
+    const gh = new Github(
+      {
+        github: { hostnames: ["github.mycompany.com"] },
+      },
+      "origin",
+      async () => "git@github.mycompany.com:recipeyak/recipeyak.git",
+    )
+    const result = await gh.getUrls({
+      selection: {
+        start: { line: 0, character: 0 },
+        end: { line: 0, character: 0 },
+      },
+      head: createBranch("master"),
+      relativeFilePath: "frontend/src/components/App.tsx",
+    })
+
+    assert.deepEqual(
+      result?.blobUrl,
+      "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx",
+    )
+  })
 })
 
 suite("Gitlab", async () => {
