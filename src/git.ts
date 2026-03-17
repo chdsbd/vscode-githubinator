@@ -1,14 +1,14 @@
 import * as vscode from "vscode"
-import { execFile } from "child_process"
-import { promisify } from "util"
-import * as path from "path"
+import { execFile } from "node:child_process"
+import { promisify } from "node:util"
+import * as path from "node:path"
 import { outputChannel } from "./extension"
-
-const execFileAsync = promisify(execFile)
 
 export interface Repo {
   rootUri: vscode.Uri
 }
+
+const execFileAsync = promisify(execFile)
 
 async function git(cwd: string, ...args: string[]): Promise<string> {
   const { stdout } = await execFileAsync("git", args, { cwd })
@@ -25,9 +25,7 @@ export async function getRepo(fileUri: vscode.Uri): Promise<Repo | null> {
     const root = await git(cwd, "rev-parse", "--show-toplevel")
     return { rootUri: vscode.Uri.file(root) }
   } catch {
-    outputChannel.warn(
-      "Could not find git repository for file: " + fileUri.fsPath,
-    )
+    outputChannel.warn("Could not find git repository for file", fileUri.fsPath)
     return null
   }
 }
@@ -74,11 +72,4 @@ export async function head(
   } catch {
     return null
   }
-}
-
-export async function dir(
-  repo: Repo,
-): Promise<{ git: string; repository: string } | null> {
-  const root = repo.rootUri.fsPath
-  return { git: root, repository: root }
 }

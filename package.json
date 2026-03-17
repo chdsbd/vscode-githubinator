@@ -455,14 +455,14 @@
     "@types/lodash": "^4.14.170",
     "@types/mocha": "^10.0.6",
     "@types/mz": "^2.7.3",
-    "@types/node": "^15.12.4",
+    "@types/node": "^22.22.0",
     "@types/vscode": "^1.110.0",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "esbuild": "^0.11.12",
     "mocha": "^10.4.0",
     "prettier": "^3.3.0",
-    "typescript": "^4.2.2",
+    "typescript": "^5.9.3",
     "vscode-test": "^1.6.1"
   },
   "dependencies": {
