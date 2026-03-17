@@ -475,9 +475,5 @@
   "extensionDependencies": [
     "vscode.git"
   ],
-  "packageManager": "yarn@1.22.22",
-  "volta": {
-    "node": "18.20.3",
-    "yarn": "1.22.22"
-  }
+  "packageManager": "yarn@1.22.22"
 }
