@@ -1,139 +1,75 @@
-import * as path from "path"
-import * as fs from "mz/fs"
-import * as ini from "ini"
+import * as vscode from "vscode"
+import { execFile } from "node:child_process"
+import { promisify } from "node:util"
+import * as path from "node:path"
+import { outputChannel } from "./extension"
 
-interface IRemote {
-  fetch: string
-  url?: string
+export interface Repo {
+  rootUri: vscode.Uri
 }
 
-interface IGitDirectories {
-  git: string
-  repository: string
+const execFileAsync = promisify(execFile)
+
+async function git(cwd: string, ...args: string[]): Promise<string> {
+  const { stdout } = await execFileAsync("git", args, { cwd })
+  return stdout.trim()
+}
+
+export async function getRepo(fileUri: vscode.Uri): Promise<Repo | null> {
+  try {
+    const stat = await vscode.workspace.fs.stat(fileUri)
+    const cwd =
+      stat.type & vscode.FileType.Directory
+        ? fileUri.fsPath
+        : path.dirname(fileUri.fsPath)
+    const root = await git(cwd, "rev-parse", "--show-toplevel")
+    return { rootUri: vscode.Uri.file(root) }
+  } catch {
+    outputChannel.warn("Could not find git repository for file", fileUri.fsPath)
+    return null
+  }
 }
 
 export async function origin(
-  gitDir: string,
+  repo: Repo,
   remote: string,
 ): Promise<string | null> {
-  const configPath = path.resolve(gitDir, "config")
-  if (!(await fs.exists(configPath))) {
+  try {
+    return await git(repo.rootUri.fsPath, "remote", "get-url", remote)
+  } catch {
     return null
   }
-  const configFileData = await fs.readFile(configPath, { encoding: "utf-8" })
-  const parsedConfig = ini.parse(configFileData)
-  for (const [key, value] of Object.entries(parsedConfig)) {
-    if (key.startsWith('remote "')) {
-      const origin = key.replace(/^remote "/, "").replace(/"$/, "")
-      if (origin === remote) {
-        const url = (value as IRemote).url
-        return url || null
-      }
-    }
-  }
-
-  return null
 }
 
-/** Get the SHA for a ref */
 export async function getSHAForBranch(
-  gitDir: string,
+  repo: Repo,
   branchName: string,
 ): Promise<string | null> {
-  const refName = `refs/heads/${branchName}`
-  // check for normal ref
-  const refPath = path.resolve(gitDir, refName)
-  if (await fs.exists(refPath)) {
-    return await fs.readFile(refPath, {
-      encoding: "utf-8",
-    })
+  try {
+    return await git(repo.rootUri.fsPath, "rev-parse", branchName)
+  } catch {
+    return null
   }
-  // check packed-refs
-  const packedRefPath = path.resolve(gitDir, "packed-refs")
-  if (await fs.exists(packedRefPath)) {
-    const packRefs = await fs.readFile(packedRefPath, {
-      encoding: "utf-8",
-    })
-
-    for (const x of packRefs.split("\n")) {
-      const [sha, refPath] = x.split(" ") as [
-        string | undefined,
-        string | undefined,
-      ]
-      if (sha && refPath && refPath.trim() === refName.trim()) {
-        return sha
-      }
-    }
-  }
-  return null
 }
 
-/** Get the current SHA and branch from HEAD for a git directory */
 export async function head(
-  gitDir: string,
+  repo: Repo,
 ): Promise<[string, string | null] | null> {
-  const headPath = path.resolve(gitDir, "HEAD")
-  if (!(await fs.exists(headPath))) {
-    return null
-  }
-  const headFileData = await fs.readFile(headPath, { encoding: "utf-8" })
-  if (!headFileData) {
-    return null
-  }
-  // If we're not on a branch, headFileData will be of the form:
-  // `3c0cc80bbdb682f6e9f65b4c9659ca21924aad4`
-  // If we're on a branch, it will be `ref: refs/heads/my_branch_name`
-  const [maybeSha, maybeHeadInfo] = headFileData.split(" ") as [
-    string,
-    string | undefined,
-  ]
-  if (maybeHeadInfo == null) {
-    return [maybeSha.trim(), null]
-  }
-  const branchName = maybeHeadInfo.trim().replace("refs/heads/", "")
-  const sha = await getSHAForBranch(gitDir, branchName)
-  if (sha == null) {
-    return null
-  }
-  return [sha.trim(), branchName]
-}
-
-export function dir(filePath: string) {
-  return walkUpDirectories(filePath, ".git")
-}
-
-function walkUpDirectories(
-  file_path: string,
-  file_or_folder: string,
-): IGitDirectories | null {
-  let directory = file_path
-  while (true) {
-    const newPath = path.resolve(directory, file_or_folder)
-    if (fs.existsSync(newPath)) {
-      if (fs.lstatSync(newPath).isFile()) {
-        const submoduleMatch = fs
-          .readFileSync(newPath, "utf8")
-          .match(/gitdir: (.+)/)
-
-        if (submoduleMatch) {
-          return {
-            git: path.resolve(path.join(directory, submoduleMatch[1])),
-            repository: directory,
-          }
-        } else {
-          return null
-        }
-      } else {
-        return {
-          git: newPath,
-          repository: directory,
-        }
-      }
+  try {
+    const sha = await git(repo.rootUri.fsPath, "rev-parse", "HEAD")
+    let branchName: string | null = null
+    try {
+      branchName = await git(
+        repo.rootUri.fsPath,
+        "symbolic-ref",
+        "--short",
+        "HEAD",
+      )
+    } catch {
+      // detached HEAD, branchName stays null
     }
-    const newDirectory = path.dirname(directory)
-    if (newDirectory === directory) {
-      return null
-    }
-    directory = newDirectory
+    return [sha, branchName]
+  } catch {
+    return null
   }
 }

@@ -77,28 +77,35 @@ export interface IGithubinatorConfig {
   }
 }
 
+export let outputChannel: vscode.LogOutputChannel
+
 export function activate(context: vscode.ExtensionContext) {
-  console.log("githubinator.active.start")
+  outputChannel = vscode.window.createOutputChannel("GitHubinator", {
+    log: true,
+  })
+  outputChannel.debug("githubinator.active.start")
+  context.subscriptions.push(outputChannel)
   COMMANDS.forEach(([cmd, args]) => {
     const disposable = vscode.commands.registerCommand(cmd, () =>
       githubinator(args),
     )
     context.subscriptions.push(disposable)
   })
-  vscode.commands.registerCommand(
+  const openFromUrlDisposable = vscode.commands.registerCommand(
     "githubinator.githubinatorOpenFromUrl",
     openFileFromGitHubUrl,
   )
+  context.subscriptions.push(openFromUrlDisposable)
 
-  console.log("githubinator.active.complete")
+  outputChannel.debug("githubinator.active.complete")
 }
 
 export function deactivate() {
-  console.log("githubinator.deactivate")
+  outputChannel.debug("githubinator.deactivate")
 }
 
 function err(message: string) {
-  console.error(message)
+  outputChannel.error(message)
   vscode.window.showErrorMessage(message)
 }
 
@@ -127,11 +134,15 @@ function mainBranches() {
     .get<string[]>("mainBranches", ["main"])
 }
 
+/**
+ * Search default main branch names for the first one that exists.
+ */
 async function findShaForBranches(
-  gitDir: string,
+  gitRepository: git.Repo,
+  fileUri: vscode.Uri,
 ): Promise<[string, string] | null> {
   for (let branch of mainBranches()) {
-    const sha = await git.getSHAForBranch(gitDir, branch)
+    const sha = await git.getSHAForBranch(gitRepository, branch)
     if (sha == null) {
       continue
     }
@@ -151,41 +162,41 @@ interface IGithubinator {
   openPR?: boolean
   compare?: boolean
 }
-async function githubinator({
-  openUrl,
-  copyToClipboard,
-  blame,
-  mainBranch,
-  openRepo,
-  permalink,
-  history,
-  openPR,
-  compare,
-}: IGithubinator) {
-  console.log("githubinator.call")
+async function githubinator(options: IGithubinator) {
+  const {
+    openUrl,
+    copyToClipboard,
+    blame,
+    mainBranch,
+    openRepo,
+    permalink,
+    history,
+    openPR,
+    compare,
+  } = options
+  outputChannel.info(
+    "githubinator called with options: " + JSON.stringify(options),
+  )
   const editorConfig = getEditorInfo()
   if (!editorConfig.uri) {
-    return err("could not find file")
+    return err("Could not find file for current editor.")
   }
+  const fileUri = editorConfig.uri
 
-  const gitDirectories = git.dir(editorConfig.uri.fsPath)
-
-  if (gitDirectories == null) {
-    return err("Could not find .git directory.")
+  const gitRepository = await git.getRepo(fileUri)
+  if (!gitRepository) {
+    return err("Could not find git repository for file.")
   }
-
-  const gitDir = gitDirectories.git
-  const repoDir = gitDirectories.repository
 
   let headBranch: [string, string | null] | null = null
   if (mainBranch) {
-    const res = await findShaForBranches(gitDir)
+    const res = await findShaForBranches(gitRepository, fileUri)
     if (res == null) {
       return err(`Could not find SHA for branch in ${mainBranches()}`)
     }
     headBranch = res
   } else {
-    headBranch = await git.head(gitDir)
+    headBranch = await git.head(gitRepository)
   }
   if (headBranch == null) {
     return err("Could not find HEAD.")
@@ -209,7 +220,7 @@ async function githubinator({
     const parsedUrl = await new provider(
       providersConfig,
       globalDefaultRemote,
-      (remote) => git.origin(gitDir, remote),
+      (remote) => git.origin(gitRepository, remote),
     ).getUrls({
       selection,
       // priority: permalink > branch > branch from HEAD
@@ -220,19 +231,19 @@ async function githubinator({
           ? createSha(head)
           : createBranch(branchName),
       relativeFilePath: editorConfig.fileName
-        ? getRelativeFilePath(repoDir, editorConfig.fileName)
+        ? getRelativeFilePath(gitRepository.rootUri, editorConfig.fileName)
         : null,
     })
     if (parsedUrl != null) {
-      console.log("Found provider", provider.name)
+      outputChannel.debug("Found provider", provider.name)
       urls = parsedUrl
       break
     }
-    console.log("Skipping provider", provider.name)
+    outputChannel.debug("Skipping provider", provider.name)
   }
 
   if (urls == null) {
-    return err("Could not find provider for repo.")
+    return err("Could not find remote for repository.")
   }
 
   let url = compare
