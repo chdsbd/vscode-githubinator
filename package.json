@@ -2,7 +2,7 @@
   "name": "githubinator",
   "displayName": "Githubinator",
   "description": "Quickly open files on Github and other providers. View blame information, copy permalinks and more. See the \"commands\" section of the README for more details.",
-  "version": "3.4.0",
+  "version": "4.0.0",
   "publisher": "chdsbd",
   "license": "SEE LICENSE IN LICENSE",
   "icon": "images/logo256.png",
@@ -455,14 +455,14 @@
     "@types/lodash": "^4.14.170",
     "@types/mocha": "^10.0.6",
     "@types/mz": "^2.7.3",
-    "@types/node": "^15.12.4",
-    "@types/vscode": "^1.32.0",
+    "@types/node": "^22.19.15",
+    "@types/vscode": "^1.110.0",
     "@vscode/test-cli": "^0.0.9",
     "@vscode/test-electron": "^2.4.0",
     "esbuild": "^0.11.12",
     "mocha": "^10.4.0",
     "prettier": "^3.3.0",
-    "typescript": "^4.2.2",
+    "typescript": "^5.9.3",
     "vscode-test": "^1.6.1"
   },
   "dependencies": {
@@ -472,9 +472,8 @@
     "lodash": "^4.17.21",
     "mz": "^2.7.0"
   },
-  "packageManager": "yarn@1.22.22",
-  "volta": {
-    "node": "18.20.3",
-    "yarn": "1.22.22"
-  }
+  "extensionDependencies": [
+    "vscode.git"
+  ],
+  "packageManager": "yarn@1.22.22"
 }

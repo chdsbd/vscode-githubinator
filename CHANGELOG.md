@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 4.0.0 - 2026-03-16
+
+### Changed
+
+- Extension now calls `git` instead of manually reading `.git/` files. (#75)
+
 ## 3.4.0 - 2026-03-07
 
 ### Changed
