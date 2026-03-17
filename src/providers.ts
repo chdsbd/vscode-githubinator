@@ -113,10 +113,6 @@ export class Github extends BaseProvider {
   PROVIDER_NAME = "github"
 
   buildLines({ start, end }: ISelection): string {
-    if (start.line === end.line && start.character === end.character) {
-      return ""
-    }
-
     let line = `L${start.line + 1}`
     if (start.character !== 0) {
       line += `C${start.character + 1}`
