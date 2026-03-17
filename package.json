@@ -25,7 +25,7 @@
     "url": "https://github.com/chdsbd/vscode-githubinator/issues"
   },
   "engines": {
-    "vscode": "^1.89.0"
+    "vscode": "^1.110.0"
   },
   "categories": [
     "Other"
