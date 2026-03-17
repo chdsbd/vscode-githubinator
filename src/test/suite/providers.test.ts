@@ -168,7 +168,7 @@ suite("Github", async () => {
     })
 
     assert.deepEqual(
-      result?.blameUrl,
+      result?.blobUrl,
       "https://github.mycompany.com/recipeyak/recipeyak/blob/master/frontend/src/components/App.tsx",
     )
   })
