@@ -26,4 +26,4 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Publish to Visual Studio Marketplace
-        run: npx --yes @vscode/vsce@4.1.0 publish --oidc
+        run: yarn vsce publish --oidc

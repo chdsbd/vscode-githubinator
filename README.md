@@ -18,7 +18,7 @@ Download the extension package from the [latest Github release](https://github.c
 
 ### From source
 
-With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
+Clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `yarn install` and `yarn vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
 
 ## Features
 
