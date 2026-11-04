@@ -117,11 +117,7 @@ yarn test
 
 ### Publish
 
-```bash
-vsce package
-vsce login chdsbd
-vsce publish <version>
-```
+Bump the version in `package.json`, merge to `master`, and run the [Publish workflow](https://github.com/chdsbd/vscode-githubinator/actions/workflows/publish.yml).
 
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator
 
