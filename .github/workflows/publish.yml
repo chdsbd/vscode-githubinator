@@ -9,6 +9,7 @@ jobs:
   publish:
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
+    environment: marketplace
     permissions:
       contents: read
       id-token: write
