@@ -1,13 +1,14 @@
 name: Publish
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 permissions: {}
 
 jobs:
   publish:
-    if: github.ref == 'refs/heads/master'
+    if: ${{ !github.event.release.prerelease }}
     runs-on: ubuntu-latest
     environment: marketplace
     permissions:
@@ -23,6 +24,8 @@ jobs:
         with:
           node-version-file: ".nvmrc"
           package-manager-cache: false
+      - name: Check tag matches package.json version
+        run: test "$GITHUB_REF_NAME" = "v$(node -p "require('./package.json').version")"
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Publish to Visual Studio Marketplace

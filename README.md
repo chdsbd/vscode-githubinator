@@ -117,7 +117,7 @@ yarn test
 
 ### Publish
 
-Bump the version in `package.json`, merge to `master`, and run the [Publish workflow](https://github.com/chdsbd/vscode-githubinator/actions/workflows/publish.yml).
+Bump the version in `package.json`, merge to `master`, and create a GitHub release tagged `v<version>`. The [Publish workflow](https://github.com/chdsbd/vscode-githubinator/actions/workflows/publish.yml) publishes it to the Marketplace, skipping pre-releases.
 
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator
 
