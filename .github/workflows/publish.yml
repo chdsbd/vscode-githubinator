@@ -1,0 +1,32 @@
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions: {}
+
+jobs:
+  publish:
+    if: ${{ !github.event.release.prerelease }}
+    runs-on: ubuntu-latest
+    environment: marketplace
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: ".nvmrc"
+          package-manager-cache: false
+      - name: Check tag matches package.json version
+        run: test "$GITHUB_REF_NAME" = "v$(node -p "require('./package.json').version")"
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Publish to Visual Studio Marketplace
+        run: yarn vsce publish --oidc

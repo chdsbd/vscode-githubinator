@@ -18,7 +18,7 @@ Download the extension package from the [latest Github release](https://github.c
 
 ### From source
 
-With `vsce` installed from NPM (`yarn global add vsce`), clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
+Clone [this repo](https://github.com/chdsbd/vscode-githubinator) and run `yarn install` and `yarn vsce package`. Install the resulting package with `code --install-extension githubinator-*.vsix`
 
 ## Features
 
@@ -117,11 +117,7 @@ yarn test
 
 ### Publish
 
-```bash
-vsce package
-vsce login chdsbd
-vsce publish <version>
-```
+Bump the version in `package.json`, merge to `master`, and create a GitHub release tagged `v<version>`. The [Publish workflow](https://github.com/chdsbd/vscode-githubinator/actions/workflows/publish.yml) publishes it to the Marketplace, skipping pre-releases.
 
 [marketplace]: https://marketplace.visualstudio.com/items?itemName=chdsbd.githubinator
 
