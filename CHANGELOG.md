@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## 4.1.1 - 2026-11-04
+
+### Changed
+
+- Publish to the Marketplace from GitHub Actions with trusted publishing. (#84)
+
 ## 4.1.0 - 2026-09-29
 
 ### Changed
